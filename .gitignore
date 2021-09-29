@@ -1,0 +1,11 @@
+# other
+.DS_Store
+
+# ignore pycache folder
+**/__pycache__/
+.pytest_cache
+
+# venv
+**/venv/
+
+tests/hvr.lic

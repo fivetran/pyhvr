@@ -1,0 +1,33 @@
+# top-level (get version) (or hide?)
+/:
+  get: get_api
+# rename duplicates
+/hubs/{hub}/definition/channels/{channel}:
+  get: get_hubs_definition_channels_channel
+/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}:
+  get: get_hubs_definition_channels_loc_groups_group
+/hubs/{hub}/definition/channels/{channel}/tables/{table}:
+  get: get_hubs_definition_channels_tables_table
+  patch: patch_hubs_definition_channels_tables_table
+  put: put_hubs_definition_channels_tables_table
+/hubs/{hub}/definition/locs/{loc}:
+  get: get_hubs_definition_locs_loc
+/hubs/{hub}:
+  get: get_hubs_hub
+/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}:
+  post: post_hubs_channels_locs_adapt_check_table
+/users/{user}:
+  get: get_users_user
+/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:  
+  get: get_hubs_channels_controls_ctrl_id
+/licenses/{license}:
+  get: get_licenses_license
+# we do not want to expose auth API automatically
+/password:
+  post: skip
+/refresh:
+  post: skip
+/revoke:
+  post: skip
+/setup:
+  post: skip

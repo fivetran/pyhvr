@@ -1,0 +1,178 @@
+import json
+import time
+import requests
+import pyhvr.pyhvr_exceptions
+#from pprint import pprint
+
+class Client:
+    username: str
+    password: str
+    uri: str
+    bearer_token: str = None
+    bearer_token_valid_until: int = 0
+    setup_mode: bool = False
+
+    def __init__(self, uri, setup_mode, username=None, password=None):
+        self.username = username
+        self.password = password
+        self.uri = uri
+        self.setup_mode = setup_mode
+
+    def login(self):
+        self.login_token()
+        return None  # do not leak the token
+
+    def header_nonauth(self):
+        return {"Content-type": "application/json", "Accept": "application/json"}
+
+
+    def header_auth(self, bearer_token):
+        return {
+            "Content-type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "bearer " + bearer_token,
+        }
+
+    def login_token(self):
+        # ToDo - use refresh token if possible
+        if self.bearer_token_valid_until < time.time():
+            try:
+                if self.setup_mode:
+                    rq = requests.post(
+                        self.uri + "/auth/v1/setup",
+                        headers=self.header_nonauth(),
+                )
+                else:
+                    rq = requests.post(
+                        self.uri + "/auth/v1/password",
+                        data=json.dumps(
+                            {"username": self.username, "password": self.password, "refresh": "token"}
+                        ),
+                        headers=self.header_nonauth(),
+                    )
+                if rq.ok:
+                    self.bearer_token = rq.json()["access_token"]
+                    # Force renew 60 seconds before expiry
+                    self.bearer_token_valid_until = time.time() + (rq.json()["expires_in"] - 60)
+                    return self.bearer_token
+
+            except Exception as e:
+                raise pyhvr.pyhvr_exceptions.ConnectionError(
+                    message="Cannot login: " + str(e)
+                )
+
+            raise pyhvr.pyhvr_exceptions.LoginError(
+                status_code=rq.status_code, message=rq.text
+            )
+
+        else:
+            return self.bearer_token
+
+
+    def get(self, path, query, headers, payload, is_json):
+        headers.update(self.header_auth(self.login_token()))
+        rq = requests.get(
+            self.uri + path,
+            params=query,
+            data=json.dumps(payload),
+            headers=headers,
+        )
+
+        if rq.ok:
+            if rq.text and is_json:
+                return rq.json()
+            elif rq.text:
+                return rq.text
+            else:
+                return None
+
+        raise pyhvr.pyhvr_exceptions.RestError(status_code=rq.status_code, message=rq.text)
+
+
+    def post(self, path, query, headers, payload, is_json):
+        headers.update(self.header_auth(self.login_token()))
+        rq = requests.post(
+            self.uri + path,
+            params=query,
+            data=json.dumps(payload),
+            headers=headers,
+        )
+
+        if rq.ok:
+            if rq.text and is_json:
+                return rq.json()
+            elif rq.text:
+                return rq.text
+            else:
+                return None
+
+        raise pyhvr.pyhvr_exceptions.RestError(status_code=rq.status_code, message=rq.text)
+
+
+    def put(self, path, query, headers, payload, is_json):
+        headers.update(self.header_auth(self.login_token()))
+        rq = requests.put(
+            self.uri + path,
+            params=query,
+            data=json.dumps(payload),
+            headers=headers,
+        )
+
+        if rq.ok:
+            if rq.text and is_json:
+                return rq.json()
+            elif rq.text:
+                return rq.text
+            else:
+                return None
+
+        raise pyhvr.pyhvr_exceptions.RestError(status_code=rq.status_code, message=rq.text)
+
+
+    def delete(self, path, query, headers, payload, is_json):
+        headers.update(self.header_auth(self.login_token()))
+        rq = requests.delete(
+            self.uri + path,
+            params=query,
+            data=json.dumps(payload),
+            headers=headers,
+        )
+
+        if rq.ok:
+            if rq.text and is_json:
+                return rq.json()
+            elif rq.text:
+                return rq.text
+            else:
+                return None
+
+        raise pyhvr.pyhvr_exceptions.RestError(status_code=rq.status_code, message=rq.text)
+
+
+    def patch(self, path, query, headers, payload, is_json):
+        headers.update(self.header_auth(self.login_token()))
+        rq = requests.patch(
+            self.uri + path,
+            params=query,
+            data=json.dumps(payload),
+            headers=headers,
+        )
+
+        if rq.ok:
+            if rq.text and is_json:
+                return rq.json()
+            elif rq.text:
+                return rq.text
+            else:
+                return None
+
+        raise pyhvr.pyhvr_exceptions.RestError(status_code=rq.status_code, message=rq.text)
+
+    def from_bool(self, b):
+        if (b):
+            return "true"
+        else:
+            return "false"
+
+    {% for fun,fundef in function_definitions|dictsort %}
+    {{ fundef }}{% endfor %}

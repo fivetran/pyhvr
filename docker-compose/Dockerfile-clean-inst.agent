@@ -1,0 +1,12 @@
+ARG owner
+FROM $owner/rtdsagent:cicd-test-latest
+
+
+COPY clean-inst-agent.sh /home/hvr/bin/
+
+USER root
+RUN chown -R hvr:hvr /home/hvr/bin/*.sh /home/hvr/bin/*.py /home/hvr/bin/*/*.py \
+    && chmod ug+rwx /home/hvr/bin/*.sh /home/hvr/bin/*.py /home/hvr/bin/*/*.py 
+USER hvr
+
+CMD ["/home/hvr/bin/clean-inst-agent.sh"]

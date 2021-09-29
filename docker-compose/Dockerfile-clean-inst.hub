@@ -1,0 +1,11 @@
+ARG owner
+FROM $owner/rtdshub:cicd-test-latest
+
+COPY clean-inst-hub.sh /home/hvr/bin/
+
+USER root
+RUN chown -R hvr:hvr /home/hvr/bin/*.sh /home/hvr/bin/*.py /home/hvr/bin/*/*.py \
+    && chmod ug+rwx /home/hvr/bin/*.sh /home/hvr/bin/*.py /home/hvr/bin/*/*.py 
+USER hvr
+
+CMD ["/home/hvr/bin/clean-inst-hub.sh"]

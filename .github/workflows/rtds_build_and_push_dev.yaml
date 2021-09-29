@@ -1,0 +1,66 @@
+name: Test pyhvr
+env:
+  region: ap-southeast-2
+
+on: push
+
+jobs:
+  pytest_on_push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.region }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      # Install all the required python modules for app, but also flake8 and pytest
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          pip install -r requirements.txt
+      - name: Install pyhvr
+        run: |
+          pip install .
+      # TODO: check that generated code is up-to-date with source code
+      - name: docker compose and pytest
+        run: |
+          cd docker-compose
+          AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
+          export owner=$AWS_ACCOUNT_ID.dkr.ecr.${{ env.region }}.amazonaws.com
+          aws ecr --region ${{ env.region }} get-login-password | docker login --username AWS --password-stdin $owner
+          docker-compose -f docker-compose-preconf.yaml up -d
+
+          cd ..
+          echo "Wait for HVR6 and all dependencies to be ready"
+          while ! docker exec rtdshub nc postgres-source 5432 ; do sleep 1; done;
+          while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
+          while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
+          pytest --ignore tests/test_clean_install.py
+          cd -
+          docker-compose -f docker-compose-preconf.yaml down -v
+
+          docker-compose -f docker-compose-clean-inst.yaml up -d
+          cd ..
+          echo "Wait for hubserver to come up"
+          while ! docker exec rtdshub nc localhost 4340 ; do sleep 1; done;
+          while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
+          while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
+          docker cp rtdshub:/install/hvr.lic tests/hvr.lic
+          pytest tests/test_clean_install.py
+          cd -
+          docker-compose  -f docker-compose-clean-inst.yaml down
+
+      # Run Flake8 test to confirm formatting of file etc.  This will use a custom config file .flake8
+      - name: Flake8
+        run: |
+          flake8 --config .flake8

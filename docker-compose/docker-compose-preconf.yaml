@@ -1,0 +1,71 @@
+###!!!
+### Always delete volumes when shutting down. I.e. use:
+### ```
+### docker compose down -v
+### ```
+### Otherwise agents might use stale certs.
+
+version: "3.1"
+services:
+  rtdshub:
+    image: ${owner}/rtdshub:cicd-test-latest
+    container_name: rtdshub
+    ports:
+      - "4340:4340"
+    environment:
+      - HUB_DATABASE_HOST=pghub
+      - HUB_DATABASE_PORT=5432
+      - HUB_DATABASE_NAME=pghub
+      - DEPLOYMENT_ID=gidtest-1
+      - DEPLOYMENT_GROUP_ID=gidtest
+      - AGENT_1_ENDPOINT=rtdsagent-1-service
+      - AGENT_2_ENDPOINT=rtdsagent-2-service
+      - OVERRIDE_HUB_DATABASE_PASSWORD=Kiwi1234
+      - OVERRIDE_HUB_DATABASE_USER=postgres
+      - OVERRIDE_HUB_ADMIN_PASSWORD=Kiwi1234
+      - OVERRIDE_HUB_ADMIN_USER=admin
+    volumes:
+       - shared-data:/shared-data
+  rtdsagent-1:
+    image: ${owner}/rtdsagent:cicd-test-latest
+    container_name: rtdsagent-1
+    # ports:
+    #   - "4340:4340"
+    environment:
+      - AGENT_ID=1
+      - DEPLOYMENT_GROUP_ID=gidtest
+    volumes:
+       - shared-data:/shared-data
+  rtdsagent-2:
+    image: ${owner}/rtdsagent:cicd-test-latest
+    container_name: rtdsagent-2
+    # ports:
+    #   - "4340:4340"
+    environment:
+      - AGENT_ID=2
+      - DEPLOYMENT_GROUP_ID=gidtest
+    volumes:
+       - shared-data:/shared-data
+  
+  pghub:
+    image: postgres:12.8
+    container_name: pghub
+    environment:
+      - POSTGRES_PASSWORD=Kiwi1234
+      - POSTGRES_DB=pghub
+  postgres-source:
+    image: ${owner}/testdb:pg-hammerdb-loaded
+    container_name: postgres-source
+    command: ["-c", "wal_level=logical"]
+    environment:
+      - POSTGRES_PASSWORD=Kiwi1234
+      - POSTGRES_DB=tpcc
+  postgres-target:
+    image: ${owner}/testdb:pg-hammerdb-empty
+    container_name: postgres-target
+    command: ["-c", "wal_level=logical"]
+    environment:
+      - POSTGRES_PASSWORD=Kiwi1234
+      - POSTGRES_DB=tpcc
+volumes:
+  shared-data:
