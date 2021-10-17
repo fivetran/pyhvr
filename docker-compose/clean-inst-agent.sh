@@ -9,5 +9,5 @@ gzip -dc /install/$HVR_INSTALL_FILE | tar xf -
 
 mkdir -p $HVR_CONFIG/etc
 
-echo "Star agent"
+echo "Start agent"
 $HVR_HOME/bin/hvragentlistener -i 4343
