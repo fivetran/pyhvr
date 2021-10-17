@@ -11,7 +11,7 @@ This module is a wrapper of the API as described in https://www.hvr-software.com
 Point `pip` to this git repository:
 
 ```bash
-pip install git+https://github.com/hvrsoftware/pyhvr.git@v6.0.1#egg=pyhvr
+pip install git+https://github.com/hvrsoftware/pyhvr.git@v6.0.2#egg=pyhvr
 ```
 
 ### Crate a client
