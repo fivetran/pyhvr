@@ -122,8 +122,9 @@ def test_get_table_clos():
         table="customer"
     )
 
+
 def test_rename_table():
-    hvr_client.post_hubs_definition_channels_rename(
+    hvr_client.post_hubs_definition_channels_tables_rename(
         hub="hvrhub",
         channel="chanst",
         table="customer",
@@ -204,8 +205,8 @@ def test_channel_rename():
 
 
 def test_channel_tables():
-    hvr_client.get_hubs_definition_channels_tables(hub="hvrhub", channel="chanart")
+    hvr_client.get_hubs_definition_channels_tables(hub="hvrhub", channel="new_chan")
 
 
 def test_delete_loc_group():
-    hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="chanart", loc_group="TEST_LOC_G_NEW")
+    hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="new_chan", loc_group="TEST_LOC_G_NEW")
