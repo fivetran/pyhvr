@@ -51,7 +51,8 @@ def test_hub_compare_Channel2():
 
 
 def test_hub_compare_invalid_param():
-    try:
+    
+    with pytest.raises(RestError):
         hvr_client.post_hubs_channels_compare(
             hub="hvrhub",
             channel="chanat",
@@ -63,11 +64,7 @@ def test_hub_compare_invalid_param():
             granularity="bulk",
             tables=["customer"]
         )
-    except RestError as Er:
-        print(Er.status_code)
-        print(Er.message)
-        print(Er.error_code)
-
+    
 
 def test_table_evenID():
     print("Get event ids for tables results of recent Compare ")
