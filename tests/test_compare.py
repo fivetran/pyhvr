@@ -1,4 +1,5 @@
 import pyhvr
+import pytest
 from pyhvr.pyhvr_exceptions import (RestError)
 
 hvr_client = pyhvr.client(
