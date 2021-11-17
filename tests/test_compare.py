@@ -25,8 +25,7 @@ def test_activate_post():
 
 
 def test_hub_compare_Channel1():
-    print("Running Compare")
-    hvr_client.post_hubs_channels_compare(
+    result = hvr_client.post_hubs_channels_compare(
         hub="hvrhub",
         channel="chanat",
         start_immediate="true",
@@ -35,8 +34,11 @@ def test_hub_compare_Channel1():
         online_compare="diff_diff",
         online_compare_sleep=0,
         granularity="rowwise",
-        tables=["customer"]
+        tables=["customer"],
     )
+
+    assert result["job"] == "chanat-cmp-sourceat-targetat"
+    assert result["posted_ev_id"]
 
 
 def test_hub_compare_Channel2():
@@ -52,7 +54,6 @@ def test_hub_compare_Channel2():
 
 
 def test_hub_compare_invalid_param():
-    
     with pytest.raises(RestError):
         hvr_client.post_hubs_channels_compare(
             hub="hvrhub",
@@ -65,7 +66,7 @@ def test_hub_compare_invalid_param():
             granularity="bulk",
             tables=["customer"]
         )
-    
+
 
 def test_table_evenID():
     print("Get event ids for tables results of recent Compare ")
