@@ -1,34 +1,28 @@
-import pytest
 import pyhvr
-from pyhvr.pyhvr_exceptions import (ConnectionError, LoginError, PyhvrError,
-                                    RestError)
-import test_activate
+import pytest
+from pyhvr.pyhvr_exceptions import (RestError)
 
 hvr_client = pyhvr.client(
     username="admin", password="Kiwi1234", uri="http://localhost:4340"
 )
 
 
-def test_get_active():
-    print("Check activation Status of channels ")
-    hvr_client.post_hubs_channels_activate(hub="hvrhub", channel="chanat")
-
-
-def test_channel_activation():
-    print("Check replication activation status of channel")
-    hvr_client.get_hubs_channels_activate(hub="hvrhub",
-                                          channel="chanat"
-                                          )
-
-
 def test_activate_post():
+    activate_data = {
+        "start_next_jobs": ["cap"],
+        "parallel_locs": 2,
+        "replace_enroll": False,
+    }
+
+    activate = hvr_client.post_hubs_channels_activate(
+        hub="hvrhub", channel="chanat", **activate_data
+    )
     print("ACTIVE the channel")
-    hvr_client.post_hubs_channels_activate(hub="hvrhub", channel="chanat")
+    assert activate["job"] == f"chanat-activate"
 
 
 def test_hub_compare_Channel1():
-    print("Running Compare")
-    hvr_client.post_hubs_channels_compare(
+    result = hvr_client.post_hubs_channels_compare(
         hub="hvrhub",
         channel="chanat",
         start_immediate="true",
@@ -37,12 +31,14 @@ def test_hub_compare_Channel1():
         online_compare="diff_diff",
         online_compare_sleep=0,
         granularity="rowwise",
-        tables=["customer"]
+        tables=["customer"],
     )
+    assert result["job"] == "chanat-cmp-sourceat-targetat"
+    assert result["posted_ev_id"]
 
 
 def test_hub_compare_Channel2():
-    hvr_client.post_hubs_channels_compare(
+    result = hvr_client.post_hubs_channels_compare(
         hub="hvrhub",
         channel="chanrl",
         source_loc="sourcerl",
@@ -51,10 +47,12 @@ def test_hub_compare_Channel2():
         granularity="bulk",
         tables=["customer"]
     )
+    assert result["job"] == "chanat-cmp-sourceat-targetat"
+    assert result["posted_ev_id"]
 
 
 def test_hub_compare_invalid_param():
-    try:
+    with pytest.raises(RestError):
         hvr_client.post_hubs_channels_compare(
             hub="hvrhub",
             channel="chanat",
@@ -66,64 +64,46 @@ def test_hub_compare_invalid_param():
             granularity="bulk",
             tables=["customer"]
         )
-    except RestError as Er:
-        print(Er.status_code)
-        print(Er.message)
-        print(Er.error_code)
-
-
-def test_table_evenID():
-    print("Get event ids for tables results of recent Compare ")
-    hvr_client.get_hubs_channels_refresh_tables_results_ids(hub="hvrhub", channel="chanat")
-
-
-def test_context():
-    print("Show contexts and context variables ")
-    hvr_client.get_hubs_channels_contexts(hub="hvrhub", channel="chanat")
 
 
 def test_deactivate():
-    hvr_client.post_hubs_channels_deactivate(hub="hvrhub", channel="chanrl")
+    deactivate_data = {
+        "start_immediate": "true",
+        "components": ["state_tables"],
+        "parallel_locs": 2,
+    }
 
-
-def test_check_open_trans():
-    hvr_client.get_hubs_channels_locs_capture_open_tx(
-        hub="hvrhub",
-        channel="chanat",
-        loc="sourceat"
+    deactivate = hvr_client.post_hubs_channels_deactivate(
+        hub="hvrhub", channel="chanat", **deactivate_data
     )
-
-
-def test_integrate_point():
-    hvr_client.get_hubs_channels_locs_integrate_point(
-        hub="hvrhub",
-        channel="chanat",
-        loc="sourceat"
-    )
-
-
-def test_refresh_table_result_ids():
-    print("Get event ids for tables results of recent Refresh for all channels ")
-    hvr_client.get_hubs_refresh_tables_results_ids(hub="hvrhub")
+    print("DeACTIVE the channel")
+    assert deactivate["job"] == f"chanat-activate"
 
 
 def test_get_tables():
-    hvr_client.get_hubs_definition_channels_tables(hub="hvrhub", channel="chanst")
+    ht = hvr_client.get_hubs_definition_channels_tables(hub="hvrhub", channel="chanst")
+    print(ht)
+    assert ht["customer"]["base_name"] == "customer"
 
 
 def test_definition_table():
-    hvr_client.get_hubs_definition_channels_tables_table(hub="hvrhub", channel="chanst", table="customer")
+    ht = hvr_client.get_hubs_definition_channels_tables_table(hub="hvrhub", channel="chanst", table="customer")
+    print(ht)
+    assert ht is not None
 
 
 def test_get_table_clos():
-    hvr_client.get_hubs_definition_channels_tables_cols(
+    ht = hvr_client.get_hubs_definition_channels_tables_cols(
         hub="hvrhub",
         channel="chanst",
         table="customer"
     )
+    print(ht)
+    assert ht is not None
+
 
 def test_rename_table():
-    hvr_client.post_hubs_definition_channels_rename(
+    hvr_client.post_hubs_definition_channels_tables_rename(
         hub="hvrhub",
         channel="chanst",
         table="customer",
@@ -132,33 +112,36 @@ def test_rename_table():
 
 
 def test_table_delete_in_channel():
-    hvr_client.delete_hubs_definition_channels_tables(
+    tb1 =hvr_client.delete_hubs_definition_channels_tables(
         hub="hvrhub",
         channel="chanst",
         table="new_cust"
     )
+    assert tb1 is None
 
 
 def test_delete_channel():
-    hvr_client.delete_hubs_definition_channels(
+    ch = hvr_client.delete_hubs_definition_channels(
         hub="hvrhub",
-        channel="chanst"
+        channel="chane"
     )
+    print(ch)
+    assert ch is None
 
 
-def test_channel_action():
-    print(" Fetch channel actions from hub definition ")
-    hvr_client.get_hubs_definition_channels_actions(
-        hub="hvrhub",
-        channel="chanjc"
-    )
+def test_delete_non_ext_channel():
+    with pytest.raises(RestError):
+        hvr_client.delete_hubs_definition_channels(channel="chane", hub="hvrhub")
 
 
 def test_add_loc_group():
-    hvr_client.post_hubs_definition_channels_loc_groups(
+    lc = hvr_client.post_hubs_definition_channels_loc_groups(
         hub="hvrhub",
         channel="chanart",
-        loc_group="TEST_LOC_G1")
+        loc_group="TEST_LOC_G1"
+    )
+    print(lc)
+    assert lc is None
 
 
 def test_wrong_loc_group():
@@ -204,8 +187,8 @@ def test_channel_rename():
 
 
 def test_channel_tables():
-    hvr_client.get_hubs_definition_channels_tables(hub="hvrhub", channel="chanart")
+    hvr_client.get_hubs_definition_channels_tables(hub="hvrhub", channel="new_chan")
 
 
 def test_delete_loc_group():
-    hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="chanart", loc_group="TEST_LOC_G_NEW")
+    hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="new_chan", loc_group="TEST_LOC_G_NEW")
