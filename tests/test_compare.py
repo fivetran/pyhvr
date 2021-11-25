@@ -18,7 +18,7 @@ def test_activate_post():
         hub="hvrhub", channel="chanat", **activate_data
     )
     print("ACTIVE the channel")
-    assert activate["job"] == f"chanat-activate"
+    assert activate["job"] == "chanat-activate"
 
 
 def test_hub_compare_Channel1():
@@ -77,7 +77,7 @@ def test_deactivate():
         hub="hvrhub", channel="chanat", **deactivate_data
     )
     print("DeACTIVE the channel")
-    assert deactivate["job"] == f"chanat-activate"
+    assert deactivate["job"] == "chanat-activate"
 
 
 def test_get_tables():
@@ -112,10 +112,10 @@ def test_rename_table():
 
 
 def test_table_delete_in_channel():
-    tb1 =hvr_client.delete_hubs_definition_channels_tables(
-        hub="hvrhub",
-        channel="chanst",
-        table="new_cust"
+    tb1 = hvr_client.delete_hubs_definition_channels_tables(
+         hub="hvrhub",
+         channel="chanst",
+         table="new_cust"
     )
     assert tb1 is None
 
