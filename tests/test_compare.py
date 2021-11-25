@@ -47,7 +47,7 @@ def test_hub_compare_Channel2():
         granularity="bulk",
         tables=["customer"]
     )
-    assert result["job"] == "chanat-cmp-sourceat-targetat"
+    assert result["job"] == "chanrl-cmp-sourceat-targetat"
     assert result["posted_ev_id"]
 
 
