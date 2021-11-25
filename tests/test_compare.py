@@ -113,9 +113,9 @@ def test_rename_table():
 
 def test_table_delete_in_channel():
     tb1 = hvr_client.delete_hubs_definition_channels_tables(
-         hub="hvrhub",
-         channel="chanst",
-         table="new_cust"
+        hub="hvrhub",
+        channel="chanst",
+        table="new_cust"
     )
     assert tb1 is None
 
@@ -157,38 +157,29 @@ def test_wrong_loc_group():
         print(e.error_code)
 
 
-def test_get_loc_group():
-    hvr_client.get_hubs_definition_channels_loc_groups(hub="hvrhub", channel="chanart")
-
-
-def test_get_loc():
-    hvr_client.get_hubs_definition_channels_loc_groups_group(hub="hvrhub",
-                                                             channel="chanart",
-                                                             loc_group="TEST_LOC_G1")
-
-
-def test_get_loc_gmembers():
-    hvr_client.get_hubs_definition_channels_loc_groups_members(hub="hvrhub", channel="chanart", loc_group="TEST_LOC_G1")
-
-
-def test_put_loc_group():
-    hvr_client.put_hubs_definition_channels_loc_groups(hub="hvrhub", channel="chanart", loc_group="TEST_LOC_G1")
-
-
 def test_rename_loc_group():
-    hvr_client.post_hubs_definition_channels_loc_groups_rename(hub="hvrhub",
-                                                               channel="chanart",
-                                                               loc_group="TEST_LOC_G1",
-                                                               new_name="TEST_LOC_G_NEW")
+    rlg = hvr_client.post_hubs_definition_channels_loc_groups_rename(hub="hvrhub",
+                                                                     channel="chanart",
+                                                                     loc_group="TEST_LOC_G1",
+                                                                     new_name="TEST_LOC_G_NEW")
+    print(rlg)
+    assert rlg is None
 
 
 def test_channel_rename():
-    hvr_client.post_hubs_definition_channels_rename(hub="hvrhub", channel="chanart", new_name="new_chan")
-
-
-def test_channel_tables():
-    hvr_client.get_hubs_definition_channels_tables(hub="hvrhub", channel="new_chan")
+    rm = hvr_client.post_hubs_definition_channels_rename(hub="hvrhub", channel="chanart", new_name="new_chan")
+    print(rm)
+    assert rm is None
 
 
 def test_delete_loc_group():
-    hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="new_chan", loc_group="TEST_LOC_G_NEW")
+    dg = hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="new_chan",
+                                                              loc_group="TEST_LOC_G_NEW")
+    print(dg)
+    assert dg is None
+
+
+def test_wrong_delete_loc_group():
+    with pytest.raises(RestError):
+        hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="new_chan",
+                                                              loc_group="TEST_LOC_G_WRONG")
