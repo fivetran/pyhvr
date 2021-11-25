@@ -114,7 +114,7 @@ def test_setup_direct_rep():
         hub="hvrhub", channel="t1_channel", **refresh_data
     )
 
-    assert refresh["job"] == f"t1_channel-refr-test1_source-test1_target"
+    assert refresh["job"] == "t1_channel-refr-test1_source-test1_target"
 
     activate_data = {
         "parallel_locs": 2,
@@ -125,4 +125,4 @@ def test_setup_direct_rep():
         hub="hvrhub", channel="t1_channel", **activate_data
     )
 
-    assert activate["job"] == f"t1_channel-activate"
+    assert activate["job"] == "t1_channel-activate"
