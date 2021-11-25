@@ -174,7 +174,7 @@ def test_channel_rename():
 
 def test_delete_loc_group():
     dg = hvr_client.delete_hubs_definition_channels_loc_groups(hub="hvrhub", channel="new_chan",
-                                                              loc_group="TEST_LOC_G_NEW")
+                                                               loc_group="TEST_LOC_G_NEW")
     print(dg)
     assert dg is None
 
