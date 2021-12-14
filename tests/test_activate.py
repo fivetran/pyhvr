@@ -1,10 +1,6 @@
-# from pyhvr.pyhvr_exceptions import ConnectionError, LoginError, RestError, PyhvrError
 from pprint import pprint
 
-import pytest
-
 import pyhvr
-from pyhvr.pyhvr_exceptions import RestError
 
 hvr_client = pyhvr.client(
     username="admin", password="Kiwi1234", uri="http://localhost:4340"
@@ -123,15 +119,16 @@ def test_add_remove_tables():
         ]
     }
 
-    with pytest.raises(RestError):
-        hvr_client.post_hubs_channels_locs_adapt_apply(
-            hub=hub,
-            channel=channel,
-            loc=source,
-            add_table_group={"group": "GENERAL"},
-            add_tables=True,
-            mapspec={"tables": [{"schema": "public", "base_name": "does_not_exist"}]},
-        )
+    add_not_exists = hvr_client.post_hubs_channels_locs_adapt_apply(
+        hub=hub,
+        channel=channel,
+        loc=source,
+        add_table_group={"group": "GENERAL"},
+        add_tables=True,
+        mapspec={"tables": [{"schema": "public", "base_name": "does_not_exist"}]},
+    )
+
+    assert add_not_exists == {"add_tables": []}
 
     add = hvr_client.post_hubs_channels_locs_adapt_apply(
         hub=hub,

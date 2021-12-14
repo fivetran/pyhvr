@@ -32,7 +32,7 @@ def test_init():
 
     pprint(lic)
 
-    wallet = hvr_sm_client.post_wallet(props={"Type": "DISABLED"})
+    wallet = hvr_sm_client.post_wallet(props={"Type": "SOFTWARE", "Auto_Open": True})
 
     pprint(wallet)
 

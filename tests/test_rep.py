@@ -68,9 +68,7 @@ def test_setup_direct_rep():
     assert ch is None
 
     lg = hvr_client.post_hubs_definition_channels_loc_groups(
-        hub="hvrhub",
-        channel="t1_channel",
-        loc_group="TEST_GROUP"
+        hub="hvrhub", channel="t1_channel", loc_group="TEST_GROUP"
     )
     assert lg is None
 

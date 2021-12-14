@@ -1,6 +1,7 @@
-# top-level (get version) (or hide?)
+# top-level (get version) and (post auth options)
 /:
   get: get_api
+  post: skip
 # rename duplicates
 /hubs/{hub}/definition/channels/{channel}:
   get: get_hubs_definition_channels_channel
@@ -18,7 +19,7 @@
   post: post_hubs_channels_locs_adapt_check_table
 /users/{user}:
   get: get_users_user
-/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:  
+/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:
   get: get_hubs_channels_controls_ctrl_id
 /licenses/{license}:
   get: get_licenses_license
