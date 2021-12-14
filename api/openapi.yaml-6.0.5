@@ -1,11 +1,12 @@
 openapi: 3.0.0
 info:
-  version: v6.1
+  version: v6.0.5
   title: HVR REST Interfaces
-  description: HVR REST Interfaces version v6.1 which was originally released with HVR version 6.1.0/0.
+  description: HVR REST Interfaces version&#58; v6.0.5. Released together with HVR version&#58; 6.0.5/0.
   contact:
     name: HVR Software
     url: https://www.hvr-software.com/
+    email: info@hvr-software.com
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -41,14 +42,9 @@ tags:
   - name: Miscellaneous Interface
   - name: Authentication Interface
 paths:
-  /api/v6.1/hubs/{hub}/activate:
+  /api/v6.0.5/hubs/{hub}/activate:
     get:
-      description: |
-        **Check replication activation status of channels**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Check replication activation status of channels <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: hub_activate_get
@@ -253,14 +249,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/activate:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/activate:
     get:
-      description: |
-        **Check replication activation status of channel**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Check replication activation status of channel <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: channel_activate_get
@@ -459,58 +450,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Post an Hvr activate event**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Activate</b></summary>
-        <pre><samp>  'locs' ?: ( &lt;ident&gt;+ )
-          'tables' ?: ( &lt;ident&gt;+ )
-          'parallel_locs' ?: &lt;int&gt;
-          'components' ?: (
-              'state_tables'
-              | 'change_tables'
-              | 'triggers'
-              | 'db_procs'
-              | 'router_files'
-              | 'enroll'
-              | 'supplemental_logging'
-              | 'jobs'
-              | 'state_files'+
-          )
-          'start_immediate' ?: &lt;bool&gt;
-          'replace_enroll' ?: &lt;bool&gt;
-          'rewind_scan_start' ?: { 
-                                   'tstamp' : &lt;date_str_z&gt;
-                               }
-                               | { 
-                                   'oldest_tx' : &lt;true&gt;
-                               }
-          'rewind_emit' ?: { 
-                             'tstamp' : &lt;date_str_z&gt;
-                         }
-                         | { 
-                             'hvr_tx_seq' : &lt;str&gt;
-                         }
-                         | { 
-                             'scn' : &lt;int64_ascii&gt;
-                         }
-                         | { 
-                             'integrate_point' : { 
-                                 integloc&lt;ident&gt; +: { 
-                                     'integ_hvr_tx_seq' : &lt;str&gt;
-                                     'integ_hvr_tx_countdown' ?: &lt;int&gt;
-                                     'burst_busy_table' ?: &lt;ident&gt;
-                                     'burst_busy_table_busy' ?: &lt;true&gt;
-                                     'burst_busy_tx_seq' ?: &lt;str&gt;
-                                 }
-                             }
-                         }
-          'start_next_jobs' ?: ( task&lt;ident&gt;+ )
-          'start_next_ev_ids' ?: ( ev_id&lt;date_str_usecs_z&gt;+ )</samp></pre></details></body></html>
+      description: Post an Hvr activate event <br> ReadWrite <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: activate_post
@@ -668,59 +608,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/compare:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/compare:
     post:
-      description: |
-        **Post Compare event and schedule a job for it**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Compare</b></summary>
-        <pre><samp>  'channel' : &lt;ident&gt;
-          'source_loc' : &lt;ident&gt;
-          'target_loc' : &lt;ident&gt;
-          'contexts' ?: ( &lt;ident&gt;+ )
-          'granularity' ?: 'bulk' | 'rowwise'
-          'difference_filter' ?: { 
-              'inserts' ?: &lt;bool&gt;
-              'updates' ?: &lt;bool&gt;
-              'deletes' ?: &lt;bool&gt;
-          }
-          'quota_run' ?: njobs&lt;int&gt;
-          'parallel_sessions' ?: &lt;int&gt;
-          'db_sequences' ?: &lt;bool&gt;
-          'slicing' ?: { 
-              table&lt;str&gt; *: { 
-                  'type' : 'boundary'
-                         | 'count'
-                         | 'modulo'
-                         | 'series'
-                  'col' ?: &lt;str&gt;
-                  'slices' ?: &lt;int&gt;
-                  'str_boundaries' ?: ( vals&lt;str&gt;+ )
-                  'int_boundaries' ?: ( vals&lt;int64_ascii&gt;+ )
-                  'date_boundaries' ?: ( vals&lt;date_str_z&gt;+ )
-                  'series_values' ?: ( &lt;str&gt;+ )
-                  'selection' ?: ( &lt;int&gt;+ )
-              }
-          }
-          'tables' ?: ( &lt;str&gt;+ )
-          'task' ?: &lt;ident&gt;
-          'context_variables' ?: { 
-              name&lt;str&gt; *: value&lt;str&gt;
-          }
-          'file_preread_subtasks' ?: &lt;int&gt;
-          'start_immediate' ?: &lt;bool&gt;
-          'online_compare' ?: 'diff_diff' | 'diff_cap'
-          'online_compare_sleep' ?: &lt;int&gt;
-          'select_moment' ?: &lt;str&gt;
-          'save_diff_file' ?: &lt;bool&gt;
-          'prereader_intermediate_files' ?: { 
-              'keep' ?: &lt;bool&gt;
-              'reuse' ?: &lt;bool&gt;
-          }</samp></pre></details></body></html>
+      description: Post Compare event and schedule a job for it <br> ReadExec <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: compare_post
@@ -892,14 +782,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/compare/tables_results_ids:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/compare/tables_results_ids:
     get:
-      description: |
-        **Get event ids for tables results of recent Compare**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get event ids for tables results of recent Compare <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: channel_compare_tables_results_ids_get
@@ -967,14 +852,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/contexts:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/contexts:
     get:
-      description: |
-        **Show contexts and context variables**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Show contexts and context variables <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: channel_contexts_get
@@ -1022,31 +902,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/deactivate:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/deactivate:
     post:
-      description: |
-        **Post an Hvr deactivate event**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Deactivate</b></summary>
-        <pre><samp>  'locs' ?: ( &lt;ident&gt;+ )
-          'tables' ?: ( &lt;ident&gt;+ )
-          'parallel_locs' ?: &lt;int&gt;
-          'components' ?: (
-              'state_tables'
-              | 'change_tables'
-              | 'triggers'
-              | 'db_procs'
-              | 'router_files'
-              | 'enroll'
-              | 'supplemental_logging'
-              | 'jobs'
-              | 'state_files'+
-          )
-          'start_immediate' ?: &lt;bool&gt;</samp></pre></details></body></html>
+      description: Post an Hvr deactivate event <br> ReadWrite <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: deactivate_post
@@ -1127,14 +985,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx:
     get:
-      description: |
-        **Show open transactions**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Show open transactions <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: capture_open_tx_get
@@ -1188,14 +1041,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point:
     get:
-      description: |
-        **Show integrate point**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Show integrate point <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: integrate_point_get
@@ -1272,14 +1120,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest:
     post:
-      description: |
-        **Suggest slicing, based on old table results and Oracle DBMS stats**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Suggest slicing, based on old table results and Oracle DBMS stats <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: slicing_suggest_post
@@ -1408,14 +1251,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries:
     post:
-      description: |
-        **Suggest slicing boundaries based on Oracle DBMS stats. Can return empty**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Suggest slicing boundaries based on Oracle DBMS stats. Can return empty <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: slicing_boundaries_post
@@ -1492,64 +1330,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/refresh:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/refresh:
     post:
-      description: |
-        **Post Refresh event and schedule a job for it**
-        ---
-        Required Permissions:
-        * ReadExecRefresh access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Refresh</b></summary>
-        <pre><samp>  'channel' : &lt;ident&gt;
-          'source_loc' : &lt;ident&gt;
-          'target_loc' : &lt;ident&gt;
-          'contexts' ?: ( &lt;ident&gt;+ )
-          'granularity' ?: 'bulk' | 'rowwise'
-          'difference_filter' ?: { 
-              'inserts' ?: &lt;bool&gt;
-              'updates' ?: &lt;bool&gt;
-              'deletes' ?: &lt;bool&gt;
-          }
-          'quota_run' ?: njobs&lt;int&gt;
-          'parallel_sessions' ?: &lt;int&gt;
-          'db_sequences' ?: &lt;bool&gt;
-          'slicing' ?: { 
-              table&lt;str&gt; *: { 
-                  'type' : 'boundary'
-                         | 'count'
-                         | 'modulo'
-                         | 'series'
-                  'col' ?: &lt;str&gt;
-                  'slices' ?: &lt;int&gt;
-                  'str_boundaries' ?: ( vals&lt;str&gt;+ )
-                  'int_boundaries' ?: ( vals&lt;int64_ascii&gt;+ )
-                  'date_boundaries' ?: ( vals&lt;date_str_z&gt;+ )
-                  'series_values' ?: ( &lt;str&gt;+ )
-                  'selection' ?: ( &lt;int&gt;+ )
-              }
-          }
-          'tables' ?: ( &lt;str&gt;+ )
-          'task' ?: &lt;ident&gt;
-          'context_variables' ?: { 
-              name&lt;str&gt; *: value&lt;str&gt;
-          }
-          'file_preread_subtasks' ?: &lt;int&gt;
-          'start_immediate' ?: &lt;bool&gt;
-          'create_tables' ?: { 
-              'keep_structure' ?: &lt;bool&gt;
-              'force_recreate' ?: &lt;bool&gt;
-              'index' ?: &lt;bool&gt;
-              'keep_existing_data' ?: &lt;bool&gt;
-              'recreate_if_mismatch' ?: &lt;bool&gt;
-          }
-          'data_refresh' ?: &lt;bool&gt;
-          'fire_db_triggers' ?: &lt;bool&gt;
-          'foreign_keys' ?: 'ignore' | 'disable'
-          'select_moment' ?: &lt;str&gt;
-          'online_refresh' ?: 'read_write' | 'write_only' | 'no_skip'
-          'start_next_jobs' ?: ( 'cap' | 'integ'* )</samp></pre></details></body></html>
+      description: Post Refresh event and schedule a job for it <br> ReadExecRefresh <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: refresh_post
@@ -1740,14 +1523,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/refresh/tables_results_ids:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/refresh/tables_results_ids:
     get:
-      description: |
-        **Get event ids for tables results of recent Refresh**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get event ids for tables results of recent Refresh <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: channel_refresh_tables_results_ids_get
@@ -1815,14 +1593,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/compare/tables_results_ids:
+  /api/v6.0.5/hubs/{hub}/compare/tables_results_ids:
     get:
-      description: |
-        **Get event ids for tables results of recent Compare for all channels**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get event ids for tables results of recent Compare for all channels <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: compare_tables_results_ids_get
@@ -1896,14 +1669,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/activate:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/activate:
     get:
-      description: |
-        **Check replication activation status of loc**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Check replication activation status of loc <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: loc_activate_get
@@ -2093,14 +1861,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/refresh/tables_results_ids:
+  /api/v6.0.5/hubs/{hub}/refresh/tables_results_ids:
     get:
-      description: |
-        **Get event ids for tables results of recent Refresh for all channels**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get event ids for tables results of recent Refresh for all channels <br> ReadOnly <br> access level on hub
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: refresh_tables_results_ids_get
@@ -2174,14 +1937,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent:
     get:
-      description: |
-        **Detect whether hub may (re)configure agent of existing location**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Detect whether hub may (re)configure agent of existing location <br> ReadOnly <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_get
@@ -2234,18 +1992,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_delete:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/props_delete:
     post:
-      description: |
-        **Delete agent properties of existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Delete</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props' : ( [&lt;str&gt;]... )</samp></pre></details></body></html>
+      description: Delete agent properties of existing location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_props_delete_post
@@ -2302,14 +2051,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_get:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/props_get:
     post:
-      description: |
-        **Get agent properties of existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Get agent properties of existing location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_props_get_post
@@ -2322,10 +2066,6 @@ paths:
         - name: loc
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Access
-          in: header
           schema:
             type: string
       requestBody:
@@ -2356,13 +2096,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
-            X-Hvr-Redacted-Storage:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -2386,23 +2119,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_patch:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/props_patch:
     post:
-      description: |
-        **Update agent properties of existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Change</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_agent_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Update agent properties of existing location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_props_patch_post
@@ -2415,10 +2134,6 @@ paths:
         - name: loc
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -2467,23 +2182,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_put:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/props_put:
     post:
-      description: |
-        **Set/reset agent properties of existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Set</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Set/reset agent properties of existing location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_props_put_post
@@ -2496,10 +2197,6 @@ paths:
         - name: loc
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -2547,14 +2244,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/test:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/test:
     post:
-      description: |
-        **Discover agent loc props of existing location**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Discover agent loc props of existing location <br> ReadOnly <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_test_post
@@ -2620,18 +2312,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/users:
     post:
-      description: |
-        **Create user on agent for existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_User_Create</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'user' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Create user on agent for existing location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_users_post
@@ -2675,7 +2358,6 @@ paths:
                     - 'local'
                     - 'pam'
                     - 'plugin'
-                    - 'windows'
                 password:
                   type: string
               required:
@@ -2696,18 +2378,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users_delete:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/users_delete:
     post:
-      description: |
-        **Delete user on agent for existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_User_Delete</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'user' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Delete user on agent for existing location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_users_delete_post
@@ -2761,14 +2434,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users_get:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/users_get:
     post:
-      description: |
-        **Get list of users on existing agent**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Get list of users on existing agent <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_users_get_post
@@ -2824,7 +2492,6 @@ paths:
                         - 'local'
                         - 'pam'
                         - 'plugin'
-                        - 'windows'
                   required:
                     - authentication
         '400':
@@ -2839,18 +2506,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users_password:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/agent/users_password:
     post:
-      description: |
-        **Change password of local user on agent for existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_User_Password_Change</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'user' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Change password of local user on agent for existing location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: loc_agent_users_password_post
@@ -2887,13 +2545,11 @@ paths:
                       - type: string
                 user:
                   type: string
-                new_password:
-                  type: string
-                current_password:
+                password:
                   type: string
               required:
                 - user
-                - new_password
+                - password
       responses:
         '204':
           description: No Content
@@ -2909,18 +2565,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_delete:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/props_delete:
     post:
-      description: |
-        **Delete agent properties of new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Delete</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props' : ( [&lt;str&gt;]... )</samp></pre></details></body></html>
+      description: Delete agent properties of new location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_props_delete_post
@@ -2979,14 +2626,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_get:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/props_get:
     post:
-      description: |
-        **Get agent properties of new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Get agent properties of new location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_props_get_post
@@ -2994,10 +2636,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Access
-          in: header
           schema:
             type: string
       requestBody:
@@ -3042,13 +2680,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
-            X-Hvr-Redacted-Storage:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -3066,23 +2697,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_patch:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/props_patch:
     post:
-      description: |
-        **Update agent properties of new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Change</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_agent_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Update agent properties of new location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_props_patch_post
@@ -3090,10 +2707,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3149,23 +2762,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_put:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/props_put:
     post:
-      description: |
-        **Set/reset agent properties of new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Set</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Set/reset agent properties of new location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_props_put_post
@@ -3173,10 +2772,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3231,14 +2826,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/test:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/test:
     post:
-      description: |
-        **Discover agent loc props of new location**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Discover agent loc props of new location <br> ReadOnly <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_test_post
@@ -3307,18 +2897,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/users:
     post:
-      description: |
-        **Create user on agent for new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_User_Create</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'user' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Create user on agent for new location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_users_post
@@ -3369,7 +2950,6 @@ paths:
                     - 'local'
                     - 'pam'
                     - 'plugin'
-                    - 'windows'
                 password:
                   type: string
               required:
@@ -3385,18 +2965,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users_delete:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/users_delete:
     post:
-      description: |
-        **Delete user on agent for new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_User_Delete</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'user' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Delete user on agent for new location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_users_delete_post
@@ -3452,14 +3023,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users_get:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/users_get:
     post:
-      description: |
-        **Get list of users on new agent**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Get list of users on new agent <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_users_get_post
@@ -3524,7 +3090,6 @@ paths:
                         - 'local'
                         - 'pam'
                         - 'plugin'
-                        - 'windows'
                   required:
                     - authentication
         '400':
@@ -3533,18 +3098,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users_password:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent/users_password:
     post:
-      description: |
-        **Change password of local user on agent for new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_User_Password_Change</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'user' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Change password of local user on agent for new location <br> ReadWrite <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_users_password_post
@@ -3588,14 +3144,12 @@ paths:
                       - type: string
                 user:
                   type: string
-                new_password:
-                  type: string
-                current_password:
+                password:
                   type: string
               required:
                 - loc_props
                 - user
-                - new_password
+                - password
       responses:
         '204':
           description: No Content
@@ -3605,14 +3159,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent_get:
+  /api/v6.0.5/hubs/{hub}/new_loc/agent_get:
     post:
-      description: |
-        **Detect whether hub may (re)configure agent of new location**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Detect whether hub may (re)configure agent of new location <br> ReadOnly <br> access level on hub
       tags:
         - Agent Configuration Interface
       operationId: new_loc_agent_get_post
@@ -3681,14 +3230,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts:
+  /api/v6.0.5/hubs/{hub}/alerts:
     get:
-      description: |
-        **List configured alerts**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: List configured alerts <br> ReadOnly <br> access level on hub
       tags:
         - Alert Interface
       operationId: alerts_get
@@ -3720,18 +3264,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Create alert configuration**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Create</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;
-          'props' : { 
-              prop&lt;str&gt; *: value&lt;typeof_alert_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Create alert configuration <br> ReadWrite <br> access level on hub
       tags:
         - Alert Interface
       operationId: alerts_post
@@ -3739,10 +3272,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3781,17 +3310,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}:
+  /api/v6.0.5/hubs/{hub}/alerts/{alert}:
     delete:
-      description: |
-        **Delete alert configuration**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Delete</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;</samp></pre></details></body></html>
+      description: Delete alert configuration <br> ReadWrite <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_delete
@@ -3821,17 +3342,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/clear:
+  /api/v6.0.5/hubs/{hub}/alerts/{alert}/clear:
     post:
-      description: |
-        **Clear alert state**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Clear</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;</samp></pre></details></body></html>
+      description: Clear alert state <br> ReadWrite <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_clear_post
@@ -3861,17 +3374,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/disable:
+  /api/v6.0.5/hubs/{hub}/alerts/{alert}/disable:
     post:
-      description: |
-        **Disable an alert configuration**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Disable</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;</samp></pre></details></body></html>
+      description: Disable an alert configuration <br> ReadWrite <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_disable_post
@@ -3901,35 +3406,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/execute:
+  /api/v6.0.5/hubs/{hub}/alerts/{alert}/execute:
     post:
-      description: |
-        **Execute alert configuration now**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Notification</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;
-          'latency_sla' ?: { 
-              'over' : { 
-                  job&lt;str&gt; *: { 
-                      'latency' : &lt;secs_int&gt;
-                      'sla' : &lt;secs_int&gt;
-                  }
-              }
-              'under' : &lt;int&gt;
-          }
-          'error_summary' | 'warning_summary' ?: { 
-              err_id&lt;ident&gt; *: { 
-                  'count' : &lt;int&gt;
-                  'first' : &lt;date_str_z&gt;
-                  'last' ?: &lt;date_str_z&gt;
-              }
-          }
-          'scheduler_alive' : &lt;bool&gt;
-          'alert_errors' ?: ( &lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Execute alert configuration now <br> ReadExec <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_execute_post
@@ -3963,14 +3442,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/props:
+  /api/v6.0.5/hubs/{hub}/alerts/{alert}/props:
     get:
-      description: |
-        **Get alert configuration properties**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get alert configuration properties <br> ReadOnly <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_props_get
@@ -3992,20 +3466,9 @@ paths:
             minItems: 1
             items:
               type: string
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK
-          headers:
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
-            X-Hvr-Redacted-Storage:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -4030,21 +3493,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify alert configuration properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Property_Change</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_alert_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_alert_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Modify alert configuration properties <br> ReadWrite <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_props_patch
@@ -4057,10 +3506,6 @@ paths:
         - name: alert
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -4092,21 +3537,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace all alert configuration properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Property_Set</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;typeof_alert_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_alert_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Replace all alert configuration properties <br> ReadWrite <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_props_put
@@ -4119,10 +3550,6 @@ paths:
         - name: alert
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -4153,18 +3580,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/props_delete:
+  /api/v6.0.5/hubs/{hub}/alerts/{alert}/props_delete:
     post:
-      description: |
-        **Delete alert configuration properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Property_Delete</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;
-          'props' : ( prop&lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Delete alert configuration properties <br> ReadWrite <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_props_delete_post
@@ -4208,14 +3626,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/test:
+  /api/v6.0.5/hubs/{hub}/alerts/{alert}/test:
     post:
-      description: |
-        **Send test alert notifications**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
+      description: Send test alert notifications <br> ReadExec <br> access level on hub
       tags:
         - Alert Interface
       operationId: alert_test_post
@@ -4249,14 +3662,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition:
+  /api/v6.0.5/hubs/{hub}/definition:
     get:
-      description: |
-        **Fetch hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_get
@@ -4319,10 +3727,6 @@ paths:
           schema:
             type: string
             pattern: (\d{4})-(\d{2})-(\d{2})([ T])(\d{2}):(\d{2}):(\d{2})(.\d{1,6})?(\s*)(Z|[+-]\d{2}:\d{2})
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -4334,9 +3738,6 @@ paths:
             X-Hvr-Reload-Cache:
               schema:
                 type: boolean
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -4488,35 +3889,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/action_modify:
+  /api/v6.0.5/hubs/{hub}/definition/action_modify:
     post:
-      description: |
-        **Modify scope or parameters of action**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'modify_action' : { 
-              'type' : &lt;ident&gt;
-              'old' : { 
-                  'channel' ?: &lt;str&gt;
-                  'loc_scope' ?: &lt;str&gt;
-                  'table_scope' ?: &lt;str&gt;
-                  'params' ?: { 
-                      param&lt;str&gt; *: val&lt;scal&gt;
-                  }
-              }
-              'new' : { 
-                  'channel' ?: &lt;str&gt;
-                  'loc_scope' ?: &lt;str&gt;
-                  'table_scope' ?: &lt;str&gt;
-                  'params' ?: { 
-                      param&lt;str&gt; *: val&lt;null&gt; | &lt;scal&gt;
-                  }
-              }
-          }</samp></pre></details></body></html>
+      description: Modify scope or parameters of action <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_action_modify_post
@@ -4588,35 +3963,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/action_replace:
+  /api/v6.0.5/hubs/{hub}/definition/action_replace:
     post:
-      description: |
-        **Replace action**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'replace_action' : { 
-              'type' : &lt;ident&gt;
-              'old' : { 
-                  'channel' ?: &lt;str&gt;
-                  'loc_scope' ?: &lt;str&gt;
-                  'table_scope' ?: &lt;str&gt;
-                  'params' ?: { 
-                      param&lt;str&gt; *: val&lt;scal&gt;
-                  }
-              }
-              'new' : { 
-                  'channel' ?: &lt;str&gt;
-                  'loc_scope' ?: &lt;str&gt;
-                  'table_scope' ?: &lt;str&gt;
-                  'params' ?: { 
-                      param&lt;str&gt; *: val&lt;scal&gt;
-                  }
-              }
-          }</samp></pre></details></body></html>
+      description: Replace action <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_action_replace_post
@@ -4687,14 +4036,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/change/events:
+  /api/v6.0.5/hubs/{hub}/definition/change/events:
     get:
-      description: |
-        **Fetch definition changes from events**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch definition changes from events <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_change_events_get
@@ -4745,17 +4089,9 @@ paths:
             items:
               type: string
               pattern: (\d{4})-(\d{2})-(\d{2})([ T])(\d{2}):(\d{2}):(\d{2})(.\d{1,6})?(\s*)(Z|[+-]\d{2}:\d{2})
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK
-          headers:
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -6277,14 +5613,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels:
+  /api/v6.0.5/hubs/{hub}/definition/channels:
     get:
-      description: |
-        **Fetch channels from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch channels from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channels_get
@@ -6446,21 +5777,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Add channel**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_channel' : { 
-              'channel' : &lt;ident&gt;
-              'description' ?: &lt;str&gt;
-              'loc_groups' ?: ( &lt;ident&gt;+ )
-              'tables' ?: ( &lt;ident&gt;+ )
-              'actions' ?: ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add channel <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_post
@@ -6578,19 +5895,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}:
     delete:
-      description: |
-        **Delete channel**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_channel' : { 
-              'channel' : &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Delete channel <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_delete
@@ -6621,12 +5928,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Fetch channel from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch channel from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_get
@@ -6788,18 +6090,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify channel**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'modify_channel' : { 
-              'channel' : &lt;ident&gt;
-              'description' : &lt;str&gt;
-          }</samp></pre></details></body></html>
+      description: Modify channel <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_patch
@@ -6835,21 +6126,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Add or replace channel**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_channel' | 'replace_channel' : { 
-              'channel' : &lt;ident&gt;
-              'description' ?: &lt;str&gt;
-              'loc_groups' ?: ( &lt;ident&gt;+ )
-              'tables' ?: ( &lt;ident&gt;+ )
-              'actions' ?: ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add or replace channel <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_put
@@ -6967,14 +6244,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/actions:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/actions:
     get:
-      description: |
-        **Fetch channel actions from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch channel actions from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_actions_get
@@ -7047,27 +6319,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Add channel actions**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_channel_actions' : { 
-              'channel' : &lt;ident&gt;
-              'actions' : (
-                  { 
-                      'loc_scope' ?: &lt;str&gt;
-                      'table_scope' ?: &lt;str&gt;
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Add channel actions <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_actions_patch
@@ -7128,27 +6380,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace channel actions list**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'replace_channel_action_list' : { 
-              'channel' : &lt;ident&gt;
-              'actions' : (
-                  { 
-                      'loc_scope' ?: &lt;str&gt;
-                      'table_scope' ?: &lt;str&gt;
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Replace channel actions list <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_actions_put
@@ -7208,29 +6440,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/actions_delete:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/actions_delete:
     post:
-      description: |
-        **Delete channel actions**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_channel_actions' : { 
-              'channel' : &lt;ident&gt;
-              'actions' : (
-                  { 
-                      'loc_scope' ?: &lt;str&gt;
-                      'table_scope' ?: &lt;str&gt;
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Delete channel actions <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_actions_delete_post
@@ -7290,14 +6502,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/loc_groups:
     get:
-      description: |
-        **Fetch location groups from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch location groups from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_groups_get
@@ -7362,19 +6569,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Add location group**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_loc_group' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-              'members' ?: ( loc&lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add location group <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_group_post
@@ -7421,20 +6616,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}:
     delete:
-      description: |
-        **Delete location group**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_loc_group' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Delete location group <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_group_delete
@@ -7470,12 +6654,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Fetch location group from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch location group from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_group_get
@@ -7542,19 +6721,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Add or replace location group**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_loc_group' | 'replace_loc_group' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-              'members' ?: ( loc&lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add or replace location group <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_group_put
@@ -7601,14 +6768,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members:
     get:
-      description: |
-        **Fetch location group members from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch location group members from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_members_get
@@ -7657,19 +6819,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Add location group members or move members from other location groups in channel**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_loc_group_members' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-              'members' : ( loc&lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add location group members or move members from other location groups in channel <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_members_patch
@@ -7719,19 +6869,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace location group members list**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'replace_loc_group_member_list' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-              'members' : ( loc&lt;ident&gt;* )
-          }</samp></pre></details></body></html>
+      description: Replace location group members list <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_members_put
@@ -7780,21 +6918,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}:
     delete:
-      description: |
-        **Delete location group member**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_loc_group_members' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-              'members' : ( loc&lt;ident&gt;* )
-          }</samp></pre></details></body></html>
+      description: Delete location group member <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_member_delete
@@ -7834,21 +6960,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete:
     post:
-      description: |
-        **Delete location group members**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_loc_group_members' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-              'members' : ( loc&lt;ident&gt;* )
-          }</samp></pre></details></body></html>
+      description: Delete location group members <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_members_delete_post
@@ -7896,21 +7010,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename:
     post:
-      description: |
-        **Rename location group**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'rename_loc_group' : { 
-              'channel' : &lt;ident&gt;
-              'loc_group' : &lt;ident&gt;
-              'new_name' : &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Rename location group <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_group_rename_post
@@ -7957,20 +7059,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/rename:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/rename:
     post:
-      description: |
-        **Rename channel**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'rename_channel' : { 
-              'channel' : &lt;ident&gt;
-              'new_name' : &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Rename channel <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_channel_rename_post
@@ -8012,14 +7103,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/tables:
     get:
-      description: |
-        **Fetch tables from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch tables from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_tables_get
@@ -8133,18 +7219,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Add and replace tables**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_tables' | 'modify_table_list' : { 
-              'channel' : &lt;ident&gt;
-              'tables' : ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add and replace tables <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_tables_patch
@@ -8232,21 +7307,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Add table**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_table' : { 
-              'channel' : &lt;ident&gt;
-              'table' : &lt;ident&gt;
-              'base_name' ?: &lt;str&gt;
-              'table_group' ?: &lt;ident&gt;
-              'cols' ?: ( &lt;str&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add table <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_table_post
@@ -8336,18 +7397,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace tables list**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'replace_table_list' : { 
-              'channel' : &lt;ident&gt;
-              'tables' : ( &lt;ident&gt;* )
-          }</samp></pre></details></body></html>
+      description: Replace tables list <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_tables_put
@@ -8434,20 +7484,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/tables/{table}:
     delete:
-      description: |
-        **Delete table**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_tables' : { 
-              'channel' : &lt;ident&gt;
-              'tables' : ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Delete table <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_table_delete
@@ -8483,12 +7522,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Fetch table from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch table from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_table_get
@@ -8597,20 +7631,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify table**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'modify_table' : { 
-              'channel' : &lt;ident&gt;
-              'table' : &lt;ident&gt;
-              'base_name' ?: &lt;str&gt;
-              'table_group' ?: &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Modify table <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_table_patch
@@ -8658,21 +7679,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Add or replace table**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_table' | 'replace_table' : { 
-              'channel' : &lt;ident&gt;
-              'table' : &lt;ident&gt;
-              'base_name' ?: &lt;str&gt;
-              'table_group' ?: &lt;ident&gt;
-              'cols' ?: ( &lt;str&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add or replace table <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_table_put
@@ -8761,14 +7768,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols:
     get:
-      description: |
-        **Fetch columns from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch columns from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_cols_get
@@ -8857,19 +7859,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Add and replace columns**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_cols' | 'modify_col_list' : { 
-              'channel' : &lt;ident&gt;
-              'table' : &lt;ident&gt;
-              'cols' : ( &lt;str&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add and replace columns <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_cols_patch
@@ -8951,19 +7941,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace columns list**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'replace_col_list' : { 
-              'channel' : &lt;ident&gt;
-              'table' : &lt;ident&gt;
-              'cols' : ( &lt;str&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Replace columns list <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_cols_put
@@ -9044,21 +8022,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete:
     post:
-      description: |
-        **Delete columns**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_cols' : { 
-              'channel' : &lt;ident&gt;
-              'table' : &lt;ident&gt;
-              'cols' : ( &lt;str&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Delete columns <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_cols_delete_post
@@ -9106,21 +8072,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename:
     post:
-      description: |
-        **Rename table**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'rename_table' : { 
-              'channel' : &lt;ident&gt;
-              'table' : &lt;ident&gt;
-              'new_name' : &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Rename table <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_table_rename_post
@@ -9167,20 +8121,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables_delete:
+  /api/v6.0.5/hubs/{hub}/definition/channels/{channel}/tables_delete:
     post:
-      description: |
-        **Delete tables**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_tables' : { 
-              'channel' : &lt;ident&gt;
-              'tables' : ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Delete tables <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_tables_delete_post
@@ -9223,14 +8166,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/hub_actions:
+  /api/v6.0.5/hubs/{hub}/definition/hub_actions:
     get:
-      description: |
-        **Fetch hub actions from definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch hub actions from definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_hub_actions_get
@@ -9288,24 +8226,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Add hub actions**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_hub_actions' : { 
-              'actions' : (
-                  { 
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Add hub actions <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_hub_actions_patch
@@ -9351,24 +8272,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace hub actions list**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'replace_hub_action_list' : { 
-              'actions' : (
-                  { 
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Replace hub actions list <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_hub_actions_put
@@ -9413,26 +8317,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/hub_actions_delete:
+  /api/v6.0.5/hubs/{hub}/definition/hub_actions_delete:
     post:
-      description: |
-        **Delete hub actions**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_hub_actions' : { 
-              'actions' : (
-                  { 
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Delete hub actions <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_hub_actions_delete_post
@@ -9477,19 +8364,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/import:
+  /api/v6.0.5/hubs/{hub}/definition/import:
     post:
-      description: |
-        **Import set of definition changes**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change_Import</b></summary>
-        <pre><samp>  'changes' : (
-              &lt;str add_loc replace_loc delete_loc rename_loc add_loc_props replace_loc_props modify_loc_props delete_loc_props add_loc_actions replace_loc_action_list delete_loc_actions add_channel replace_channel modify_channel delete_channel rename_channel add_loc_group replace_loc_group delete_loc_group rename_loc_group add_loc_group_members replace_loc_group_member_list delete_loc_group_members add_tables modify_table_list replace_table_list add_table replace_table modify_table rename_table delete_tables add_cols modify_col_list replace_col_list delete_cols add_channel_actions replace_channel_action_list delete_channel_actions add_hub_actions replace_hub_action_list delete_hub_actions modify_action replace_action&gt;*
-          )</samp></pre></details></body></html>
+      description: Import set of definition changes <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_import_post
@@ -9497,10 +8374,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -11339,14 +10212,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/import/analyze:
+  /api/v6.0.5/hubs/{hub}/definition/import/analyze:
     post:
-      description: |
-        **Analyze set of definition changes for import**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Analyze set of definition changes for import <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_import_analyze_post
@@ -11354,10 +10222,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -13169,14 +12033,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs:
+  /api/v6.0.5/hubs/{hub}/definition/locs:
     get:
-      description: |
-        **Fetch locations from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch locations from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_locs_get
@@ -13216,10 +12075,6 @@ paths:
           schema:
             type: string
             pattern: (\d{4})-(\d{2})-(\d{2})([ T])(\d{2}):(\d{2}):(\d{2})(.\d{1,6})?(\s*)(Z|[+-]\d{2}:\d{2})
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK - Locations fetched
@@ -13231,9 +12086,6 @@ paths:
             X-Hvr-Reload-Cache:
               schema:
                 type: boolean
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -13275,19 +12127,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Add location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_loc' : { 
-              'loc' : &lt;ident&gt;
-              'props' : ( &lt;str&gt;+ )
-              'actions' ?: ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add location <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_post
@@ -13295,10 +12135,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -13348,19 +12184,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}:
     delete:
-      description: |
-        **Delete location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_loc' : { 
-              'loc' : &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Delete location <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_delete
@@ -13391,12 +12217,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Fetch location from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch location from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_get
@@ -13433,10 +12254,6 @@ paths:
           schema:
             type: string
             pattern: (\d{4})-(\d{2})-(\d{2})([ T])(\d{2}):(\d{2}):(\d{2})(.\d{1,6})?(\s*)(Z|[+-]\d{2}:\d{2})
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK - Location fetched
@@ -13448,9 +12265,6 @@ paths:
             X-Hvr-Reload-Cache:
               schema:
                 type: boolean
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -13495,19 +12309,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Add or replace location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_loc' | 'replace_loc' : { 
-              'loc' : &lt;ident&gt;
-              'props' : ( &lt;str&gt;+ )
-              'actions' ?: ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Add or replace location <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_put
@@ -13520,10 +12322,6 @@ paths:
         - name: loc
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -13569,14 +12367,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/actions:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}/actions:
     get:
-      description: |
-        **Fetch location actions from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch location actions from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_actions_get
@@ -13645,25 +12438,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Add location actions**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_loc_actions' : { 
-              'loc' : &lt;ident&gt;
-              'actions' : (
-                  { 
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Add location actions <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_actions_patch
@@ -13720,25 +12495,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace location actions list**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'replace_loc_action_list' : { 
-              'loc' : &lt;ident&gt;
-              'actions' : (
-                  { 
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Replace location actions list <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_actions_put
@@ -13794,27 +12551,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/actions_delete:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}/actions_delete:
     post:
-      description: |
-        **Delete location actions**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_loc_actions' : { 
-              'loc' : &lt;ident&gt;
-              'actions' : (
-                  { 
-                      'type' : &lt;ident&gt;
-                      'params' ?: { 
-                          param&lt;str&gt; *: val&lt;scal&gt;
-                      }
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Delete location actions <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_actions_delete_post
@@ -13870,21 +12609,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/copy:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}/copy:
     post:
-      description: |
-        **Copy location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'add_loc' : { 
-              'loc' : &lt;ident&gt;
-              'props' : ( &lt;str&gt;+ )
-              'actions' ?: ( &lt;ident&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Copy location <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_copy_post
@@ -13926,14 +12653,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/props:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}/props:
     get:
-      description: |
-        **Fetch location properties from hub definition**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch location properties from hub definition <br> ReadOnly <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_props_get
@@ -13948,10 +12670,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK - Location properties fetched
@@ -13963,12 +12681,6 @@ paths:
             X-Hvr-Reload-Cache:
               schema:
                 type: boolean
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
-            X-Hvr-Redacted-Storage:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -13993,20 +12705,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify location properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'modify_loc_props' : { 
-              'loc' : &lt;ident&gt;
-              'props' : { 
-                  prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_loc_prop&gt;
-              }
-          }</samp></pre></details></body></html>
+      description: Modify location properties <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_props_patch
@@ -14019,10 +12718,6 @@ paths:
         - name: loc
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -14053,20 +12748,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/props/{prop}:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}/props/{prop}:
     delete:
-      description: |
-        **Delete location property**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_loc_props' : { 
-              'loc' : &lt;ident&gt;
-              'props' : ( &lt;str&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Delete location property <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_prop_delete
@@ -14101,20 +12785,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/props_delete:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}/props_delete:
     post:
-      description: |
-        **Delete location properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'delete_loc_props' : { 
-              'loc' : &lt;ident&gt;
-              'props' : ( &lt;str&gt;+ )
-          }</samp></pre></details></body></html>
+      description: Delete location properties <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_props_delete_post
@@ -14157,20 +12830,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/rename:
+  /api/v6.0.5/hubs/{hub}/definition/locs/{loc}/rename:
     post:
-      description: |
-        **Rename location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'rename_loc' : { 
-              'loc' : &lt;ident&gt;
-              'new_name' : &lt;ident&gt;
-          }</samp></pre></details></body></html>
+      description: Rename location <br> ReadWrite <br> access level on hub
       tags:
         - Definition Interface
       operationId: definition_loc_rename_post
@@ -14212,14 +12874,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/event_channels:
+  /api/v6.0.5/hubs/{hub}/event_channels:
     get:
-      description: |
-        **Get all unique channels from hvr_event**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get all unique channels from hvr_event <br> ReadOnly <br> access level on hub
       tags:
         - Event Interface
       operationId: event_channels_get
@@ -14280,14 +12937,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/event_locs:
+  /api/v6.0.5/hubs/{hub}/event_locs:
     get:
-      description: |
-        **Get all unique locations from hvr_event**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get all unique locations from hvr_event <br> ReadOnly <br> access level on hub
       tags:
         - Event Interface
       operationId: event_locs_get
@@ -14351,14 +13003,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/event_types:
+  /api/v6.0.5/hubs/{hub}/event_types:
     get:
-      description: |
-        **Get all unique event types from hvr_event**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get all unique event types from hvr_event <br> ReadOnly <br> access level on hub
       tags:
         - Event Interface
       operationId: hub_event_types_get
@@ -14420,14 +13067,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/events:
+  /api/v6.0.5/hubs/{hub}/events:
     get:
-      description: |
-        **Fetch event(s)**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch event(s) <br> ReadOnly <br> access level on hub
       tags:
         - Event Interface
       operationId: hub_events_get
@@ -14597,14 +13239,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/events/{ev_id}/log:
+  /api/v6.0.5/hubs/{hub}/events/{ev_id}/log:
     get:
-      description: |
-        **Get log file content during a specified event**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get log file content during a specified event <br> ReadOnly <br> access level on hub
       tags:
         - Event Interface
       operationId: event_log_get
@@ -14669,17 +13306,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/events_cancel:
+  /api/v6.0.5/hubs/{hub}/events_cancel:
     post:
-      description: |
-        **Cancel events. Associated jobs will be suspended**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Event_Cancel</b></summary>
-        <pre><samp>  'ev_ids' : ( &lt;date_str_usecs_z&gt;+ )</samp></pre></details></body></html>
+      description: Cancel events. Associated jobs will be suspended <br> ReadExec <br> access level on hub
       tags:
         - Event Interface
       operationId: events_cancel_post
@@ -14718,14 +13347,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/event_types:
+  /api/v6.0.5/repos/event_types:
     get:
-      description: |
-        **Get all unique event types for repos**
-        ---
-        Required Permissions:
-        * No special permission required
-        ---
+      description: Get all unique event types for repos <br> No special permission required
       tags:
         - Event Interface
       operationId: repos_event_types_get
@@ -14765,14 +13389,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/events:
+  /api/v6.0.5/repos/events:
     get:
-      description: |
-        **Fetch the repository events**
-        ---
-        Required Permissions:
-        * No special permission required
-        ---
+      description: Fetch the repository events <br> No special permission required
       tags:
         - Event Interface
       operationId: repos_events_get
@@ -14870,14 +13489,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/dirs:
+  /api/v6.0.5/hubs/{hub}/dirs:
     get:
-      description: |
-        **List files in a directory (hub)**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: List files in a directory (hub) <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: hub_dirs_get
@@ -14940,14 +13554,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/db/schemas:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/db/schemas:
     get:
-      description: |
-        **Show all schemas in database**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Show all schemas in database <br> ReadOnly <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: db_schemas_get
@@ -14992,14 +13601,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/dirs:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/dirs:
     get:
-      description: |
-        **List files in a directory on the location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: List files in a directory on the location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: loc_dirs_get
@@ -15077,14 +13681,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/env/odbc_drivers:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/env/odbc_drivers:
     get:
-      description: |
-        **Get list of installed ODBC Data Source Names of the location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Get list of installed ODBC Data Source Names of the location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: loc_env_odbc_drivers_get
@@ -15132,14 +13731,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/env/oratab:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/env/oratab:
     get:
-      description: |
-        **Retrieve /etc/oratab or equivalent Windows registry values of the location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Retrieve /etc/oratab or equivalent Windows registry values of the location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: loc_env_oratab_get
@@ -15187,14 +13781,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/env/vars:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/env/vars:
     get:
-      description: |
-        **Retrieve specified environment variables of the location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Retrieve specified environment variables of the location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: loc_env_vars_get
@@ -15253,14 +13842,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/test:
+  /api/v6.0.5/hubs/{hub}/locs/{loc}/test:
     post:
-      description: |
-        **Test Location connection**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Test Location connection <br> ReadOnly <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: loc_test_post
@@ -15316,14 +13900,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/db/schemas:
+  /api/v6.0.5/hubs/{hub}/new_loc/db/schemas:
     post:
-      description: |
-        **Show all schemas in new database location**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Show all schemas in new database location <br> ReadOnly <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: new_loc_db_schemas_post
@@ -15379,14 +13958,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/dirs:
+  /api/v6.0.5/hubs/{hub}/new_loc/dirs:
     post:
-      description: |
-        **List files in a directory on the new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: List files in a directory on the new location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: new_loc_dirs_post
@@ -15472,14 +14046,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/env/odbc_drivers:
+  /api/v6.0.5/hubs/{hub}/new_loc/env/odbc_drivers:
     post:
-      description: |
-        **Get list of installed ODBC Data Source Names or the new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Get list of installed ODBC Data Source Names or the new location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: new_loc_env_odbc_drivers_post
@@ -15531,14 +14100,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/env/oratab:
+  /api/v6.0.5/hubs/{hub}/new_loc/env/oratab:
     post:
-      description: |
-        **Retrieve /etc/oratab or equivalent Windows registry values of the new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Retrieve /etc/oratab or equivalent Windows registry values of the new location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: new_loc_env_oratab_post
@@ -15594,14 +14158,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/env/vars:
+  /api/v6.0.5/hubs/{hub}/new_loc/env/vars:
     post:
-      description: |
-        **Retrieve specified environment variables of the new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Retrieve specified environment variables of the new location <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: new_loc_env_vars_post
@@ -15666,14 +14225,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/test:
+  /api/v6.0.5/hubs/{hub}/new_loc/test:
     post:
-      description: |
-        **Test Location connection properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
+      description: Test Location connection properties <br> ReadWrite <br> access level on hub
       tags:
         - File and DB Browse Interface
       operationId: new_loc_test_post
@@ -15732,15 +14286,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/dirs:
+  /api/v6.0.5/hubserver/dirs:
     get:
-      description: |
-        **List files in a directory (hubserver)**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: List files in a directory (hubserver) <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - File and DB Browse Interface
       operationId: hubserver_dirs_get
@@ -15804,15 +14352,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/env/odbc_drivers:
+  /api/v6.0.5/hubserver/env/odbc_drivers:
     get:
-      description: |
-        **Get list of installed ODBC Data Source Names of the hub server**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get list of installed ODBC Data Source Names of the hub server <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - File and DB Browse Interface
       operationId: hubserver_env_odbc_drivers_get
@@ -15845,15 +14387,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/env/oratab:
+  /api/v6.0.5/hubserver/env/oratab:
     get:
-      description: |
-        **Retrieve /etc/oratab or equivalent Windows registry values of the hub server**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Retrieve /etc/oratab or equivalent Windows registry values of the hub server <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - File and DB Browse Interface
       operationId: hubserver_env_oratab_get
@@ -15885,15 +14421,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/env/vars:
+  /api/v6.0.5/hubserver/env/vars:
     get:
-      description: |
-        **Retrieve specified environment variables of the hub server**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Retrieve specified environment variables of the hub server <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - File and DB Browse Interface
       operationId: hubserver_env_vars_get
@@ -15937,15 +14467,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/props_test:
+  /api/v6.0.5/hubserver/props_test:
     post:
-      description: |
-        **Verify (changes) to HubServer connection properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Verify (changes) to HubServer connection properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - File and DB Browse Interface
       operationId: hubserver_props_test_post
@@ -16000,15 +14524,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/test:
+  /api/v6.0.5/hubserver/test:
     post:
-      description: |
-        **Test hubserver is working correctly**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Test hubserver is working correctly <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - File and DB Browse Interface
       operationId: hubserver_test_post
@@ -16027,15 +14545,137 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs:
+  /api/v6.0.5/hub_snapshot:
+    post:
+      description: Restore the hub state (db content and files) from a snapshot. <br> HubCreation <br> access level
+      tags:
+        - Hub Config Interface
+      operationId: hub_snapshot_restore_post
+      parameters:
+        - name: X-Hvr-Classified-Transport-Key
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: hub_snapshot_restore_post_req
+              type: object
+              properties:
+                ref:
+                  type: string
+                hub:
+                  type: string
+                  pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
+                description:
+                  type: string
+              required:
+                - ref
+                - hub
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - The hub snapshot does not exist.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.0.5/hub_snapshot_inspect:
+    post:
+      description: Inspect the hub snapshot and return some information about it. <br> No special permission required
+      tags:
+        - Hub Config Interface
+      operationId: hub_snapshot_inspect_post
+      parameters:
+        - name: X-Hvr-Classified-Transport-Key
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: hub_snapshot_inspect_post_req
+              type: object
+              properties:
+                ref:
+                  type: string
+              required:
+                - ref
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: hub_snapshot_inspect_post_resp
+                type: object
+                properties:
+                  original_hub:
+                    type: string
+                  original_hvr_version:
+                    type: string
+                  original_repository_version:
+                    type: string
+                  save_user:
+                    type: string
+                  save_tstamp:
+                    type: string
+                    format: date-time
+                  reason:
+                    type: string
+                  channel_focus:
+                    type: string
+                  event_trim:
+                    type: string
+                    format: date-time
+                  log_trim:
+                    type: string
+                    format: date-time
+                  stats_trim:
+                    type: string
+                    format: date-time
+                  definition_trim:
+                    type: string
+                    format: date-time
+                  hub_props:
+                    type: object
+                    description: prop
+                    additionalProperties:
+                      oneOf:
+                        - type: integer
+                        - type: string
+                        - type: object
+                required:
+                  - original_hub
+                  - original_hvr_version
+                  - original_repository_version
+                  - save_user
+                  - save_tstamp
+                  - hub_props
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - The hub snapshot does not exist.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.0.5/hubs:
     get:
-      description: |
-        **Fetch all hubs and their basic properties**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Fetch all hubs and their basic properties <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Hub Config Interface
       operationId: hubs_get
@@ -16084,16 +14724,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Create a new hub**
-        ---
-        Required Permissions:
-        * HubCreation access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Create</b></summary>
-        <pre><samp>  'hub' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Create a new hub <br> HubCreation <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Hub Config Interface
       operationId: hubs_post
@@ -16125,17 +14756,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}:
+  /api/v6.0.5/hubs/{hub}:
     delete:
-      description: |
-        **Delete hub**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Delete</b></summary>
-        <pre><samp>  'hub' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Delete hub <br> HubOwner <br> access level on hub
       tags:
         - Hub Config Interface
       operationId: hub_delete
@@ -16161,12 +14784,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Fetch basic hub properties**
-        ---
-        Required Permissions:
-        * No special permission required
-        ---
+      description: Fetch basic hub properties <br> No special permission required
       tags:
         - Hub Config Interface
       operationId: hub_get
@@ -16223,17 +14841,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/freeze:
+  /api/v6.0.5/hubs/{hub}/freeze:
     post:
-      description: |
-        **Changes the state of a hub to FROZEN**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Freeze</b></summary>
-        No content</details></body></html>
+      description: Changes the state of a hub to FROZEN <br> HubOwner <br> access level on hub
       tags:
         - Hub Config Interface
       operationId: hub_freeze_post
@@ -16258,14 +14868,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/props:
+  /api/v6.0.5/hubs/{hub}/props:
     get:
-      description: |
-        **Get hub properties**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get hub properties <br> ReadOnly <br> access level on hub
       tags:
         - Hub Config Interface
       operationId: hub_props_get
@@ -16303,21 +14908,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify hub properties**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Property_Change</b></summary>
-        <pre><samp>  'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_hub_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_hub_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Modify hub properties <br> HubOwner <br> access level on hub <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Hub Config Interface
       operationId: hub_props_patch
@@ -16350,20 +14941,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace all hub properties**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Property_Set</b></summary>
-        <pre><samp>  'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_hub_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_hub_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Replace all hub properties <br> HubOwner <br> access level on hub
       tags:
         - Hub Config Interface
       operationId: hub_props_put
@@ -16394,17 +14972,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/props_delete:
+  /api/v6.0.5/hubs/{hub}/props_delete:
     post:
-      description: |
-        **Delete hub properties**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Property_Delete</b></summary>
-        <pre><samp>  'props' : ( prop&lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Delete hub properties <br> HubOwner <br> access level on hub
       tags:
         - Hub Config Interface
       operationId: hub_props_delete_post
@@ -16437,14 +15007,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/snapshot:
+  /api/v6.0.5/hubs/{hub}/snapshot:
     post:
-      description: |
-        **Save the hub state (db content and files) to a snapshot.**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        ---
+      description: Save the hub state (db content and files) to a snapshot. <br> HubOwner <br> access level on hub
       tags:
         - Hub Config Interface
       operationId: snapshot_save_post
@@ -16527,17 +15092,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/unfreeze:
+  /api/v6.0.5/hubs/{hub}/unfreeze:
     post:
-      description: |
-        **Changes the state of a hub to LIVE**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Unfreeze</b></summary>
-        No content</details></body></html>
+      description: Changes the state of a hub to LIVE <br> HubOwner <br> access level on hub
       tags:
         - Hub Config Interface
       operationId: hub_unfreeze_post
@@ -16562,27 +15119,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/snapshot:
+  /api/v6.0.5/snapshot:
     post:
-      description: |
-        **Restore the state (db content and files) from a snapshot.**
-        ---
-        Required Permissions:
-        * HubCreation access level
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Restore_Hub_Snapshot</b></summary>
-        <pre><samp>  'original_hub' : &lt;str&gt;
-          'original_hvr_version' : &lt;str&gt;
-          'original_repository_version' : &lt;str&gt;
-          'save_user' : user&lt;str&gt;
-          'save_tstamp' : &lt;date_str_z&gt;
-          'reason' ?: &lt;str&gt;
-          'channel_focus' ?: chn&lt;ident&gt;
-          'event_trim' ?: &lt;date_str_z&gt; | &lt;str none all&gt;
-          'log_trim' ?: &lt;date_str_z&gt; | &lt;str none all&gt;
-          'stats_trim' ?: &lt;date_str_z&gt; | &lt;str none all&gt;
-          'definition_trim' ?: &lt;date_str_z&gt; | &lt;str none all&gt;</samp></pre></details></body></html>
+      description: Restore the state (db content and files) from a snapshot. <br> HubCreation <br> access level
       tags:
         - Hub Config Interface
       operationId: snapshot_restore_post
@@ -16623,14 +15162,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/snapshot_inspect:
+  /api/v6.0.5/snapshot_inspect:
     post:
-      description: |
-        **Inspect the snapshot and return some information about it.**
-        ---
-        Required Permissions:
-        * No special permission required
-        ---
+      description: Inspect the snapshot and return some information about it. <br> No special permission required
       tags:
         - Hub Config Interface
       operationId: snapshot_inspect_post
@@ -16726,15 +15260,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/clock:
+  /api/v6.0.5/hubserver/clock:
     get:
-      description: |
-        **Get HubServer clock**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get HubServer clock <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - HubServer Interface
       operationId: hubserver_clock_get
@@ -16758,15 +15286,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/props:
+  /api/v6.0.5/hubserver/props:
     get:
-      description: |
-        **Get HubServer properties**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get HubServer properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - HubServer Interface
       operationId: hubserver_props_get
@@ -16778,20 +15300,9 @@ paths:
             minItems: 1
             items:
               type: string
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK
-          headers:
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
-            X-Hvr-Redacted-Storage:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -16816,21 +15327,10 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify HubServer properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Modify HubServer properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - HubServer Interface
       operationId: hubserver_props_patch
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -16854,21 +15354,10 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace/Create all HubServer properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Replace/Create all HubServer properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - HubServer Interface
       operationId: hubserver_props_put
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -16890,15 +15379,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/props_delete:
+  /api/v6.0.5/hubserver/props_delete:
     post:
-      description: |
-        **Delete some HubServer properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Delete some HubServer properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - HubServer Interface
       operationId: hubserver_props_delete_post
@@ -16925,18 +15408,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/restart:
+  /api/v6.0.5/hubserver/restart:
     post:
-      description: |
-        **Restart HubServer internals**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Server_Restart</b></summary>
-        No content</details></body></html>
+      description: Restart HubServer internals <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - HubServer Interface
       operationId: hubserver_restart_post
@@ -16949,18 +15423,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/stop:
+  /api/v6.0.5/hubserver/stop:
     post:
-      description: |
-        **Stop HubServer**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Server_Stop</b></summary>
-        No content</details></body></html>
+      description: Stop HubServer <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - HubServer Interface
       operationId: hubserver_stop_post
@@ -16973,14 +15438,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/upload:
+  /api/v6.0.5/hubserver/upload:
     post:
-      description: |
-        **Create upload ref to be used to upload a file to the server.**
-        ---
-        Required Permissions:
-        * No special permission required
-        ---
+      description: Create upload ref to be used to upload a file to the server. <br> No special permission required
       tags:
         - HubServer Interface
       operationId: hubserver_upload_post
@@ -17014,14 +15474,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs:
+  /api/v6.0.5/hubs/{hub}/jobs:
     get:
-      description: |
-        **Fetch job(s)**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch job(s) <br> ReadOnly <br> access level on hub
       tags:
         - Job Interface
       operationId: jobs_get
@@ -17099,18 +15554,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs/{job}:
+  /api/v6.0.5/hubs/{hub}/jobs/{job}:
     delete:
-      description: |
-        **Delete job**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Job_Delete</b></summary>
-        <pre><samp>  'jobs' : ( &lt;str&gt;+ )
-          'canceled_ev_ids' ?: ( &lt;date_str_usecs_z&gt;* )</samp></pre></details></body></html>
+      description: Delete job <br> ReadExec <br> access level on hub
       tags:
         - Job Interface
       operationId: job_delete
@@ -17151,18 +15597,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_delete:
+  /api/v6.0.5/hubs/{hub}/jobs_delete:
     post:
-      description: |
-        **Delete jobs**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Job_Delete</b></summary>
-        <pre><samp>  'jobs' : ( &lt;str&gt;+ )
-          'canceled_ev_ids' ?: ( &lt;date_str_usecs_z&gt;* )</samp></pre></details></body></html>
+      description: Delete jobs <br> ReadExec <br> access level on hub
       tags:
         - Job Interface
       operationId: jobs_delete_post
@@ -17212,17 +15649,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_start:
+  /api/v6.0.5/hubs/{hub}/jobs_start:
     post:
-      description: |
-        **Start jobs**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Job_Start</b></summary>
-        <pre><samp>  'jobs' : ( &lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Start jobs <br> ReadExec <br> access level on hub
       tags:
         - Job Interface
       operationId: jobs_start_post
@@ -17278,17 +15707,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_suspend:
+  /api/v6.0.5/hubs/{hub}/jobs_suspend:
     post:
-      description: |
-        **Suspend jobs**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Job_Suspend</b></summary>
-        <pre><samp>  'jobs' : ( &lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Suspend jobs <br> ReadExec <br> access level on hub
       tags:
         - Job Interface
       operationId: jobs_suspend_post
@@ -17327,17 +15748,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_unsuspend:
+  /api/v6.0.5/hubs/{hub}/jobs_unsuspend:
     post:
-      description: |
-        **Unsuspend jobs**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Job_Unsuspend</b></summary>
-        <pre><samp>  'jobs' : ( &lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Unsuspend jobs <br> ReadExec <br> access level on hub
       tags:
         - Job Interface
       operationId: jobs_unsuspend_post
@@ -17376,14 +15789,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log:
+  /api/v6.0.5/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log:
     get:
-      description: |
-        **Get log file content while a specified control was active**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get log file content while a specified control was active <br> ReadOnly <br> access level on hub
       tags:
         - Logfile Tailing Interface
       operationId: control_log_get
@@ -17447,14 +15855,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/logs/{file}:
+  /api/v6.0.5/hubs/{hub}/logs/{file}:
     get:
-      description: |
-        **Get hub's log file content**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get hub's log file content <br> ReadOnly <br> access level on hub
       tags:
         - Logfile Tailing Interface
       operationId: hub_logs_get
@@ -17542,14 +15945,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/logs/{file}/archive/{archive}:
+  /api/v6.0.5/hubs/{hub}/logs/{file}/archive/{archive}:
     get:
-      description: |
-        **Get hub's archived log file content**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get hub's archived log file content <br> ReadOnly <br> access level on hub
       tags:
         - Logfile Tailing Interface
       operationId: hub_logs_archives_get
@@ -17621,14 +16019,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/logs/{file}/search:
+  /api/v6.0.5/hubs/{hub}/logs/{file}/search:
     get:
-      description: |
-        **Search for timestamp in log file. Returns offset of first log line that starts with a timestamp bigger or equal to specified timstamp.**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get hub's log file content by time stamp <br> ReadOnly <br> access level on hub
       tags:
         - Logfile Tailing Interface
       operationId: hub_logs_search_get
@@ -17672,14 +16065,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/logs/{file}:
+  /api/v6.0.5/logs/{file}:
     get:
-      description: |
-        **Get log file content**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        ---
+      description: Get log file content <br> SysAdmin <br> access level
       tags:
         - Logfile Tailing Interface
       operationId: logs_get
@@ -17762,14 +16150,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/logs/{file}/archive/{archive}:
+  /api/v6.0.5/logs/{file}/archive/{archive}:
     get:
-      description: |
-        **Get archived log file content**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        ---
+      description: Get archived log file content <br> SysAdmin <br> access level
       tags:
         - Logfile Tailing Interface
       operationId: logs_archives_get
@@ -17836,14 +16219,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels:
+  /api/v6.0.5/hubs/{hub}/query/channels:
     get:
-      description: |
-        **For each location in each channel calculate whichtables are captured and integrated, their schema and basenames, and latency SLA.**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: For each location in each channel calculate whichtables are captured and integrated, their schema and basenames, and latency SLA. <br> ReadOnly <br> access level on hub
       tags:
         - Query Interface
       operationId: query_channels_get
@@ -17948,14 +16326,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels/{channel}/locs:
+  /api/v6.0.5/hubs/{hub}/query/channels/{channel}/locs:
     get:
-      description: |
-        **For each location calculate which tables are capturedand integrated, their schema and basenames, and latency SLA.**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: For each location calculate which tables are capturedand integrated, their schema and basenames, and latency SLA. <br> ReadOnly <br> access level on hub
       tags:
         - Query Interface
       operationId: query_channel_locs_get
@@ -18049,14 +16422,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}:
+  /api/v6.0.5/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}:
     get:
-      description: |
-        **Calculate how table is defined for a location, including effect of actions**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Calculate how table is defined for a location, including effect of actions <br> ReadOnly <br> access level on hub
       tags:
         - Query Interface
       operationId: query_channel_table_get
@@ -18250,14 +16618,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels/{channel}/tables:
+  /api/v6.0.5/hubs/{hub}/query/channels/{channel}/tables:
     get:
-      description: |
-        **For each table calculate its schema, basename, and the lists of locations where the table is captured or integrated**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: For each table calculate its schema, basename, and the lists of locations where the table is captured or integrated <br> ReadOnly <br> access level on hub
       tags:
         - Query Interface
       operationId: query_channel_tables_get
@@ -18318,9 +16681,6 @@ paths:
                               pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
                         required:
                           - base_name
-                    packed_inside:
-                      type: string
-                      pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
         '400':
           description: Bad Request
           content:
@@ -18333,14 +16693,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/status:
+  /api/v6.0.5/hubs/{hub}/query/status:
     get:
-      description: |
-        **Gets general status and health of a hub**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Gets general status and health of a hub <br> ReadOnly <br> access level on hub
       tags:
         - Query Interface
       operationId: query_status_get
@@ -18404,15 +16759,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos:
+  /api/v6.0.5/repos:
     delete:
-      description: |
-        **Drop all repository tables**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Drop all repository tables <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Repository Config Interface
       operationId: repos_delete
@@ -18426,13 +16775,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Check repository**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Check repository <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Repository Config Interface
       operationId: repos_get
@@ -18473,16 +16816,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Create repository tables**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Repository_Create</b></summary>
-        No content</details></body></html>
+      description: Create repository tables <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Repository Config Interface
       operationId: repos_post
@@ -18495,15 +16829,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/props:
+  /api/v6.0.5/repos/props:
     get:
-      description: |
-        **Get repository properties**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get repository properties <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Repository Config Interface
       operationId: repos_props_get
@@ -18515,20 +16843,9 @@ paths:
             minItems: 1
             items:
               type: string
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK
-          headers:
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
-            X-Hvr-Redacted-Storage:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -18547,29 +16864,10 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify repository properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Repository_Property_Change</b></summary>
-        <pre><samp>  'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_repos_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_repos_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Modify repository properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Repository Config Interface
       operationId: repos_props_patch
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -18593,29 +16891,10 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace all repository properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Repository_Property_Set</b></summary>
-        <pre><samp>  'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_repos_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_repos_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Replace all repository properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Repository Config Interface
       operationId: repos_props_put
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -18637,18 +16916,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/props_delete:
+  /api/v6.0.5/repos/props_delete:
     post:
-      description: |
-        **Delete repository properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Repository_Property_Delete</b></summary>
-        <pre><samp>  'props' : ( prop&lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Delete repository properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Repository Config Interface
       operationId: repos_props_delete_post
@@ -18675,14 +16945,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/stats/metrics:
+  /api/v6.0.5/hubs/{hub}/stats/metrics:
     get:
-      description: |
-        **Fetch statistics**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch statistics <br> ReadOnly <br> access level on hub
       tags:
         - Statistics Interface
       operationId: stats_metrics_get
@@ -18819,14 +17084,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/stats/metrics/export:
+  /api/v6.0.5/hubs/{hub}/stats/metrics/export:
     post:
-      description: |
-        **Export statistics to a file**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Export statistics to a file <br> ReadOnly <br> access level on hub
       tags:
         - Statistics Interface
       operationId: stats_metrics_export_post
@@ -18905,14 +17165,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/stats/oldest:
+  /api/v6.0.5/hubs/{hub}/stats/oldest:
     get:
-      description: |
-        **Fetch oldest stats history time for time granularity and scope**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Fetch oldest stats history time for time granularity and scope <br> ReadOnly <br> access level on hub
       tags:
         - Statistics Interface
       operationId: stats_oldest_get
@@ -18961,56 +17216,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply:
     post:
-      description: |
-        **Logic to Add and Replace table definition info from tables in a source (or target) database**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Table_Definition_Adapt</b></summary>
-        <pre><samp>  'tables_in_channel' ?: { 
-              'tables' ?: ( hvrtables&lt;str&gt;* )
-              'check_layout' ?: &lt;bool&gt;
-              'localize_datatypes' ?: &lt;bool&gt;
-              'delete_tables' ?: 'none' | 'not_in_db' | 'not_in_mapspec_or_not_in_db'
-              'ignore_diff' ?: (
-                  'col_dropped'
-                  | 'col_added'
-                  | 'data_type_changed'
-                  | 'data_type_family_changed'
-                  | 'col_range_smaller'
-                  | 'col_range_bigger'
-                  | 'distrib_key_removed'
-                  | 'distrib_key_added'
-                  | 'unique_index_removed'
-                  | 'unique_index_added'
-                  | 'nulls_removed'
-                  | 'nulls_added'
-                  | 'encoding_changed'*
-              )
-          }
-          'add_tables' ?: &lt;bool&gt;
-          'add_table_group' ?: { 
-              'group' ?: &lt;ident&gt;
-              'from_schema' ?: &lt;bool&gt;
-          }
-          'show_views' ?: &lt;bool&gt;
-          'mapspec' ?: { 
-              'tables' : (
-                  { 
-                      'schema' ?: &lt;str&gt;
-                      'pattern' : &lt;str&gt;
-                      'not_pattern' ?: &lt;str&gt; | ( &lt;str&gt;+ )
-                  }
-                  | { 
-                      'schema' ?: &lt;str&gt;
-                      'base_name' : &lt;str&gt;
-                  }*
-              )
-          }</samp></pre></details></body></html>
+      description: Logic to Add and Replace table definition info from tables in a source (or target) database <br> ReadWrite <br> access level on hub
       tags:
         - Table Adapt Interface
       operationId: adapt_apply_post
@@ -19191,14 +17399,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check:
     post:
-      description: |
-        **Logic to compare table definition info with table layouts in a source (or target) db**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Logic to compare table definition info with table layouts in a source (or target) db <br> ReadOnly <br> access level on hub
       tags:
         - Table Adapt Interface
       operationId: adapt_check_post
@@ -19267,7 +17470,6 @@ paths:
                     enum:
                       - 'sap_description'
                       - 'sap_refs'
-                      - 'db_stats'
                 mapspec:
                   type: object
                   properties:
@@ -19334,8 +17536,6 @@ paths:
                               type: string
                             inside_table_exists:
                               type: boolean
-                          required:
-                            - inside_table_base_name
                         sap_description:
                           type: string
                         sap_refs_to:
@@ -19347,12 +17547,6 @@ paths:
                                 type: string
                             required:
                               - base_name
-                        db_stats:
-                          type: object
-                          properties:
-                            num_rows:
-                              type: string
-                              pattern: ^([0-9-])([0-9])*
                         diff:
                           type: array
                           items:
@@ -19405,12 +17599,6 @@ paths:
                                 type: string
                             required:
                               - base_name
-                        db_stats:
-                          type: object
-                          properties:
-                            num_rows:
-                              type: string
-                              pattern: ^([0-9-])([0-9])*
                       required:
                         - schema
                         - base_name
@@ -19427,14 +17615,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}:
     post:
-      description: |
-        **Check table definition against the definition in a source (or target) database**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Check table definition against the definition in a source (or target) database <br> ReadOnly <br> access level on hub
       tags:
         - Table Adapt Interface
       operationId: adapt_check_table_post
@@ -19473,14 +17656,6 @@ paths:
                     pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
                 localize_datatypes:
                   type: boolean
-                fetch_extra:
-                  type: array
-                  items:
-                    type: string
-                    enum:
-                      - 'sap_description'
-                      - 'sap_refs'
-                      - 'db_stats'
       responses:
         '200':
           description: OK
@@ -19533,32 +17708,6 @@ paths:
                         - 'unique_index_removed'
                         - 'unique_index_added'
                         - 'source_tables'
-                  sap_unpack:
-                    type: object
-                    properties:
-                      inside_table_base_name:
-                        type: string
-                      inside_table_exists:
-                        type: boolean
-                    required:
-                      - inside_table_base_name
-                  sap_description:
-                    type: string
-                  sap_refs_to:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        base_name:
-                          type: string
-                      required:
-                        - base_name
-                  db_stats:
-                    type: object
-                    properties:
-                      num_rows:
-                        type: string
-                        pattern: ^([0-9-])([0-9])*
                   cols:
                     type: array
                     items:
@@ -19733,12 +17882,6 @@ paths:
                             - sequence
                             - data_type
                             - diff
-                        db_stats:
-                          type: object
-                          properties:
-                            num_distinct_values:
-                              type: string
-                              pattern: ^([0-9-])([0-9])*
                 required:
                   - base_name
                   - capture
@@ -19746,20 +17889,16 @@ paths:
                   - key_mode
                   - exists_in_db
                   - diff
+                  - cols
         '400':
           description: Bad Request
           content:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels:
     post:
-      description: |
-        **Check if tables are in other channels**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Check if tables are in other channels <br> ReadOnly <br> access level on hub
       tags:
         - Table Adapt Interface
       operationId: adapt_other_channels_post
@@ -19808,14 +17947,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/mapdoc/parse:
+  /api/v6.0.5/hubs/{hub}/mapdoc/parse:
     post:
-      description: |
-        **Parse adapt pattern file to mapspec in JSON format**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Parse adapt pattern file to mapspec in JSON format <br> ReadOnly <br> access level on hub
       tags:
         - Table Adapt Interface
       operationId: mapdoc_parse_post
@@ -19880,15 +18014,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/users/{user}/props:
+  /api/v6.0.5/hubs/{hub}/users/{user}/props:
     get:
-      description: |
-        **Get user's hub properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get user's hub properties <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: hub_user_props_get
@@ -19931,13 +18059,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify user hub properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Modify user hub properties <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: hub_user_props_patch
@@ -19975,13 +18097,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace all user hub properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Replace all user hub properties <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: hub_user_props_put
@@ -20017,15 +18133,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/users/{user}/props_delete:
+  /api/v6.0.5/hubs/{hub}/users/{user}/props_delete:
     post:
-      description: |
-        **Delete user hub properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Delete user hub properties <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: hub_user_props_delete_post
@@ -20063,15 +18173,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users:
+  /api/v6.0.5/users:
     get:
-      description: |
-        **Get list of users, including properties**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get list of users, including properties <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: users_get
@@ -20105,7 +18209,6 @@ paths:
                         - 'local'
                         - 'pam'
                         - 'plugin'
-                        - 'windows'
                     props:
                       type: object
                       description: prop
@@ -20121,20 +18224,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Create a new user**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>User_Create</b></summary>
-        <pre><samp>  'user' : name&lt;str&gt;
-          'authentication' : 'local'
-                           | 'pam'
-                           | 'plugin'
-                           | 'windows'</samp></pre></details></body></html>
+      description: Create a new user <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: users_post
@@ -20153,7 +18243,6 @@ paths:
                     - 'local'
                     - 'pam'
                     - 'plugin'
-                    - 'windows'
                 password:
                   type: string
                 props:
@@ -20176,18 +18265,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}:
+  /api/v6.0.5/users/{user}:
     delete:
-      description: |
-        **Delete a user**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>User_Delete</b></summary>
-        <pre><samp>  'user' : name&lt;str&gt;</samp></pre></details></body></html>
+      description: Delete a user <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: user_delete
@@ -20213,13 +18293,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Get user, including properties**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get user, including properties <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: user_get
@@ -20255,7 +18329,6 @@ paths:
                       - 'local'
                       - 'pam'
                       - 'plugin'
-                      - 'windows'
                   props:
                     type: object
                     description: prop
@@ -20270,18 +18343,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}/password:
+  /api/v6.0.5/users/{user}/password:
     put:
-      description: |
-        **Reset password of user, with local authentication**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>User_Password_Change</b></summary>
-        <pre><samp>  'user' : name&lt;str&gt;</samp></pre></details></body></html>
+      description: Reset password of user, with local authentication <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: user_password_put
@@ -20298,12 +18362,10 @@ paths:
               title: user_password_put_req
               type: object
               properties:
-                new_password:
-                  type: string
-                current_password:
+                password:
                   type: string
               required:
-                - new_password
+                - password
       responses:
         '204':
           description: No Content
@@ -20319,15 +18381,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}/props:
+  /api/v6.0.5/users/{user}/props:
     get:
-      description: |
-        **Get user properties**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get user properties <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: user_props_get
@@ -20365,13 +18421,7 @@ paths:
               schema:
                 type: string
     patch:
-      description: |
-        **Modify user properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Modify user properties <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: user_props_patch
@@ -20404,13 +18454,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **Replace all user properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Replace all user properties <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: user_props_put
@@ -20441,15 +18485,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}/props_delete:
+  /api/v6.0.5/users/{user}/props_delete:
     post:
-      description: |
-        **Delete user properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Delete user properties <br> CurrentUser <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - User Config Interface
       operationId: user_props_delete_post
@@ -20482,14 +18520,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/controls:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/controls:
     get:
-      description: |
-        **Get all control ids matched by the query**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get all control ids matched by the query <br> ReadOnly <br> access level on hub
       tags:
         - Control Message Interface
       operationId: controls_get
@@ -20555,14 +18588,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:
     get:
-      description: |
-        **Get the control associated with the id**
-        ---
-        Required Permissions:
-        * ReadOnly access level on hub
-        ---
+      description: Get the control associated with the id <br> ReadOnly <br> access level on hub
       tags:
         - Control Message Interface
       operationId: control_get
@@ -20699,18 +18727,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/controls_delete:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/controls_delete:
     post:
-      description: |
-        **Delete all the controls matched.**
-        ---
-        Required Permissions:
-        * ReadExec access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Control_Delete</b></summary>
-        <pre><samp>  'chn_name' : &lt;ident&gt;
-          'ctrl_ids' : ( &lt;str&gt;+ )</samp></pre></details></body></html>
+      description: Delete all the controls matched. <br> ReadExec <br> access level on hub
       tags:
         - Control Message Interface
       operationId: controls_delete_post
@@ -20754,59 +18773,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls:
+  /api/v6.0.5/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls:
     post:
-      description: |
-        **Send a new control file**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Control_Send</b></summary>
-        <pre><samp>  'chn_name' : &lt;ident&gt;
-          'task_name' : 'cap' | 'integ'
-          'loc_name' : &lt;ident&gt;
-          'ctrl_name' : &lt;ident&gt;
-          'filters' ?: (
-              { 
-                  'tables' ?: ( &lt;ident&gt;+ )
-                  'where' ?: (
-                      { 
-                          'col' : &lt;str&gt;
-                          'op' : '='
-                               | '!='
-                               | '&lt;&gt;'
-                               | '&gt;'
-                               | '&lt;'
-                               | '&gt;='
-                               | '&lt;='
-                               | '&gt;&gt;'
-                               | '&lt;&lt;'
-                               | '%='
-                          'val_str' ?: ( &lt;str&gt;+ )
-                          'val_int' ?: ( &lt;str&gt;+ )
-                          'val_date' ?: ( &lt;date_str_z&gt;+ )
-                          'val_len' ?: ( &lt;str&gt;+ )
-                      }*
-                  )
-                  'force_failed_rows' ?: &lt;true&gt;
-                  'resilient' ?: &lt;true&gt;
-                  'skip_rows' ?: &lt;true&gt;
-                  'set_missing_cols' ?: ( col&lt;str&gt;+ )
-              }*
-          )
-          'set_env' ?: (
-              { 
-                  'name' : &lt;str&gt;
-                  'value' : &lt;str&gt;
-              }*
-          )
-          'journaling' ?: &lt;bool&gt;
-          'finish_after_cycle' ?: &lt;true&gt;
-          'expiry_date' ?: &lt;date_str_z&gt;
-          'recv_expiry' ?: &lt;date_str_z&gt;
-          'ctrl_id' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Send a new control file <br> ReadWrite <br> access level on hub
       tags:
         - Control Message Interface
       operationId: loc_task_controls_post
@@ -20948,31 +18917,12 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet:
+  /api/v6.0.5/wallet:
     post:
-      description: |
-        **Create new encryption wallet**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates one or more of the following events:
-        <!DOCTYPE html><body><details><summary><b>Reencrypt_Secrets</b></summary>
-        <pre><samp>  'new_encryption_key_sequence' ?: &lt;int&gt;
-          'force' ?: &lt;bool&gt;</samp></pre></details></body></html>
-        <!DOCTYPE html><body><details><summary><b>Wallet_Create</b></summary>
-        <pre><samp>  'props' : { 
-              prop&lt;str&gt; *: value&lt;typeof_wallet_prop&gt;
-          }</samp></pre></details></body></html>
+      description: Create new encryption wallet <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
       operationId: wallet_post
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -21001,32 +18951,12 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/change:
+  /api/v6.0.5/wallet/change:
     post:
-      description: |
-        **Change reference to existing wallet**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Wallet_Change</b></summary>
-        <pre><samp>  'props_after' ?: { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_wallet_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_wallet_prop&gt;
-          }
-          'password_changed' ?: &lt;bool&gt;</samp></pre></details></body></html>
+      description: Change reference to existing wallet <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
       operationId: wallet_change_post
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -21054,29 +18984,17 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/disable:
+  /api/v6.0.5/wallet/delete:
     post:
-      description: |
-        **Disable encryption wallet**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates one or more of the following events:
-        <!DOCTYPE html><body><details><summary><b>Reencrypt_Secrets</b></summary>
-        <pre><samp>  'new_encryption_key_sequence' ?: &lt;int&gt;
-          'force' ?: &lt;bool&gt;</samp></pre></details></body></html>
-        <!DOCTYPE html><body><details><summary><b>Wallet_Disable</b></summary>
-        <pre><samp>  'force' ?: &lt;bool&gt;</samp></pre></details></body></html>
+      description: Delete encryption wallet <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
-      operationId: wallet_disable_post
+      operationId: wallet_delete_post
       requestBody:
         content:
           application/json:
             schema:
-              title: wallet_disable_post_req
+              title: wallet_delete_post_req
               type: object
               properties:
                 force:
@@ -21085,25 +19003,14 @@ paths:
         '204':
           description: No Content
         '400':
-          description: Bad Request - No wallet configured or already disabled
+          description: Bad Request - No wallet configured
           content:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/key_history_delete:
+  /api/v6.0.5/wallet/key_history_delete:
     post:
-      description: |
-        **Delete historical encryption keys**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Wallet_Key_History_Delete</b></summary>
-        <pre><samp>  'before_key_sequence' ?: &lt;int&gt;
-          'before_rotation_tstamp' ?: &lt;date_str_z&gt;
-          'key_history_deleted' : &lt;int&gt;</samp></pre></details></body></html>
+      description: Delete historical encryption keys <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
       operationId: wallet_key_history_delete_post
@@ -21138,21 +19045,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/key_rotate:
+  /api/v6.0.5/wallet/key_rotate:
     post:
-      description: |
-        **Rotate encryption keys**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates one or more of the following events:
-        <!DOCTYPE html><body><details><summary><b>Reencrypt_Secrets</b></summary>
-        <pre><samp>  'new_encryption_key_sequence' ?: &lt;int&gt;
-          'force' ?: &lt;bool&gt;</samp></pre></details></body></html>
-        <!DOCTYPE html><body><details><summary><b>Wallet_Key_Rotation</b></summary>
-        <pre><samp>  'new_encryption_key_sequence' ?: &lt;int&gt;</samp></pre></details></body></html>
+      description: Rotate encryption keys <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
       operationId: wallet_key_rotate_post
@@ -21165,35 +19060,12 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/migrate:
+  /api/v6.0.5/wallet/migrate:
     post:
-      description: |
-        **Migrate to a new wallet configuration gracefully**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates one or more of the following events:
-        <!DOCTYPE html><body><details><summary><b>Reencrypt_Secrets</b></summary>
-        <pre><samp>  'new_encryption_key_sequence' ?: &lt;int&gt;
-          'force' ?: &lt;bool&gt;</samp></pre></details></body></html>
-        <!DOCTYPE html><body><details><summary><b>Wallet_Migrate</b></summary>
-        <pre><samp>  'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_wallet_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_wallet_prop&gt;
-          }
-          'new_encryption_key_sequence' ?: &lt;int&gt;</samp></pre></details></body></html>
+      description: Switch to a new wallet configuration gracefully <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
       operationId: wallet_migrate_post
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -21224,15 +19096,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/props:
+  /api/v6.0.5/wallet/props:
     get:
-      description: |
-        **Get wallet properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Get wallet properties <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
       operationId: wallet_props_get
@@ -21244,20 +19110,9 @@ paths:
             minItems: 1
             items:
               type: string
-        - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
       responses:
         '200':
           description: OK
-          headers:
-            X-Hvr-Classified-Transport-Key:
-              schema:
-                type: string
-            X-Hvr-Redacted-Storage:
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -21275,19 +19130,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/reencrypt_continue:
+  /api/v6.0.5/wallet/reencrypt_continue:
     post:
-      description: |
-        **Continue previous re-encryption operation**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Reencrypt_Secrets</b></summary>
-        <pre><samp>  'new_encryption_key_sequence' ?: &lt;int&gt;
-          'force' ?: &lt;bool&gt;</samp></pre></details></body></html>
+      description: Continue previous re-encryption operation <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Encryption Interface
       operationId: wallet_reencrypt_continue_post
@@ -21309,15 +19154,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licenses:
+  /api/v6.0.5/licenses:
     get:
-      description: |
-        **Fetch licenses**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Fetch licenses <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - License Interface
       operationId: licenses_get
@@ -21367,16 +19206,7 @@ paths:
               schema:
                 type: string
     post:
-      description: |
-        **Add a new license**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>License_Add</b></summary>
-        <pre><samp>  'license' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Add a new license <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - License Interface
       operationId: license_post
@@ -21403,18 +19233,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licenses/{license}:
+  /api/v6.0.5/licenses/{license}:
     delete:
-      description: |
-        **Delete a license**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>License_Delete</b></summary>
-        <pre><samp>  'license' : &lt;str&gt;</samp></pre></details></body></html>
+      description: Delete a license <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - License Interface
       operationId: license_delete
@@ -21440,13 +19261,7 @@ paths:
               schema:
                 type: string
     get:
-      description: |
-        **Fetch raw content of a license**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Fetch raw content of a license <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - License Interface
       operationId: license_get
@@ -21476,18 +19291,7 @@ paths:
               schema:
                 type: string
     put:
-      description: |
-        **(re)create a new license**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates one or more of the following events:
-        <!DOCTYPE html><body><details><summary><b>License_Add</b></summary>
-        <pre><samp>  'license' : &lt;str&gt;</samp></pre></details></body></html>
-        <!DOCTYPE html><body><details><summary><b>License_Replace</b></summary>
-        <pre><samp>  'license' : &lt;str&gt;</samp></pre></details></body></html>
+      description: (re)create a new license <br> SysAdmin <br> access level <br> Available while <i>Setup Mode</i> is active.
       tags:
         - License Interface
       operationId: license_put
@@ -21517,14 +19321,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licensing:
+  /api/v6.0.5/licensing:
     get:
-      description: |
-        **Show licensing status**
-        ---
-        Required Permissions:
-        * No special permission required
-        ---
+      description: Show licensing status <br> No special permission required
       tags:
         - License Interface
       operationId: licensing_get
@@ -21580,6 +19379,11 @@ paths:
                         properties:
                           max_locs:
                             type: integer
+                      sap_appconnect:
+                        type: object
+                        properties:
+                          max_locs:
+                            type: integer
                 required:
                   - status
         '400':
@@ -21588,14 +19392,9 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licensing/license_agreement_accepted:
+  /api/v6.0.5/licensing/license_agreement_accepted:
     post:
-      description: |
-        **Set Hub Server property License_Agreement_Accepted**
-        ---
-        Required Permissions:
-        * No special permission required
-        ---
+      description: Set Hub Server property License_Agreement_Accepted <br> No special permission required
       tags:
         - License Interface
       operationId: license_agreement_accepted_post
@@ -21610,13 +19409,7 @@ paths:
                 type: string
   /api:
     get:
-      description: |
-        **Detect API versions available**
-        ---
-        Required Permissions:
-        * No special permission required
-        * Available while <i>Setup Mode</i> is active.
-        ---
+      description: Detect API versions available <br> No special permission required <br> Available while <i>Setup Mode</i> is active.
       tags:
         - Miscellaneous Interface
       operationId: api_get
@@ -21799,29 +19592,6 @@ paths:
                   - expires_in
         '403':
           description: Forbidden
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-
-  /auth:
-    post:
-      description: Detect Auth versions available.
-      tags:
-        - Authentication Interface
-      operationId: auth_get
-      responses:
-        '200':
-          description: Ok - Auth versions fetched
-          content:
-            application/json:
-              schema:
-                title: auth_get_resp
-                type: array
-                items:
-                  type: string
-        '400':
-          description: Bad Request
           content:
             text/plain; charset=utf-8:
               schema:

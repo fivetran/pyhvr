@@ -207,9 +207,14 @@ def generate_function(function_name, verb, uri, openapi, full_openapi):
             except IndexError:
                 pass
 
-    required_params = [param for param in parameters if ("=" not in param)]
+    required_params = [
+        param for param in parameters if ("=" not in param and "**" not in param)
+    ]
+    passthrough_params = [param for param in parameters if ("**" in param)]
     optional_params = [param for param in parameters if ("=" in param)]
-    parameters_joined = ", ".join(required_params + optional_params)
+    parameters_joined = ", ".join(
+        required_params + optional_params + passthrough_params
+    )
 
     # if uri is parametrized, make it so
     if "{" in uri:
