@@ -46,6 +46,7 @@ jobs:
           while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
           while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
           pytest --ignore tests/test_clean_install.py
+          pytest --ignore tests/test_user.py
           cd -
           docker-compose -f docker-compose-preconf.yaml down -v
 
@@ -57,6 +58,7 @@ jobs:
           while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
           docker cp rtdshub:/install/hvr.lic tests/hvr.lic
           pytest tests/test_clean_install.py
+          pytest tests/test_user.py
           cd -
           docker-compose  -f docker-compose-clean-inst.yaml down
 
