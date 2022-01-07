@@ -51,7 +51,7 @@ def test_patch_user_props():
 
 
 def test_reset_user_password():
-    up = hvr_client.put_users_password(user="test_user1", password="newpassword")
+    up = hvr_client.put_users_password(user="test_user1", new_password="newpassword", current_password="welcome123")
     assert up is None
 
 
