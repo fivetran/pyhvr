@@ -13,7 +13,7 @@ def test_create_alerts():
         props={
             "Ignore_Warnings": "false",
             "Notification_Type": "EMAIL",
-            "Email_Recipients": ["sahana.nagaraj@fivetran.com"],
+            "Email_Recipients": ["sahananagaraj9@gmail.com"],
             "Email_SMTP_Server": "smtp.gmail.com",
             "Email_SMTP_Starttls": "true",
             "Repeat_Interval": "3600",
@@ -37,7 +37,7 @@ def test_get_alerts():
 def test_alerts_props():
     aprops = hvr_client.get_hubs_alerts_props(hub="hvrhub", alert="alert1")
     assert aprops["Email_SMTP_Server"] == "smtp.gmail.com"
-    # assert aprops["Email_Recipients"] == "sahana.nagaraj@fivetran.com"
+    # assert aprops["Email_Recipients"] == "sahananagaraj9@gmail.com"
 
 
 def test_al_patch():
