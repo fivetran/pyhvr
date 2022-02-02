@@ -35,7 +35,7 @@ def test_ch_exception_loc():
 
 
 def test_logs():
-    lg = hvr_client.get_hubs_logs(hub="hvrhub", file="chanat-integ-targetat.out")
+    lg = hvr_client.get_hubs_logs(hub="hvrhub", file="chanat-cap-targetat.out")
     assert lg is not None
 
 
