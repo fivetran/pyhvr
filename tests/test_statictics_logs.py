@@ -34,11 +34,6 @@ def test_ch_exception_loc():
         print(e.error_code)
 
 
-def test_logs():
-    lg = hvr_client.get_hubs_logs(hub="hvrhub", file="chanat-cap-targetat.out")
-    assert lg is not None
-
-
 def test_metrics_oldest():
     om = hvr_client.get_hubs_stats_oldest(hub="hvrhub")
     assert om is not None
