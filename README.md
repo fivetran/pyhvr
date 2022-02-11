@@ -106,4 +106,4 @@ The code used to generate the pyhvr module is a part of this repository, too. Se
 
 Python versions 3.6, 3.7, 3.8 and 3.9 are tested and supported.
 
-HVR 6.0.5 is the only support version at this time.
+HVR6 keeps backward compatibility of the APIs, so all versions since the general release are supported.
