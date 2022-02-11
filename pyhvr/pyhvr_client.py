@@ -190,22 +190,28 @@ class Client:
 
     def delete_hubs(self, hub):
 
-        return self.delete(f"/api/v6.1/hubs/{hub}", None, {}, None, True)
+        return self.delete(f"/api/v6.1.6/hubs/{hub}", None, {}, None, True)
 
     def delete_hubs_alerts(self, hub, alert):
 
-        return self.delete(f"/api/v6.1/hubs/{hub}/alerts/{alert}", None, {}, None, True)
+        return self.delete(
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}", None, {}, None, True
+        )
 
     def delete_hubs_definition_channels(self, hub, channel):
 
         return self.delete(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}", None, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}",
+            None,
+            {},
+            None,
+            True,
         )
 
     def delete_hubs_definition_channels_loc_groups(self, hub, channel, loc_group):
 
         return self.delete(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}",
             None,
             {},
             None,
@@ -217,7 +223,7 @@ class Client:
     ):
 
         return self.delete(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}",
             None,
             {},
             None,
@@ -227,7 +233,7 @@ class Client:
     def delete_hubs_definition_channels_tables(self, hub, channel, table):
 
         return self.delete(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}",
             None,
             {},
             None,
@@ -237,34 +243,58 @@ class Client:
     def delete_hubs_definition_locs(self, hub, loc):
 
         return self.delete(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}", None, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}", None, {}, None, True
         )
 
     def delete_hubs_definition_locs_props(self, hub, loc, prop):
 
         return self.delete(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/props/{prop}",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props/{prop}",
             None,
             {},
             None,
             True,
         )
 
+    def delete_hubs_job_system_attributes(self, hub, attr):
+
+        return self.delete(
+            f"/api/v6.1.6/hubs/{hub}/job_system/attributes/{attr}", None, {}, None, True
+        )
+
+    def delete_hubs_job_system_env_vars(self, hub, var):
+
+        return self.delete(
+            f"/api/v6.1.6/hubs/{hub}/job_system/env_vars/{var}", None, {}, None, True
+        )
+
     def delete_hubs_jobs(self, hub, job):
 
-        return self.delete(f"/api/v6.1/hubs/{hub}/jobs/{job}", None, {}, None, True)
+        return self.delete(f"/api/v6.1.6/hubs/{hub}/jobs/{job}", None, {}, None, True)
+
+    def delete_hubs_jobs_attributes(self, hub, job, attr):
+
+        return self.delete(
+            f"/api/v6.1.6/hubs/{hub}/jobs/{job}/attributes/{attr}", None, {}, None, True
+        )
+
+    def delete_hubs_jobs_env_vars(self, hub, job, var):
+
+        return self.delete(
+            f"/api/v6.1.6/hubs/{hub}/jobs/{job}/env_vars/{var}", None, {}, None, True
+        )
 
     def delete_licenses(self, license):
 
-        return self.delete(f"/api/v6.1/licenses/{license}", None, {}, None, True)
+        return self.delete(f"/api/v6.1.6/licenses/{license}", None, {}, None, True)
 
     def delete_repos(self):
 
-        return self.delete("/api/v6.1/repos", None, {}, None, True)
+        return self.delete("/api/v6.1.6/repos", None, {}, None, True)
 
     def delete_users(self, user):
 
-        return self.delete(f"/api/v6.1/users/{user}", None, {}, None, True)
+        return self.delete(f"/api/v6.1.6/users/{user}", None, {}, None, True)
 
     def get_api(self):
 
@@ -272,7 +302,7 @@ class Client:
 
     def get_hubs(self):
 
-        return self.get("/api/v6.1/hubs", None, {}, None, True)
+        return self.get("/api/v6.1.6/hubs", None, {}, None, True)
 
     def get_hubs_activate(self, hub, channels=None, locs=None):
         query = {}
@@ -281,11 +311,11 @@ class Client:
         if locs:
             query["locs"] = locs
 
-        return self.get(f"/api/v6.1/hubs/{hub}/activate", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/activate", query, {}, None, True)
 
     def get_hubs_alerts(self, hub):
 
-        return self.get(f"/api/v6.1/hubs/{hub}/alerts", None, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/alerts", None, {}, None, True)
 
     def get_hubs_alerts_props(
         self, hub, alert, fetch=None, x_hvr_classified_access=None
@@ -298,7 +328,7 @@ class Client:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/props", query, headers, None, True
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/props", query, headers, None, True
         )
 
     def get_hubs_channels_activate(self, hub, channel, locs=None):
@@ -307,7 +337,7 @@ class Client:
             query["locs"] = locs
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/activate", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/activate", query, {}, None, True
         )
 
     def get_hubs_channels_compare_tables_results_ids(
@@ -336,7 +366,7 @@ class Client:
             query["ev_tstamp_end"] = ev_tstamp_end
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/compare/tables_results_ids",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/compare/tables_results_ids",
             query,
             {},
             None,
@@ -346,7 +376,7 @@ class Client:
     def get_hubs_channels_contexts(self, hub, channel):
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/contexts", None, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/contexts", None, {}, None, True
         )
 
     def get_hubs_channels_controls(
@@ -363,13 +393,13 @@ class Client:
             query["ctrl_id"] = ctrl_id
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/controls", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/controls", query, {}, None, True
         )
 
     def get_hubs_channels_controls_ctrl_id(self, hub, channel, ctrl_id):
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/controls/{ctrl_id}",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/controls/{ctrl_id}",
             None,
             {},
             None,
@@ -379,7 +409,7 @@ class Client:
     def get_hubs_channels_locs_capture_open_tx(self, hub, channel, loc):
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx",
             None,
             {},
             None,
@@ -396,7 +426,7 @@ class Client:
             query["orig_integ_loc"] = orig_integ_loc
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point",
             query,
             {},
             None,
@@ -429,7 +459,7 @@ class Client:
             query["ev_tstamp_end"] = ev_tstamp_end
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/refresh/tables_results_ids",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/refresh/tables_results_ids",
             query,
             {},
             None,
@@ -464,7 +494,7 @@ class Client:
             query["ev_tstamp_end"] = ev_tstamp_end
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/compare/tables_results_ids", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/compare/tables_results_ids", query, {}, None, True
         )
 
     def get_hubs_definition(
@@ -495,7 +525,9 @@ class Client:
         if x_hvr_classified_access:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
-        return self.get(f"/api/v6.1/hubs/{hub}/definition", query, headers, None, True)
+        return self.get(
+            f"/api/v6.1.6/hubs/{hub}/definition", query, headers, None, True
+        )
 
     def get_hubs_definition_change_events(
         self,
@@ -526,7 +558,11 @@ class Client:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/change/events", query, headers, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/change/events",
+            query,
+            headers,
+            None,
+            True,
         )
 
     def get_hubs_definition_channels(
@@ -551,7 +587,7 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/channels", query, {}, None, True
         )
 
     def get_hubs_definition_channels_actions(
@@ -564,7 +600,7 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/actions",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/actions",
             query,
             {},
             None,
@@ -591,7 +627,11 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}",
+            query,
+            {},
+            None,
+            True,
         )
 
     def get_hubs_definition_channels_loc_groups(
@@ -604,7 +644,7 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups",
             query,
             {},
             None,
@@ -621,7 +661,7 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}",
             query,
             {},
             None,
@@ -631,7 +671,7 @@ class Client:
     def get_hubs_definition_channels_loc_groups_members(self, hub, channel, loc_group):
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members",
             None,
             {},
             None,
@@ -650,7 +690,7 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables",
             query,
             {},
             None,
@@ -660,7 +700,7 @@ class Client:
     def get_hubs_definition_channels_tables_cols(self, hub, channel, table):
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols",
             None,
             {},
             None,
@@ -677,7 +717,7 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}",
             query,
             {},
             None,
@@ -694,7 +734,7 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/hub_actions", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/hub_actions", query, {}, None, True
         )
 
     def get_hubs_definition_locs(
@@ -720,7 +760,7 @@ class Client:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/locs", query, headers, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/locs", query, headers, None, True
         )
 
     def get_hubs_definition_locs_actions(
@@ -733,7 +773,11 @@ class Client:
             query["cache_view_tstamp"] = cache_view_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/actions", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/actions",
+            query,
+            {},
+            None,
+            True,
         )
 
     def get_hubs_definition_locs_loc(
@@ -757,7 +801,7 @@ class Client:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}", query, headers, None, True
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}", query, headers, None, True
         )
 
     def get_hubs_definition_locs_props(self, hub, loc, x_hvr_classified_access=None):
@@ -767,7 +811,7 @@ class Client:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/props",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props",
             None,
             headers,
             None,
@@ -781,7 +825,7 @@ class Client:
         if pattern:
             query["pattern"] = pattern
 
-        return self.get(f"/api/v6.1/hubs/{hub}/dirs", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/dirs", query, {}, None, True)
 
     def get_hubs_event_channels(
         self,
@@ -807,7 +851,7 @@ class Client:
         if ev_tstamp_end:
             query["ev_tstamp_end"] = ev_tstamp_end
 
-        return self.get(f"/api/v6.1/hubs/{hub}/event_channels", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/event_channels", query, {}, None, True)
 
     def get_hubs_event_locs(
         self,
@@ -833,7 +877,7 @@ class Client:
         if ev_tstamp_end:
             query["ev_tstamp_end"] = ev_tstamp_end
 
-        return self.get(f"/api/v6.1/hubs/{hub}/event_locs", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/event_locs", query, {}, None, True)
 
     def get_hubs_event_types(
         self,
@@ -859,7 +903,7 @@ class Client:
         if ev_tstamp_end:
             query["ev_tstamp_end"] = ev_tstamp_end
 
-        return self.get(f"/api/v6.1/hubs/{hub}/event_types", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/event_types", query, {}, None, True)
 
     def get_hubs_events(
         self,
@@ -918,7 +962,7 @@ class Client:
         if max_events:
             query["max_events"] = max_events
 
-        return self.get(f"/api/v6.1/hubs/{hub}/events", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/events", query, {}, None, True)
 
     def get_hubs_events_log(
         self, hub, ev_id, max_lines=None, head_crc=None, offset_begin=None, archive=None
@@ -934,12 +978,24 @@ class Client:
             query["archive"] = archive
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/events/{ev_id}/log", query, {}, None, False
+            f"/api/v6.1.6/hubs/{hub}/events/{ev_id}/log", query, {}, None, False
         )
 
     def get_hubs_hub(self, hub):
 
-        return self.get(f"/api/v6.1/hubs/{hub}", None, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}", None, {}, None, True)
+
+    def get_hubs_job_system_attributes(self, hub):
+
+        return self.get(
+            f"/api/v6.1.6/hubs/{hub}/job_system/attributes", None, {}, None, True
+        )
+
+    def get_hubs_job_system_env_vars(self, hub):
+
+        return self.get(
+            f"/api/v6.1.6/hubs/{hub}/job_system/env_vars", None, {}, None, True
+        )
 
     def get_hubs_jobs(
         self,
@@ -948,6 +1004,7 @@ class Client:
         job=None,
         updated_jobs_since=None,
         updated_err_since=None,
+        fetch=None,
     ):
         query = {}
         if channel:
@@ -958,8 +1015,16 @@ class Client:
             query["updated_jobs_since"] = updated_jobs_since
         if updated_err_since:
             query["updated_err_since"] = updated_err_since
+        if fetch:
+            query["fetch"] = fetch
 
-        return self.get(f"/api/v6.1/hubs/{hub}/jobs", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/jobs", query, {}, None, True)
+
+    def get_hubs_jobs_attributes(self, hub, job):
+
+        return self.get(
+            f"/api/v6.1.6/hubs/{hub}/jobs/{job}/attributes", None, {}, None, True
+        )
 
     def get_hubs_jobs_controls_log(
         self,
@@ -982,22 +1047,30 @@ class Client:
             query["archive"] = archive
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log",
+            f"/api/v6.1.6/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log",
             query,
             {},
             None,
             False,
         )
 
+    def get_hubs_jobs_env_vars(self, hub, job):
+
+        return self.get(
+            f"/api/v6.1.6/hubs/{hub}/jobs/{job}/env_vars", None, {}, None, True
+        )
+
     def get_hubs_locs_activate(self, hub, loc):
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/activate", None, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/activate", None, {}, None, True
         )
 
     def get_hubs_locs_agent(self, hub, loc):
 
-        return self.get(f"/api/v6.1/hubs/{hub}/locs/{loc}/agent", None, {}, None, True)
+        return self.get(
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent", None, {}, None, True
+        )
 
     def get_hubs_locs_db_schemas(self, hub, loc, channel=None):
         query = {}
@@ -1005,7 +1078,7 @@ class Client:
             query["channel"] = channel
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/db/schemas", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/db/schemas", query, {}, None, True
         )
 
     def get_hubs_locs_dirs(
@@ -1021,7 +1094,9 @@ class Client:
         if channel:
             query["channel"] = channel
 
-        return self.get(f"/api/v6.1/hubs/{hub}/locs/{loc}/dirs", query, {}, None, True)
+        return self.get(
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/dirs", query, {}, None, True
+        )
 
     def get_hubs_locs_env_odbc_drivers(
         self, hub, loc, odbcinst=None, odbcsysini=None, channel=None
@@ -1035,7 +1110,7 @@ class Client:
             query["channel"] = channel
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/env/odbc_drivers", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/env/odbc_drivers", query, {}, None, True
         )
 
     def get_hubs_locs_env_oratab(self, hub, loc, channel=None):
@@ -1044,7 +1119,7 @@ class Client:
             query["channel"] = channel
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/env/oratab", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/env/oratab", query, {}, None, True
         )
 
     def get_hubs_locs_env_vars(self, hub, loc, vars=None, channel=None):
@@ -1055,7 +1130,7 @@ class Client:
             query["channel"] = channel
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/env/vars", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/env/vars", query, {}, None, True
         )
 
     def get_hubs_logs(
@@ -1083,7 +1158,7 @@ class Client:
         if search_eof:
             query["search_eof"] = self.from_bool(search_eof)
 
-        return self.get(f"/api/v6.1/hubs/{hub}/logs/{file}", query, {}, None, False)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/logs/{file}", query, {}, None, False)
 
     def get_hubs_logs_archive(
         self,
@@ -1106,7 +1181,7 @@ class Client:
             query["search_eof"] = self.from_bool(search_eof)
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/logs/{file}/archive/{archive}",
+            f"/api/v6.1.6/hubs/{hub}/logs/{file}/archive/{archive}",
             query,
             {},
             None,
@@ -1119,7 +1194,7 @@ class Client:
             query["search_tstamp"] = search_tstamp
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/logs/{file}/search", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/logs/{file}/search", query, {}, None, True
         )
 
     def get_hubs_props(self, hub, fetch=None):
@@ -1127,7 +1202,7 @@ class Client:
         if fetch:
             query["fetch"] = fetch
 
-        return self.get(f"/api/v6.1/hubs/{hub}/props", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/props", query, {}, None, True)
 
     def get_hubs_query_channels(
         self, hub, channel=None, loc=None, fetch=None, table=None
@@ -1142,7 +1217,7 @@ class Client:
         if table:
             query["table"] = table
 
-        return self.get(f"/api/v6.1/hubs/{hub}/query/channels", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/query/channels", query, {}, None, True)
 
     def get_hubs_query_channels_locs(
         self, hub, channel, loc=None, fetch=None, table=None
@@ -1156,7 +1231,11 @@ class Client:
             query["table"] = table
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/query/channels/{channel}/locs", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/query/channels/{channel}/locs",
+            query,
+            {},
+            None,
+            True,
         )
 
     def get_hubs_query_channels_locs_tables(
@@ -1167,7 +1246,7 @@ class Client:
             query["context"] = context
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}",
+            f"/api/v6.1.6/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}",
             query,
             {},
             None,
@@ -1180,7 +1259,7 @@ class Client:
             query["table"] = table
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/query/channels/{channel}/tables",
+            f"/api/v6.1.6/hubs/{hub}/query/channels/{channel}/tables",
             query,
             {},
             None,
@@ -1189,7 +1268,7 @@ class Client:
 
     def get_hubs_query_status(self, hub):
 
-        return self.get(f"/api/v6.1/hubs/{hub}/query/status", None, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/query/status", None, {}, None, True)
 
     def get_hubs_refresh_tables_results_ids(
         self,
@@ -1219,7 +1298,7 @@ class Client:
             query["ev_tstamp_end"] = ev_tstamp_end
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/refresh/tables_results_ids", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/refresh/tables_results_ids", query, {}, None, True
         )
 
     def get_hubs_stats_metrics(
@@ -1261,7 +1340,7 @@ class Client:
         if updated_glob_since:
             query["updated_glob_since"] = updated_glob_since
 
-        return self.get(f"/api/v6.1/hubs/{hub}/stats/metrics", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/stats/metrics", query, {}, None, True)
 
     def get_hubs_stats_oldest(self, hub, time_gran=None, scope=None):
         query = {}
@@ -1270,7 +1349,7 @@ class Client:
         if scope:
             query["scope"] = scope
 
-        return self.get(f"/api/v6.1/hubs/{hub}/stats/oldest", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/hubs/{hub}/stats/oldest", query, {}, None, True)
 
     def get_hubs_users_props(self, hub, user, fetch=None):
         query = {}
@@ -1278,12 +1357,12 @@ class Client:
             query["fetch"] = fetch
 
         return self.get(
-            f"/api/v6.1/hubs/{hub}/users/{user}/props", query, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/users/{user}/props", query, {}, None, True
         )
 
     def get_hubserver_clock(self):
 
-        return self.get("/api/v6.1/hubserver/clock", None, {}, None, True)
+        return self.get("/api/v6.1.6/hubserver/clock", None, {}, None, True)
 
     def get_hubserver_dirs(self, path=None, pattern=None):
         query = {}
@@ -1292,7 +1371,7 @@ class Client:
         if pattern:
             query["pattern"] = pattern
 
-        return self.get("/api/v6.1/hubserver/dirs", query, {}, None, True)
+        return self.get("/api/v6.1.6/hubserver/dirs", query, {}, None, True)
 
     def get_hubserver_env_odbc_drivers(self, odbcinst=None, odbcsysini=None):
         query = {}
@@ -1301,18 +1380,18 @@ class Client:
         if odbcsysini:
             query["odbcsysini"] = odbcsysini
 
-        return self.get("/api/v6.1/hubserver/env/odbc_drivers", query, {}, None, True)
+        return self.get("/api/v6.1.6/hubserver/env/odbc_drivers", query, {}, None, True)
 
     def get_hubserver_env_oratab(self):
 
-        return self.get("/api/v6.1/hubserver/env/oratab", None, {}, None, True)
+        return self.get("/api/v6.1.6/hubserver/env/oratab", None, {}, None, True)
 
     def get_hubserver_env_vars(self, vars=None):
         query = {}
         if vars:
             query["vars"] = vars
 
-        return self.get("/api/v6.1/hubserver/env/vars", query, {}, None, True)
+        return self.get("/api/v6.1.6/hubserver/env/vars", query, {}, None, True)
 
     def get_hubserver_props(self, fetch=None, x_hvr_classified_access=None):
         query = {}
@@ -1322,22 +1401,22 @@ class Client:
         if x_hvr_classified_access:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
-        return self.get("/api/v6.1/hubserver/props", query, headers, None, True)
+        return self.get("/api/v6.1.6/hubserver/props", query, headers, None, True)
 
     def get_licenses(self, license=None):
         query = {}
         if license:
             query["license"] = license
 
-        return self.get("/api/v6.1/licenses", query, {}, None, True)
+        return self.get("/api/v6.1.6/licenses", query, {}, None, True)
 
     def get_licenses_license(self, license):
 
-        return self.get(f"/api/v6.1/licenses/{license}", None, {}, None, False)
+        return self.get(f"/api/v6.1.6/licenses/{license}", None, {}, None, False)
 
     def get_licensing(self):
 
-        return self.get("/api/v6.1/licensing", None, {}, None, True)
+        return self.get("/api/v6.1.6/licensing", None, {}, None, True)
 
     def get_logs(
         self,
@@ -1363,7 +1442,7 @@ class Client:
         if search_eof:
             query["search_eof"] = self.from_bool(search_eof)
 
-        return self.get(f"/api/v6.1/logs/{file}", query, {}, None, False)
+        return self.get(f"/api/v6.1.6/logs/{file}", query, {}, None, False)
 
     def get_logs_archive(
         self,
@@ -1385,12 +1464,21 @@ class Client:
             query["search_eof"] = self.from_bool(search_eof)
 
         return self.get(
-            f"/api/v6.1/logs/{file}/archive/{archive}", query, {}, None, False
+            f"/api/v6.1.6/logs/{file}/archive/{archive}", query, {}, None, False
         )
+
+    def get_metering_download(self, period_begin=None, period_end=None):
+        query = {}
+        if period_begin:
+            query["period_begin"] = period_begin
+        if period_end:
+            query["period_end"] = period_end
+
+        return self.get("/api/v6.1.6/metering/download", query, {}, None, True)
 
     def get_repos(self):
 
-        return self.get("/api/v6.1/repos", None, {}, None, True)
+        return self.get("/api/v6.1.6/repos", None, {}, None, True)
 
     def get_repos_event_types(
         self, state=None, ev_tstamp_begin=None, ev_tstamp_end=None
@@ -1403,7 +1491,7 @@ class Client:
         if ev_tstamp_end:
             query["ev_tstamp_end"] = ev_tstamp_end
 
-        return self.get("/api/v6.1/repos/event_types", query, {}, None, True)
+        return self.get("/api/v6.1.6/repos/event_types", query, {}, None, True)
 
     def get_repos_events(
         self,
@@ -1437,7 +1525,7 @@ class Client:
         if max_events:
             query["max_events"] = max_events
 
-        return self.get("/api/v6.1/repos/events", query, {}, None, True)
+        return self.get("/api/v6.1.6/repos/events", query, {}, None, True)
 
     def get_repos_props(self, fetch=None, x_hvr_classified_access=None):
         query = {}
@@ -1447,28 +1535,28 @@ class Client:
         if x_hvr_classified_access:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
-        return self.get("/api/v6.1/repos/props", query, headers, None, True)
+        return self.get("/api/v6.1.6/repos/props", query, headers, None, True)
 
     def get_users(self, fetch=None):
         query = {}
         if fetch:
             query["fetch"] = fetch
 
-        return self.get("/api/v6.1/users", query, {}, None, True)
+        return self.get("/api/v6.1.6/users", query, {}, None, True)
 
     def get_users_props(self, user, fetch=None):
         query = {}
         if fetch:
             query["fetch"] = fetch
 
-        return self.get(f"/api/v6.1/users/{user}/props", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/users/{user}/props", query, {}, None, True)
 
     def get_users_user(self, user, fetch=None):
         query = {}
         if fetch:
             query["fetch"] = fetch
 
-        return self.get(f"/api/v6.1/users/{user}", query, {}, None, True)
+        return self.get(f"/api/v6.1.6/users/{user}", query, {}, None, True)
 
     def get_wallet_props(self, fetch=None, x_hvr_classified_access=None):
         query = {}
@@ -1478,7 +1566,7 @@ class Client:
         if x_hvr_classified_access:
             headers["X-Hvr-Classified-Access"] = x_hvr_classified_access
 
-        return self.get("/api/v6.1/wallet/props", query, headers, None, True)
+        return self.get("/api/v6.1.6/wallet/props", query, headers, None, True)
 
     def patch_hubs_alerts_props(
         self, hub, alert, x_hvr_classified_transport_key=None, **payload
@@ -1489,7 +1577,7 @@ class Client:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
 
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/props", None, headers, payload, True
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/props", None, headers, payload, True
         )
 
     def patch_hubs_definition_channels(self, hub, channel, description):
@@ -1497,7 +1585,7 @@ class Client:
         payload = {}
         payload["description"] = description
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}",
             None,
             {},
             payload,
@@ -1509,7 +1597,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/actions",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/actions",
             None,
             {},
             payload,
@@ -1523,7 +1611,7 @@ class Client:
         payload = {}
         payload["members"] = members
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members",
             None,
             {},
             payload,
@@ -1533,7 +1621,7 @@ class Client:
     def patch_hubs_definition_channels_tables(self, hub, channel, **payload):
 
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables",
             None,
             {},
             payload,
@@ -1545,7 +1633,7 @@ class Client:
     ):
 
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols",
             None,
             {},
             payload,
@@ -1562,7 +1650,7 @@ class Client:
         if table_group is not None:
             payload["table_group"] = table_group
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}",
             None,
             {},
             payload,
@@ -1574,7 +1662,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/hub_actions", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/hub_actions", None, {}, payload, True
         )
 
     def patch_hubs_definition_locs_actions(self, hub, loc, actions):
@@ -1582,7 +1670,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/actions",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/actions",
             None,
             {},
             payload,
@@ -1598,7 +1686,7 @@ class Client:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
 
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/props",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props",
             None,
             headers,
             payload,
@@ -1607,12 +1695,12 @@ class Client:
 
     def patch_hubs_props(self, hub, **payload):
 
-        return self.patch(f"/api/v6.1/hubs/{hub}/props", None, {}, payload, True)
+        return self.patch(f"/api/v6.1.6/hubs/{hub}/props", None, {}, payload, True)
 
     def patch_hubs_users_props(self, hub, user, **payload):
 
         return self.patch(
-            f"/api/v6.1/hubs/{hub}/users/{user}/props", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/users/{user}/props", None, {}, payload, True
         )
 
     def patch_hubserver_props(self, x_hvr_classified_transport_key=None, **payload):
@@ -1621,7 +1709,7 @@ class Client:
         if x_hvr_classified_transport_key:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
 
-        return self.patch("/api/v6.1/hubserver/props", None, headers, payload, True)
+        return self.patch("/api/v6.1.6/hubserver/props", None, headers, payload, True)
 
     def patch_repos_props(self, x_hvr_classified_transport_key=None, **payload):
 
@@ -1629,11 +1717,11 @@ class Client:
         if x_hvr_classified_transport_key:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
 
-        return self.patch("/api/v6.1/repos/props", None, headers, payload, True)
+        return self.patch("/api/v6.1.6/repos/props", None, headers, payload, True)
 
     def patch_users_props(self, user, **payload):
 
-        return self.patch(f"/api/v6.1/users/{user}/props", None, {}, payload, True)
+        return self.patch(f"/api/v6.1.6/users/{user}/props", None, {}, payload, True)
 
     def post_hubs(self, hub, props=None):
 
@@ -1641,7 +1729,7 @@ class Client:
         payload["hub"] = hub
         if props is not None:
             payload["props"] = props
-        return self.post("/api/v6.1/hubs", None, {}, payload, True)
+        return self.post("/api/v6.1.6/hubs", None, {}, payload, True)
 
     def post_hubs_alerts(self, hub, alert, props, x_hvr_classified_transport_key=None):
 
@@ -1651,24 +1739,24 @@ class Client:
         payload = {}
         payload["alert"] = alert
         payload["props"] = props
-        return self.post(f"/api/v6.1/hubs/{hub}/alerts", None, headers, payload, True)
+        return self.post(f"/api/v6.1.6/hubs/{hub}/alerts", None, headers, payload, True)
 
     def post_hubs_alerts_clear(self, hub, alert):
 
         return self.post(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/clear", None, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/clear", None, {}, None, True
         )
 
     def post_hubs_alerts_disable(self, hub, alert):
 
         return self.post(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/disable", None, {}, None, True
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/disable", None, {}, None, True
         )
 
     def post_hubs_alerts_execute(self, hub, alert):
 
         return self.post(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/execute", None, {}, None, False
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/execute", None, {}, None, False
         )
 
     def post_hubs_alerts_props_delete(self, hub, alert, props):
@@ -1676,13 +1764,17 @@ class Client:
         payload = {}
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/props_delete", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/props_delete",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_alerts_test(self, hub, alert):
 
         return self.post(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/test", None, {}, None, False
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/test", None, {}, None, False
         )
 
     def post_hubs_channels_activate(
@@ -1723,7 +1815,11 @@ class Client:
         if start_next_ev_ids is not None:
             payload["start_next_ev_ids"] = start_next_ev_ids
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/activate", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/activate",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_channels_compare(
@@ -1738,11 +1834,14 @@ class Client:
         quota_run=None,
         parallel_sessions=None,
         db_sequences=None,
+        repeatable=None,
         slicing=None,
         tables=None,
         task=None,
         context_variables=None,
         file_preread_subtasks=None,
+        schedule_times=None,
+        start_at=None,
         start_immediate=None,
         online_compare=None,
         online_compare_sleep=None,
@@ -1766,6 +1865,8 @@ class Client:
             payload["parallel_sessions"] = parallel_sessions
         if db_sequences is not None:
             payload["db_sequences"] = self.from_bool(db_sequences)
+        if repeatable is not None:
+            payload["repeatable"] = self.from_bool(repeatable)
         if slicing is not None:
             payload["slicing"] = slicing
         if tables is not None:
@@ -1776,6 +1877,10 @@ class Client:
             payload["context_variables"] = context_variables
         if file_preread_subtasks is not None:
             payload["file_preread_subtasks"] = file_preread_subtasks
+        if schedule_times is not None:
+            payload["schedule_times"] = schedule_times
+        if start_at is not None:
+            payload["start_at"] = start_at
         if start_immediate is not None:
             payload["start_immediate"] = self.from_bool(start_immediate)
         if online_compare is not None:
@@ -1789,7 +1894,11 @@ class Client:
         if prereader_intermediate_files is not None:
             payload["prereader_intermediate_files"] = prereader_intermediate_files
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/compare", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/compare",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_channels_controls_delete(self, hub, channel, ctrl_ids):
@@ -1797,7 +1906,7 @@ class Client:
         payload = {}
         payload["ctrl_ids"] = ctrl_ids
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/controls_delete",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/controls_delete",
             None,
             {},
             payload,
@@ -1827,7 +1936,7 @@ class Client:
         if start_immediate is not None:
             payload["start_immediate"] = self.from_bool(start_immediate)
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/deactivate",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/deactivate",
             None,
             {},
             payload,
@@ -1858,7 +1967,7 @@ class Client:
         if mapspec is not None:
             payload["mapspec"] = mapspec
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply",
             None,
             {},
             payload,
@@ -1894,7 +2003,7 @@ class Client:
                 mapspec_table_not_in_db_error
             )
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check",
             None,
             {},
             payload,
@@ -1920,7 +2029,7 @@ class Client:
         if fetch_extra is not None:
             payload["fetch_extra"] = fetch_extra
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}",
             None,
             {},
             payload,
@@ -1930,7 +2039,7 @@ class Client:
     def post_hubs_channels_locs_adapt_other_channels(self, hub, channel, loc):
 
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels",
             None,
             {},
             None,
@@ -1978,7 +2087,22 @@ class Client:
         if tables is not None:
             payload["tables"] = tables
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest",
+            None,
+            {},
+            payload,
+            True,
+        )
+
+    def post_hubs_channels_locs_tables_diffs_get(
+        self, hub, channel, loc, table, ev_id, bytes_per_file=None
+    ):
+
+        payload = {}
+        if bytes_per_file is not None:
+            payload["bytes_per_file"] = bytes_per_file
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/diffs/{ev_id}/get",
             None,
             {},
             payload,
@@ -1993,7 +2117,7 @@ class Client:
         payload["col"] = col
         payload["slices"] = slices
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries",
             None,
             {},
             payload,
@@ -2031,7 +2155,7 @@ class Client:
         if recv_expiry is not None:
             payload["recv_expiry"] = recv_expiry
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls",
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls",
             None,
             {},
             payload,
@@ -2050,11 +2174,14 @@ class Client:
         quota_run=None,
         parallel_sessions=None,
         db_sequences=None,
+        repeatable=None,
         slicing=None,
         tables=None,
         task=None,
         context_variables=None,
         file_preread_subtasks=None,
+        schedule_times=None,
+        start_at=None,
         start_immediate=None,
         create_tables=None,
         data_refresh=None,
@@ -2080,6 +2207,8 @@ class Client:
             payload["parallel_sessions"] = parallel_sessions
         if db_sequences is not None:
             payload["db_sequences"] = self.from_bool(db_sequences)
+        if repeatable is not None:
+            payload["repeatable"] = self.from_bool(repeatable)
         if slicing is not None:
             payload["slicing"] = slicing
         if tables is not None:
@@ -2090,6 +2219,10 @@ class Client:
             payload["context_variables"] = context_variables
         if file_preread_subtasks is not None:
             payload["file_preread_subtasks"] = file_preread_subtasks
+        if schedule_times is not None:
+            payload["schedule_times"] = schedule_times
+        if start_at is not None:
+            payload["start_at"] = start_at
         if start_immediate is not None:
             payload["start_immediate"] = self.from_bool(start_immediate)
         if create_tables is not None:
@@ -2107,7 +2240,11 @@ class Client:
         if start_next_jobs is not None:
             payload["start_next_jobs"] = start_next_jobs
         return self.post(
-            f"/api/v6.1/hubs/{hub}/channels/{channel}/refresh", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/channels/{channel}/refresh",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_definition_action_modify(self, hub, type, old, new):
@@ -2117,7 +2254,7 @@ class Client:
         payload["old"] = old
         payload["new"] = new
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/action_modify", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/action_modify", None, {}, payload, True
         )
 
     def post_hubs_definition_action_replace(self, hub, type, old, new):
@@ -2127,7 +2264,7 @@ class Client:
         payload["old"] = old
         payload["new"] = new
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/action_replace", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/action_replace", None, {}, payload, True
         )
 
     def post_hubs_definition_channels(
@@ -2145,7 +2282,7 @@ class Client:
         if actions is not None:
             payload["actions"] = actions
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/channels", None, {}, payload, True
         )
 
     def post_hubs_definition_channels_actions_delete(self, hub, channel, actions):
@@ -2153,7 +2290,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/actions_delete",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/actions_delete",
             None,
             {},
             payload,
@@ -2169,7 +2306,7 @@ class Client:
         if members is not None:
             payload["members"] = members
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups",
             None,
             {},
             payload,
@@ -2183,7 +2320,7 @@ class Client:
         payload = {}
         payload["members"] = members
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete",
             None,
             {},
             payload,
@@ -2197,7 +2334,7 @@ class Client:
         payload = {}
         payload["new_name"] = new_name
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename",
             None,
             {},
             payload,
@@ -2209,7 +2346,7 @@ class Client:
         payload = {}
         payload["new_name"] = new_name
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/rename",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/rename",
             None,
             {},
             payload,
@@ -2229,7 +2366,7 @@ class Client:
         if cols is not None:
             payload["cols"] = cols
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables",
             None,
             {},
             payload,
@@ -2243,7 +2380,7 @@ class Client:
         payload = {}
         payload["cols"] = cols
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete",
             None,
             {},
             payload,
@@ -2255,7 +2392,7 @@ class Client:
         payload = {}
         payload["tables"] = tables
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables_delete",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables_delete",
             None,
             {},
             payload,
@@ -2269,7 +2406,7 @@ class Client:
         payload = {}
         payload["new_name"] = new_name
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename",
             None,
             {},
             payload,
@@ -2281,7 +2418,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/hub_actions_delete",
+            f"/api/v6.1.6/hubs/{hub}/definition/hub_actions_delete",
             None,
             {},
             payload,
@@ -2331,7 +2468,7 @@ class Client:
             payload["on_absent"] = on_absent
         payload["changes"] = changes
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/import", None, headers, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/import", None, headers, payload, True
         )
 
     def post_hubs_definition_import_analyze(
@@ -2362,7 +2499,7 @@ class Client:
             payload["table_context"] = table_context
         payload["changes"] = changes
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/import/analyze",
+            f"/api/v6.1.6/hubs/{hub}/definition/import/analyze",
             None,
             headers,
             payload,
@@ -2382,7 +2519,7 @@ class Client:
         if actions is not None:
             payload["actions"] = actions
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/locs", None, headers, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/locs", None, headers, payload, True
         )
 
     def post_hubs_definition_locs_actions_delete(self, hub, loc, actions):
@@ -2390,7 +2527,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/actions_delete",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/actions_delete",
             None,
             {},
             payload,
@@ -2402,7 +2539,11 @@ class Client:
         payload = {}
         payload["new_name"] = new_name
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/copy", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/copy",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_definition_locs_props_delete(self, hub, loc, props):
@@ -2410,7 +2551,7 @@ class Client:
         payload = {}
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/props_delete",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props_delete",
             None,
             {},
             payload,
@@ -2422,7 +2563,7 @@ class Client:
         payload = {}
         payload["new_name"] = new_name
         return self.post(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/rename",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/rename",
             None,
             {},
             payload,
@@ -2433,17 +2574,19 @@ class Client:
 
         payload = {}
         payload["ev_ids"] = ev_ids
-        return self.post(f"/api/v6.1/hubs/{hub}/events_cancel", None, {}, payload, True)
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/events_cancel", None, {}, payload, True
+        )
 
     def post_hubs_freeze(self, hub):
 
-        return self.post(f"/api/v6.1/hubs/{hub}/freeze", None, {}, None, True)
+        return self.post(f"/api/v6.1.6/hubs/{hub}/freeze", None, {}, None, True)
 
     def post_hubs_jobs_delete(self, hub, jobs):
 
         payload = {}
         payload["jobs"] = jobs
-        return self.post(f"/api/v6.1/hubs/{hub}/jobs_delete", None, {}, payload, True)
+        return self.post(f"/api/v6.1.6/hubs/{hub}/jobs_delete", None, {}, payload, True)
 
     def post_hubs_jobs_start(self, hub, jobs, unsuspend=None, trigger_failed=None):
 
@@ -2453,20 +2596,22 @@ class Client:
             payload["unsuspend"] = self.from_bool(unsuspend)
         if trigger_failed is not None:
             payload["trigger_failed"] = self.from_bool(trigger_failed)
-        return self.post(f"/api/v6.1/hubs/{hub}/jobs_start", None, {}, payload, True)
+        return self.post(f"/api/v6.1.6/hubs/{hub}/jobs_start", None, {}, payload, True)
 
     def post_hubs_jobs_suspend(self, hub, jobs):
 
         payload = {}
         payload["jobs"] = jobs
-        return self.post(f"/api/v6.1/hubs/{hub}/jobs_suspend", None, {}, payload, True)
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/jobs_suspend", None, {}, payload, True
+        )
 
     def post_hubs_jobs_unsuspend(self, hub, jobs):
 
         payload = {}
         payload["jobs"] = jobs
         return self.post(
-            f"/api/v6.1/hubs/{hub}/jobs_unsuspend", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/jobs_unsuspend", None, {}, payload, True
         )
 
     def post_hubs_locs_agent_props_delete(
@@ -2488,7 +2633,7 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["agent_props"] = agent_props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/props_delete",
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_delete",
             None,
             {},
             payload,
@@ -2519,7 +2664,7 @@ class Client:
         if fetch is not None:
             payload["fetch"] = fetch
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/props_get",
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_get",
             None,
             headers,
             payload,
@@ -2549,7 +2694,7 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["agent_props"] = agent_props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/props_patch",
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_patch",
             None,
             headers,
             payload,
@@ -2579,7 +2724,7 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["agent_props"] = agent_props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/props_put",
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_put",
             None,
             headers,
             payload,
@@ -2598,7 +2743,7 @@ class Client:
         if auth_user_password is not None:
             payload["auth_user_password"] = auth_user_password
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/test", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/test", None, {}, payload, True
         )
 
     def post_hubs_locs_agent_users(
@@ -2625,7 +2770,7 @@ class Client:
         if password is not None:
             payload["password"] = password
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/users", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users", None, {}, payload, True
         )
 
     def post_hubs_locs_agent_users_delete(
@@ -2647,7 +2792,7 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["user"] = user
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/users_delete",
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users_delete",
             None,
             {},
             payload,
@@ -2674,7 +2819,11 @@ class Client:
         if user is not None:
             payload["user"] = user
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/users_get", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users_get",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_locs_agent_users_password(
@@ -2701,7 +2850,7 @@ class Client:
         if current_password is not None:
             payload["current_password"] = current_password
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/agent/users_password",
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users_password",
             None,
             {},
             payload,
@@ -2714,14 +2863,16 @@ class Client:
         if channel is not None:
             payload["channel"] = channel
         return self.post(
-            f"/api/v6.1/hubs/{hub}/locs/{loc}/test", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/locs/{loc}/test", None, {}, payload, True
         )
 
     def post_hubs_mapdoc_parse(self, hub, mapdoc):
 
         payload = {}
         payload["mapdoc"] = mapdoc
-        return self.post(f"/api/v6.1/hubs/{hub}/mapdoc/parse", None, {}, payload, True)
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/mapdoc/parse", None, {}, payload, True
+        )
 
     def post_hubs_new_loc_agent_get(self, hub, loc_props, loc_props_from=None):
 
@@ -2730,7 +2881,7 @@ class Client:
             payload["loc_props_from"] = loc_props_from
         payload["loc_props"] = loc_props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent_get", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent_get", None, {}, payload, True
         )
 
     def post_hubs_new_loc_agent_props_delete(
@@ -2756,7 +2907,11 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["agent_props"] = agent_props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/props_delete", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/props_delete",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_new_loc_agent_props_get(
@@ -2787,7 +2942,7 @@ class Client:
         if fetch is not None:
             payload["fetch"] = fetch
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/props_get",
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/props_get",
             None,
             headers,
             payload,
@@ -2821,7 +2976,7 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["agent_props"] = agent_props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/props_patch",
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/props_patch",
             None,
             headers,
             payload,
@@ -2855,7 +3010,7 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["agent_props"] = agent_props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/props_put",
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/props_put",
             None,
             headers,
             payload,
@@ -2883,7 +3038,7 @@ class Client:
         if auth_user_password is not None:
             payload["auth_user_password"] = auth_user_password
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/test", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/test", None, {}, payload, True
         )
 
     def post_hubs_new_loc_agent_users(
@@ -2914,7 +3069,7 @@ class Client:
         if password is not None:
             payload["password"] = password
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/users", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/users", None, {}, payload, True
         )
 
     def post_hubs_new_loc_agent_users_delete(
@@ -2940,7 +3095,11 @@ class Client:
             payload["auth_user_password"] = auth_user_password
         payload["user"] = user
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/users_delete", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/users_delete",
+            None,
+            {},
+            payload,
+            True,
         )
 
     def post_hubs_new_loc_agent_users_get(
@@ -2967,7 +3126,7 @@ class Client:
         if user is not None:
             payload["user"] = user
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/users_get", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/users_get", None, {}, payload, True
         )
 
     def post_hubs_new_loc_agent_users_password(
@@ -2998,7 +3157,7 @@ class Client:
         if current_password is not None:
             payload["current_password"] = current_password
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/agent/users_password",
+            f"/api/v6.1.6/hubs/{hub}/new_loc/agent/users_password",
             None,
             {},
             payload,
@@ -3014,7 +3173,7 @@ class Client:
             payload["props_from"] = props_from
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/db/schemas", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/db/schemas", None, {}, payload, True
         )
 
     def post_hubs_new_loc_dirs(
@@ -3040,7 +3199,9 @@ class Client:
         if props_from is not None:
             payload["props_from"] = props_from
         payload["props"] = props
-        return self.post(f"/api/v6.1/hubs/{hub}/new_loc/dirs", None, {}, payload, True)
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/new_loc/dirs", None, {}, payload, True
+        )
 
     def post_hubs_new_loc_env_odbc_drivers(
         self, hub, props, odbcinst=None, odbcsysini=None, channel=None, props_from=None
@@ -3057,7 +3218,7 @@ class Client:
             payload["props_from"] = props_from
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/env/odbc_drivers", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/env/odbc_drivers", None, {}, payload, True
         )
 
     def post_hubs_new_loc_env_oratab(self, hub, props, channel=None, props_from=None):
@@ -3069,7 +3230,7 @@ class Client:
             payload["props_from"] = props_from
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/env/oratab", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/env/oratab", None, {}, payload, True
         )
 
     def post_hubs_new_loc_env_vars(
@@ -3084,7 +3245,7 @@ class Client:
             payload["props_from"] = props_from
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/new_loc/env/vars", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/new_loc/env/vars", None, {}, payload, True
         )
 
     def post_hubs_new_loc_test(self, hub, props, channel=None, props_from=None):
@@ -3095,13 +3256,17 @@ class Client:
         if props_from is not None:
             payload["props_from"] = props_from
         payload["props"] = props
-        return self.post(f"/api/v6.1/hubs/{hub}/new_loc/test", None, {}, payload, True)
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/new_loc/test", None, {}, payload, True
+        )
 
     def post_hubs_props_delete(self, hub, props):
 
         payload = {}
         payload["props"] = props
-        return self.post(f"/api/v6.1/hubs/{hub}/props_delete", None, {}, payload, True)
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/props_delete", None, {}, payload, True
+        )
 
     def post_hubs_snapshot(
         self,
@@ -3137,7 +3302,9 @@ class Client:
             payload["dblog_dump"] = dblog_dump
         if txfiles is not None:
             payload["txfiles"] = txfiles
-        return self.post(f"/api/v6.1/hubs/{hub}/snapshot", None, headers, payload, True)
+        return self.post(
+            f"/api/v6.1.6/hubs/{hub}/snapshot", None, headers, payload, True
+        )
 
     def post_hubs_stats_metrics_export(
         self,
@@ -3172,26 +3339,26 @@ class Client:
             payload["tstamp_end"] = tstamp_end
         payload["format"] = format
         return self.post(
-            f"/api/v6.1/hubs/{hub}/stats/metrics/export", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/stats/metrics/export", None, {}, payload, True
         )
 
     def post_hubs_unfreeze(self, hub):
 
-        return self.post(f"/api/v6.1/hubs/{hub}/unfreeze", None, {}, None, True)
+        return self.post(f"/api/v6.1.6/hubs/{hub}/unfreeze", None, {}, None, True)
 
     def post_hubs_users_props_delete(self, hub, user, props):
 
         payload = {}
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/hubs/{hub}/users/{user}/props_delete", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/users/{user}/props_delete", None, {}, payload, True
         )
 
     def post_hubserver_props_delete(self, props):
 
         payload = {}
         payload["props"] = props
-        return self.post("/api/v6.1/hubserver/props_delete", None, {}, payload, True)
+        return self.post("/api/v6.1.6/hubserver/props_delete", None, {}, payload, True)
 
     def post_hubserver_props_test(self, props, props_from=None):
 
@@ -3199,48 +3366,74 @@ class Client:
         if props_from is not None:
             payload["props_from"] = self.from_bool(props_from)
         payload["props"] = props
-        return self.post("/api/v6.1/hubserver/props_test", None, {}, payload, True)
+        return self.post("/api/v6.1.6/hubserver/props_test", None, {}, payload, True)
 
     def post_hubserver_restart(self):
 
-        return self.post("/api/v6.1/hubserver/restart", None, {}, None, True)
+        return self.post("/api/v6.1.6/hubserver/restart", None, {}, None, True)
 
     def post_hubserver_stop(self):
 
-        return self.post("/api/v6.1/hubserver/stop", None, {}, None, True)
+        return self.post("/api/v6.1.6/hubserver/stop", None, {}, None, True)
 
     def post_hubserver_test(self):
 
-        return self.post("/api/v6.1/hubserver/test", None, {}, None, True)
+        return self.post("/api/v6.1.6/hubserver/test", None, {}, None, True)
 
     def post_hubserver_upload(self, file):
 
         payload = {}
         payload["file"] = file
-        return self.post("/api/v6.1/hubserver/upload", None, {}, payload, True)
+        return self.post("/api/v6.1.6/hubserver/upload", None, {}, payload, True)
 
     def post_licenses(self, license, raw):
 
         payload = {}
         payload["license"] = license
         payload["raw"] = raw
-        return self.post("/api/v6.1/licenses", None, {}, payload, True)
+        return self.post("/api/v6.1.6/licenses", None, {}, payload, True)
 
     def post_licensing_license_agreement_accepted(self):
 
         return self.post(
-            "/api/v6.1/licensing/license_agreement_accepted", None, {}, None, True
+            "/api/v6.1.6/licensing/license_agreement_accepted", None, {}, None, True
         )
+
+    def post_metering_license_acquire(self):
+
+        return self.post("/api/v6.1.6/metering/license_acquire", None, {}, None, True)
+
+    def post_metering_purge(self, period_end=None):
+
+        payload = {}
+        if period_end is not None:
+            payload["period_end"] = period_end
+        return self.post("/api/v6.1.6/metering/purge", None, {}, payload, True)
+
+    def post_metering_registration_status(self):
+
+        return self.post(
+            "/api/v6.1.6/metering/registration_status", None, {}, None, True
+        )
+
+    def post_metering_upload(self, period_begin=None, period_end=None):
+        query = {}
+        if period_begin:
+            query["period_begin"] = period_begin
+        if period_end:
+            query["period_end"] = period_end
+
+        return self.post("/api/v6.1.6/metering/upload", query, {}, None, True)
 
     def post_repos(self):
 
-        return self.post("/api/v6.1/repos", None, {}, None, True)
+        return self.post("/api/v6.1.6/repos", None, {}, None, True)
 
     def post_repos_props_delete(self, props):
 
         payload = {}
         payload["props"] = props
-        return self.post("/api/v6.1/repos/props_delete", None, {}, payload, True)
+        return self.post("/api/v6.1.6/repos/props_delete", None, {}, payload, True)
 
     def post_snapshot(
         self, ref, hub, x_hvr_classified_transport_key=None, description=None
@@ -3254,7 +3447,7 @@ class Client:
         payload["hub"] = hub
         if description is not None:
             payload["description"] = description
-        return self.post("/api/v6.1/snapshot", None, headers, payload, True)
+        return self.post("/api/v6.1.6/snapshot", None, headers, payload, True)
 
     def post_snapshot_inspect(self, ref, x_hvr_classified_transport_key=None):
 
@@ -3263,7 +3456,7 @@ class Client:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
         payload = {}
         payload["ref"] = ref
-        return self.post("/api/v6.1/snapshot_inspect", None, headers, payload, True)
+        return self.post("/api/v6.1.6/snapshot_inspect", None, headers, payload, True)
 
     def post_users(self, user, authentication, password=None, props=None):
 
@@ -3274,14 +3467,14 @@ class Client:
             payload["password"] = password
         if props is not None:
             payload["props"] = props
-        return self.post("/api/v6.1/users", None, {}, payload, True)
+        return self.post("/api/v6.1.6/users", None, {}, payload, True)
 
     def post_users_props_delete(self, user, props):
 
         payload = {}
         payload["props"] = props
         return self.post(
-            f"/api/v6.1/users/{user}/props_delete", None, {}, payload, True
+            f"/api/v6.1.6/users/{user}/props_delete", None, {}, payload, True
         )
 
     def post_wallet(self, props, x_hvr_classified_transport_key=None, password=None):
@@ -3293,7 +3486,7 @@ class Client:
         payload["props"] = props
         if password is not None:
             payload["password"] = password
-        return self.post("/api/v6.1/wallet", None, headers, payload, True)
+        return self.post("/api/v6.1.6/wallet", None, headers, payload, True)
 
     def post_wallet_change(
         self, x_hvr_classified_transport_key=None, props=None, password=None
@@ -3307,14 +3500,14 @@ class Client:
             payload["props"] = props
         if password is not None:
             payload["password"] = password
-        return self.post("/api/v6.1/wallet/change", None, headers, payload, True)
+        return self.post("/api/v6.1.6/wallet/change", None, headers, payload, True)
 
     def post_wallet_disable(self, force=None):
 
         payload = {}
         if force is not None:
             payload["force"] = self.from_bool(force)
-        return self.post("/api/v6.1/wallet/disable", None, {}, payload, True)
+        return self.post("/api/v6.1.6/wallet/disable", None, {}, payload, True)
 
     def post_wallet_key_history_delete(
         self, before_key_sequence=None, before_rotation_tstamp=None
@@ -3325,11 +3518,13 @@ class Client:
             payload["before_key_sequence"] = before_key_sequence
         if before_rotation_tstamp is not None:
             payload["before_rotation_tstamp"] = before_rotation_tstamp
-        return self.post("/api/v6.1/wallet/key_history_delete", None, {}, payload, True)
+        return self.post(
+            "/api/v6.1.6/wallet/key_history_delete", None, {}, payload, True
+        )
 
     def post_wallet_key_rotate(self):
 
-        return self.post("/api/v6.1/wallet/key_rotate", None, {}, None, True)
+        return self.post("/api/v6.1.6/wallet/key_rotate", None, {}, None, True)
 
     def post_wallet_migrate(
         self,
@@ -3348,14 +3543,16 @@ class Client:
             payload["password"] = password
         if rotate_encryption_key is not None:
             payload["rotate_encryption_key"] = self.from_bool(rotate_encryption_key)
-        return self.post("/api/v6.1/wallet/migrate", None, headers, payload, True)
+        return self.post("/api/v6.1.6/wallet/migrate", None, headers, payload, True)
 
     def post_wallet_reencrypt_continue(self, force=None):
 
         payload = {}
         if force is not None:
             payload["force"] = self.from_bool(force)
-        return self.post("/api/v6.1/wallet/reencrypt_continue", None, {}, payload, True)
+        return self.post(
+            "/api/v6.1.6/wallet/reencrypt_continue", None, {}, payload, True
+        )
 
     def put_hubs_alerts_props(
         self, hub, alert, x_hvr_classified_transport_key=None, **payload
@@ -3366,7 +3563,7 @@ class Client:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
 
         return self.put(
-            f"/api/v6.1/hubs/{hub}/alerts/{alert}/props", None, headers, payload, True
+            f"/api/v6.1.6/hubs/{hub}/alerts/{alert}/props", None, headers, payload, True
         )
 
     def put_hubs_definition_channels(
@@ -3383,7 +3580,7 @@ class Client:
         if actions is not None:
             payload["actions"] = actions
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}",
             None,
             {},
             payload,
@@ -3395,7 +3592,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/actions",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/actions",
             None,
             {},
             payload,
@@ -3410,7 +3607,7 @@ class Client:
         if members is not None:
             payload["members"] = members
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}",
             None,
             {},
             payload,
@@ -3424,7 +3621,7 @@ class Client:
         payload = {}
         payload["members"] = members
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members",
             None,
             {},
             payload,
@@ -3434,7 +3631,7 @@ class Client:
     def put_hubs_definition_channels_tables(self, hub, channel, **payload):
 
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables",
             None,
             {},
             payload,
@@ -3444,7 +3641,7 @@ class Client:
     def put_hubs_definition_channels_tables_cols(self, hub, channel, table, **payload):
 
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols",
             None,
             {},
             payload,
@@ -3463,7 +3660,7 @@ class Client:
         if cols is not None:
             payload["cols"] = cols
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}",
+            f"/api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}",
             None,
             {},
             payload,
@@ -3475,7 +3672,7 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/hub_actions", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/hub_actions", None, {}, payload, True
         )
 
     def put_hubs_definition_locs(
@@ -3490,7 +3687,11 @@ class Client:
         if actions is not None:
             payload["actions"] = actions
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}", None, headers, payload, True
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}",
+            None,
+            headers,
+            payload,
+            True,
         )
 
     def put_hubs_definition_locs_actions(self, hub, loc, actions):
@@ -3498,21 +3699,65 @@ class Client:
         payload = {}
         payload["actions"] = actions
         return self.put(
-            f"/api/v6.1/hubs/{hub}/definition/locs/{loc}/actions",
+            f"/api/v6.1.6/hubs/{hub}/definition/locs/{loc}/actions",
             None,
             {},
             payload,
             True,
         )
 
+    def put_hubs_job_system_attributes(self, hub, attr, arg1, arg2=None):
+
+        payload = {}
+        payload["arg1"] = arg1
+        if arg2 is not None:
+            payload["arg2"] = arg2
+        return self.put(
+            f"/api/v6.1.6/hubs/{hub}/job_system/attributes/{attr}",
+            None,
+            {},
+            payload,
+            True,
+        )
+
+    def put_hubs_job_system_env_vars(self, hub, var, val):
+
+        payload = {}
+        payload["val"] = val
+        return self.put(
+            f"/api/v6.1.6/hubs/{hub}/job_system/env_vars/{var}", None, {}, payload, True
+        )
+
+    def put_hubs_jobs_attributes(self, hub, job, attr, arg1, arg2=None):
+
+        payload = {}
+        payload["arg1"] = arg1
+        if arg2 is not None:
+            payload["arg2"] = arg2
+        return self.put(
+            f"/api/v6.1.6/hubs/{hub}/jobs/{job}/attributes/{attr}",
+            None,
+            {},
+            payload,
+            True,
+        )
+
+    def put_hubs_jobs_env_vars(self, hub, job, var, val):
+
+        payload = {}
+        payload["val"] = val
+        return self.put(
+            f"/api/v6.1.6/hubs/{hub}/jobs/{job}/env_vars/{var}", None, {}, payload, True
+        )
+
     def put_hubs_props(self, hub, **payload):
 
-        return self.put(f"/api/v6.1/hubs/{hub}/props", None, {}, payload, True)
+        return self.put(f"/api/v6.1.6/hubs/{hub}/props", None, {}, payload, True)
 
     def put_hubs_users_props(self, hub, user, **payload):
 
         return self.put(
-            f"/api/v6.1/hubs/{hub}/users/{user}/props", None, {}, payload, True
+            f"/api/v6.1.6/hubs/{hub}/users/{user}/props", None, {}, payload, True
         )
 
     def put_hubserver_props(self, x_hvr_classified_transport_key=None, **payload):
@@ -3521,13 +3766,13 @@ class Client:
         if x_hvr_classified_transport_key:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
 
-        return self.put("/api/v6.1/hubserver/props", None, headers, payload, True)
+        return self.put("/api/v6.1.6/hubserver/props", None, headers, payload, True)
 
     def put_licenses(self, license, raw):
 
         payload = {}
         payload["raw"] = raw
-        return self.put(f"/api/v6.1/licenses/{license}", None, {}, payload, True)
+        return self.put(f"/api/v6.1.6/licenses/{license}", None, {}, payload, True)
 
     def put_repos_props(self, x_hvr_classified_transport_key=None, **payload):
 
@@ -3535,7 +3780,7 @@ class Client:
         if x_hvr_classified_transport_key:
             headers["X-Hvr-Classified-Transport-Key"] = x_hvr_classified_transport_key
 
-        return self.put("/api/v6.1/repos/props", None, headers, payload, True)
+        return self.put("/api/v6.1.6/repos/props", None, headers, payload, True)
 
     def put_users_password(self, user, new_password, current_password=None):
 
@@ -3543,8 +3788,8 @@ class Client:
         payload["new_password"] = new_password
         if current_password is not None:
             payload["current_password"] = current_password
-        return self.put(f"/api/v6.1/users/{user}/password", None, {}, payload, True)
+        return self.put(f"/api/v6.1.6/users/{user}/password", None, {}, payload, True)
 
     def put_users_props(self, user, **payload):
 
-        return self.put(f"/api/v6.1/users/{user}/props", None, {}, payload, True)
+        return self.put(f"/api/v6.1.6/users/{user}/props", None, {}, payload, True)
