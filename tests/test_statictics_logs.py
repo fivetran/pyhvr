@@ -1,9 +1,8 @@
 import pyhvr
-from pyhvr.pyhvr_exceptions import (PyhvrError,
-                                    RestError)
+from pyhvr.pyhvr_exceptions import PyhvrError, RestError
 
 hvr_client = pyhvr.client(
-    username="admin", password="Kiwi1234", uri="http://localhost:4340"
+    username="admin", password="Kiwi1234Kiwi1234", uri="http://localhost:4340"
 )
 
 
@@ -26,7 +25,9 @@ def test_wrong_ch_name():
 
 def test_ch_exception_loc():
     try:
-        hvr_client.post_hubs_locs_test(hub="hvrhub", loc="sourceat1123", channel="chanat")
+        hvr_client.post_hubs_locs_test(
+            hub="hvrhub", loc="sourceat1123", channel="chanat"
+        )
     except RestError as e:
         # test access to the fields
         print(e.status_code)
@@ -49,7 +50,7 @@ def test_export_metrics():
         "scope": ["clt"],
         "tstamp_begin": "1643275080",
         "tstamp_end": "1643275731",
-        "format": "json"
+        "format": "json",
     }
     ct = hvr_client.post_hubs_stats_metrics_export(hub="hvrhub", **data)
     assert ct is not None
