@@ -1,7 +1,7 @@
 import pyhvr
 
 hvr_client = pyhvr.client(
-    username="admin", password="Kiwi1234", uri="http://localhost:4340"
+    username="admin", password="Kiwi1234Kiwi1234", uri="http://localhost:4340"
 )
 
 
@@ -114,9 +114,7 @@ def test_setup_slicing():
                 "col": "c_id",
                 "type": "modulo",
             }
-
-        }
-
+        },
     }
 
     refresh = hvr_client.post_hubs_channels_refresh(
@@ -155,14 +153,8 @@ def test_slicing_boundary():
         "start_next_jobs": ["integ"],
         "parallel_sessions": 4,
         "slicing": {
-            "customer": {
-                "col": "c_id",
-                "type": "boundary",
-                "int_boundaries": [100]
-            }
-
-        }
-
+            "customer": {"col": "c_id", "type": "boundary", "int_boundaries": [100]}
+        },
     }
 
     refresh = hvr_client.post_hubs_channels_refresh(
@@ -194,7 +186,7 @@ def test_slicing_compare():
         online_compare_sleep=0,
         granularity="rowwise",
         tables=["customer"],
-        slicing={"customer": {"slices": 4, "col": "c_payment_cnt", "type": "modulo"}}
+        slicing={"customer": {"slices": 4, "col": "c_payment_cnt", "type": "modulo"}},
     )
 
     assert result["job"] == "t_slice_c-cmp-test_slice_s-test_slice_t"

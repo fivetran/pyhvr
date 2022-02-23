@@ -38,7 +38,7 @@ def test_init():
 
     user = hvr_sm_client.post_users(
         authentication="local",
-        password="Kiwi1234",
+        password="Kiwi1234Kiwi1234",
         props={"Full_Name": "Admin User"},
         user="admin",
     )
@@ -52,7 +52,7 @@ def test_init():
     pprint(repo_props)
 
     hvr_client = pyhvr.client(
-        username="admin", password="Kiwi1234", uri="http://localhost:4340"
+        username="admin", password="Kiwi1234Kiwi1234", uri="http://localhost:4340"
     )
 
     hub_create = hvr_client.post_hubs(

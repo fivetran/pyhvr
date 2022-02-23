@@ -5,21 +5,23 @@ from pyhvr.pyhvr_exceptions import (ConnectionError, LoginError, PyhvrError,
                                     RestError)
 
 hvr_client = pyhvr.client(
-    username="admin", password="Kiwi1234", uri="http://localhost:4340"
+    username="admin", password="Kiwi1234Kiwi1234", uri="http://localhost:4340"
 )
 
 
 def test_invalid_uri():
     with pytest.raises(ConnectionError):
         pyhvr.client(
-            username="admin", password="Kiwi1234", uri="xxx://localhost:4340"
+            username="admin", password="Kiwi1234Kiwi1234", uri="xxx://localhost:4340"
         ).get_hubserver_clock()
 
 
 def test_nonexistent_uri():
     with pytest.raises(ConnectionError):
         pyhvr.client(
-            username="admin", password="Kiwi1234", uri="http://nodomain.com:4340"
+            username="admin",
+            password="Kiwi1234Kiwi1234",
+            uri="http://nodomain.com:4340",
         ).get_hubserver_clock()
 
 

@@ -4,7 +4,7 @@ import pyhvr
 from pyhvr.pyhvr_exceptions import RestError
 
 hvr_client = pyhvr.client(
-    username="admin", password="Kiwi1234", uri="http://localhost:4340"
+    username="admin", password="Kiwi1234Kiwi1234", uri="http://localhost:4340"
 )
 
 

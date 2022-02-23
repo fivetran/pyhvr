@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-export owner=523263996822.dkr.ecr.ap-southeast-2.amazonaws.com
+export owner=606319127842.dkr.ecr.ap-southeast-2.amazonaws.com
 
 echo "Create local python environment"
 python3 -m venv venv || python -m venv venv

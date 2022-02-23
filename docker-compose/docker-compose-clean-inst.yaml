@@ -27,7 +27,7 @@ services:
       - AGENT_2_ENDPOINT=rtdsagent-2-service
       - OVERRIDE_HUB_DATABASE_PASSWORD=Kiwi1234
       - OVERRIDE_HUB_DATABASE_USER=postgres
-      - OVERRIDE_HUB_ADMIN_PASSWORD=Kiwi1234
+      - OVERRIDE_HUB_ADMIN_PASSWORD=Kiwi1234Kiwi1234
       - OVERRIDE_HUB_ADMIN_USER=admin
   rtdsagent-1:
     build:

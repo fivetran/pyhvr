@@ -1,9 +1,10 @@
 import pytest
+
 import pyhvr
 from pyhvr.pyhvr_exceptions import RestError
 
 hvr_client = pyhvr.client(
-    username="admin", password="Kiwi1234", uri="http://localhost:4340"
+    username="admin", password="Kiwi1234Kiwi1234", uri="http://localhost:4340"
 )
 
 
@@ -18,13 +19,12 @@ def test_get_users_props():
 
 
 def test_post_create_users():
-    c_user = hvr_client.post_users(user="test_user1",
-                                   authentication="local",
-                                   password="welcome123",
-                                   props={
-                                       "Full_Name": "TestUser Name"
-                                   }
-                                   )
+    c_user = hvr_client.post_users(
+        user="test_user1",
+        authentication="local",
+        password="welcome123",
+        props={"Full_Name": "TestUser Name"},
+    )
     assert c_user is None
 
 
@@ -50,7 +50,9 @@ def test_patch_user_props():
 
 
 def test_reset_user_password():
-    up = hvr_client.put_users_password(user="test_user1", new_password="newpassword", current_password="welcome123")
+    up = hvr_client.put_users_password(
+        user="test_user1", new_password="newpassword", current_password="welcome123"
+    )
     assert up is None
 
 
