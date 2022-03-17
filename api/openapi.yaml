@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  version: v6.1
+  version: v6.1.0.3
   title: HVR REST Interfaces
-  description: HVR REST Interfaces version v6.1 which was originally released with HVR version 6.1.0/0.
+  description: HVR REST Interfaces version v6.1.0.3 which was originally released with HVR version 6.1.0/3.
   contact:
     name: HVR Software
     url: https://www.hvr-software.com/
@@ -41,7 +41,7 @@ tags:
   - name: Miscellaneous Interface
   - name: Authentication Interface
 paths:
-  /api/v6.1/hubs/{hub}/activate:
+  /api/v6.1.0.3/hubs/{hub}/activate:
     get:
       description: |
         **Check replication activation status of channels**
@@ -253,7 +253,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/activate:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/activate:
     get:
       description: |
         **Check replication activation status of channel**
@@ -668,7 +668,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/compare:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/compare:
     post:
       description: |
         **Post Compare event and schedule a job for it**
@@ -688,8 +688,8 @@ paths:
               'updates' ?: &lt;bool&gt;
               'deletes' ?: &lt;bool&gt;
           }
-          'quota_run' ?: njobs&lt;int&gt;
-          'parallel_sessions' ?: &lt;int&gt;
+          'quota_run' ?: njobs&lt;int :min=0&gt;
+          'parallel_sessions' ?: &lt;int :min=0&gt;
           'db_sequences' ?: &lt;bool&gt;
           'slicing' ?: { 
               table&lt;str&gt; *: { 
@@ -892,7 +892,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/compare/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/compare/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Compare**
@@ -967,7 +967,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/contexts:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/contexts:
     get:
       description: |
         **Show contexts and context variables**
@@ -1022,7 +1022,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/deactivate:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/deactivate:
     post:
       description: |
         **Post an Hvr deactivate event**
@@ -1127,7 +1127,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx:
     get:
       description: |
         **Show open transactions**
@@ -1183,12 +1183,18 @@ paths:
                   - request_time
                   - num_open_tx
         '400':
-          description: Bad Request
+          description: Bad Request - No capture tables defined or finding oldest transaction start time not possible
           content:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point:
+        '404':
+          description: Not Found - Channel or channel member not found
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point:
     get:
       description: |
         **Show integrate point**
@@ -1272,7 +1278,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest:
     post:
       description: |
         **Suggest slicing, based on old table results and Oracle DBMS stats**
@@ -1408,7 +1414,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries:
     post:
       description: |
         **Suggest slicing boundaries based on Oracle DBMS stats. Can return empty**
@@ -1492,7 +1498,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/refresh:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/refresh:
     post:
       description: |
         **Post Refresh event and schedule a job for it**
@@ -1512,8 +1518,8 @@ paths:
               'updates' ?: &lt;bool&gt;
               'deletes' ?: &lt;bool&gt;
           }
-          'quota_run' ?: njobs&lt;int&gt;
-          'parallel_sessions' ?: &lt;int&gt;
+          'quota_run' ?: njobs&lt;int :min=0&gt;
+          'parallel_sessions' ?: &lt;int :min=0&gt;
           'db_sequences' ?: &lt;bool&gt;
           'slicing' ?: { 
               table&lt;str&gt; *: { 
@@ -1740,7 +1746,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/refresh/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/refresh/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Refresh**
@@ -1815,7 +1821,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/compare/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/compare/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Compare for all channels**
@@ -1896,7 +1902,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/activate:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/activate:
     get:
       description: |
         **Check replication activation status of loc**
@@ -2093,7 +2099,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/refresh/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/refresh/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Refresh for all channels**
@@ -2174,7 +2180,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent:
     get:
       description: |
         **Detect whether hub may (re)configure agent of existing location**
@@ -2234,7 +2240,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_delete:
     post:
       description: |
         **Delete agent properties of existing location**
@@ -2302,7 +2308,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_get:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_get:
     post:
       description: |
         **Get agent properties of existing location**
@@ -2386,7 +2392,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_patch:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_patch:
     post:
       description: |
         **Update agent properties of existing location**
@@ -2467,7 +2473,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/props_put:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_put:
     post:
       description: |
         **Set/reset agent properties of existing location**
@@ -2547,7 +2553,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/test:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/test:
     post:
       description: |
         **Discover agent loc props of existing location**
@@ -2620,7 +2626,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users:
     post:
       description: |
         **Create user on agent for existing location**
@@ -2696,7 +2702,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users_delete:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users_delete:
     post:
       description: |
         **Delete user on agent for existing location**
@@ -2761,7 +2767,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users_get:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users_get:
     post:
       description: |
         **Get list of users on existing agent**
@@ -2839,7 +2845,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/agent/users_password:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users_password:
     post:
       description: |
         **Change password of local user on agent for existing location**
@@ -2909,7 +2915,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_delete:
     post:
       description: |
         **Delete agent properties of new location**
@@ -2979,7 +2985,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_get:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_get:
     post:
       description: |
         **Get agent properties of new location**
@@ -3066,7 +3072,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_patch:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_patch:
     post:
       description: |
         **Update agent properties of new location**
@@ -3149,7 +3155,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/props_put:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_put:
     post:
       description: |
         **Set/reset agent properties of new location**
@@ -3231,7 +3237,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/test:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/test:
     post:
       description: |
         **Discover agent loc props of new location**
@@ -3307,7 +3313,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users:
     post:
       description: |
         **Create user on agent for new location**
@@ -3385,7 +3391,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users_delete:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users_delete:
     post:
       description: |
         **Delete user on agent for new location**
@@ -3452,7 +3458,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users_get:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users_get:
     post:
       description: |
         **Get list of users on new agent**
@@ -3533,7 +3539,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent/users_password:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users_password:
     post:
       description: |
         **Change password of local user on agent for new location**
@@ -3605,7 +3611,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/agent_get:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent_get:
     post:
       description: |
         **Detect whether hub may (re)configure agent of new location**
@@ -3681,7 +3687,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts:
+  /api/v6.1.0.3/hubs/{hub}/alerts:
     get:
       description: |
         **List configured alerts**
@@ -3781,7 +3787,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}:
     delete:
       description: |
         **Delete alert configuration**
@@ -3821,7 +3827,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/clear:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/clear:
     post:
       description: |
         **Clear alert state**
@@ -3861,7 +3867,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/disable:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/disable:
     post:
       description: |
         **Disable an alert configuration**
@@ -3901,7 +3907,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/execute:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/execute:
     post:
       description: |
         **Execute alert configuration now**
@@ -3963,7 +3969,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/props:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/props:
     get:
       description: |
         **Get alert configuration properties**
@@ -4153,7 +4159,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/props_delete:
     post:
       description: |
         **Delete alert configuration properties**
@@ -4208,7 +4214,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/alerts/{alert}/test:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/test:
     post:
       description: |
         **Send test alert notifications**
@@ -4249,7 +4255,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition:
+  /api/v6.1.0.3/hubs/{hub}/definition:
     get:
       description: |
         **Fetch hub definition**
@@ -4488,7 +4494,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/action_modify:
+  /api/v6.1.0.3/hubs/{hub}/definition/action_modify:
     post:
       description: |
         **Modify scope or parameters of action**
@@ -4588,7 +4594,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/action_replace:
+  /api/v6.1.0.3/hubs/{hub}/definition/action_replace:
     post:
       description: |
         **Replace action**
@@ -4687,7 +4693,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/change/events:
+  /api/v6.1.0.3/hubs/{hub}/definition/change/events:
     get:
       description: |
         **Fetch definition changes from events**
@@ -6277,7 +6283,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels:
     get:
       description: |
         **Fetch channels from hub definition**
@@ -6578,7 +6584,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}:
     delete:
       description: |
         **Delete channel**
@@ -6967,7 +6973,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/actions:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/actions:
     get:
       description: |
         **Fetch channel actions from hub definition**
@@ -7208,7 +7214,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/actions_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/actions_delete:
     post:
       description: |
         **Delete channel actions**
@@ -7290,7 +7296,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups:
     get:
       description: |
         **Fetch location groups from hub definition**
@@ -7421,7 +7427,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}:
     delete:
       description: |
         **Delete location group**
@@ -7601,7 +7607,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members:
     get:
       description: |
         **Fetch location group members from hub definition**
@@ -7780,7 +7786,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}:
     delete:
       description: |
         **Delete location group member**
@@ -7834,7 +7840,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete:
     post:
       description: |
         **Delete location group members**
@@ -7896,7 +7902,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename:
     post:
       description: |
         **Rename location group**
@@ -7957,7 +7963,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/rename:
     post:
       description: |
         **Rename channel**
@@ -8012,7 +8018,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables:
     get:
       description: |
         **Fetch tables from hub definition**
@@ -8434,7 +8440,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}:
     delete:
       description: |
         **Delete table**
@@ -8761,7 +8767,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols:
     get:
       description: |
         **Fetch columns from hub definition**
@@ -9044,7 +9050,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete:
     post:
       description: |
         **Delete columns**
@@ -9106,7 +9112,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename:
     post:
       description: |
         **Rename table**
@@ -9167,7 +9173,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/channels/{channel}/tables_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables_delete:
     post:
       description: |
         **Delete tables**
@@ -9223,7 +9229,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/hub_actions:
+  /api/v6.1.0.3/hubs/{hub}/definition/hub_actions:
     get:
       description: |
         **Fetch hub actions from definition**
@@ -9413,7 +9419,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/hub_actions_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/hub_actions_delete:
     post:
       description: |
         **Delete hub actions**
@@ -9477,7 +9483,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/import:
+  /api/v6.1.0.3/hubs/{hub}/definition/import:
     post:
       description: |
         **Import set of definition changes**
@@ -11339,7 +11345,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/import/analyze:
+  /api/v6.1.0.3/hubs/{hub}/definition/import/analyze:
     post:
       description: |
         **Analyze set of definition changes for import**
@@ -13169,7 +13175,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs:
     get:
       description: |
         **Fetch locations from hub definition**
@@ -13348,7 +13354,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}:
     delete:
       description: |
         **Delete location**
@@ -13569,7 +13575,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/actions:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/actions:
     get:
       description: |
         **Fetch location actions from hub definition**
@@ -13794,7 +13800,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/actions_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/actions_delete:
     post:
       description: |
         **Delete location actions**
@@ -13870,7 +13876,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/copy:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/copy:
     post:
       description: |
         **Copy location**
@@ -13926,7 +13932,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/props:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/props:
     get:
       description: |
         **Fetch location properties from hub definition**
@@ -14053,7 +14059,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/props/{prop}:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/props/{prop}:
     delete:
       description: |
         **Delete location property**
@@ -14101,7 +14107,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/props_delete:
     post:
       description: |
         **Delete location properties**
@@ -14157,7 +14163,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/definition/locs/{loc}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/rename:
     post:
       description: |
         **Rename location**
@@ -14212,7 +14218,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/event_channels:
+  /api/v6.1.0.3/hubs/{hub}/event_channels:
     get:
       description: |
         **Get all unique channels from hvr_event**
@@ -14280,7 +14286,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/event_locs:
+  /api/v6.1.0.3/hubs/{hub}/event_locs:
     get:
       description: |
         **Get all unique locations from hvr_event**
@@ -14351,7 +14357,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/event_types:
+  /api/v6.1.0.3/hubs/{hub}/event_types:
     get:
       description: |
         **Get all unique event types from hvr_event**
@@ -14420,7 +14426,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/events:
+  /api/v6.1.0.3/hubs/{hub}/events:
     get:
       description: |
         **Fetch event(s)**
@@ -14569,8 +14575,10 @@ paths:
                       type: string
                     start_tstamp:
                       type: string
+                      pattern: (\d{4})-(\d{2})-(\d{2})([ T])(\d{2}):(\d{2}):(\d{2})(.\d{1,6})?(\s*)(Z|[+-]\d{2}:\d{2})
                     finish_tstamp:
                       type: string
+                      pattern: (\d{4})-(\d{2})-(\d{2})([ T])(\d{2}):(\d{2}):(\d{2})(.\d{1,6})?(\s*)(Z|[+-]\d{2}:\d{2})
                     repos_event:
                       type: boolean
                     body:
@@ -14597,7 +14605,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/events/{ev_id}/log:
+  /api/v6.1.0.3/hubs/{hub}/events/{ev_id}/log:
     get:
       description: |
         **Get log file content during a specified event**
@@ -14669,7 +14677,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/events_cancel:
+  /api/v6.1.0.3/hubs/{hub}/events_cancel:
     post:
       description: |
         **Cancel events. Associated jobs will be suspended**
@@ -14718,7 +14726,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/event_types:
+  /api/v6.1.0.3/repos/event_types:
     get:
       description: |
         **Get all unique event types for repos**
@@ -14765,7 +14773,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/events:
+  /api/v6.1.0.3/repos/events:
     get:
       description: |
         **Fetch the repository events**
@@ -14870,7 +14878,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/dirs:
+  /api/v6.1.0.3/hubs/{hub}/dirs:
     get:
       description: |
         **List files in a directory (hub)**
@@ -14940,7 +14948,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/db/schemas:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/db/schemas:
     get:
       description: |
         **Show all schemas in database**
@@ -14992,7 +15000,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/dirs:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/dirs:
     get:
       description: |
         **List files in a directory on the location**
@@ -15077,7 +15085,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/env/odbc_drivers:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/env/odbc_drivers:
     get:
       description: |
         **Get list of installed ODBC Data Source Names of the location**
@@ -15132,7 +15140,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/env/oratab:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/env/oratab:
     get:
       description: |
         **Retrieve /etc/oratab or equivalent Windows registry values of the location**
@@ -15187,7 +15195,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/env/vars:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/env/vars:
     get:
       description: |
         **Retrieve specified environment variables of the location**
@@ -15253,7 +15261,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/locs/{loc}/test:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/test:
     post:
       description: |
         **Test Location connection**
@@ -15316,7 +15324,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/db/schemas:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/db/schemas:
     post:
       description: |
         **Show all schemas in new database location**
@@ -15379,7 +15387,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/dirs:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/dirs:
     post:
       description: |
         **List files in a directory on the new location**
@@ -15472,7 +15480,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/env/odbc_drivers:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/env/odbc_drivers:
     post:
       description: |
         **Get list of installed ODBC Data Source Names or the new location**
@@ -15531,7 +15539,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/env/oratab:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/env/oratab:
     post:
       description: |
         **Retrieve /etc/oratab or equivalent Windows registry values of the new location**
@@ -15594,7 +15602,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/env/vars:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/env/vars:
     post:
       description: |
         **Retrieve specified environment variables of the new location**
@@ -15666,7 +15674,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/new_loc/test:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/test:
     post:
       description: |
         **Test Location connection properties**
@@ -15732,7 +15740,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/dirs:
+  /api/v6.1.0.3/hubserver/dirs:
     get:
       description: |
         **List files in a directory (hubserver)**
@@ -15804,7 +15812,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/env/odbc_drivers:
+  /api/v6.1.0.3/hubserver/env/odbc_drivers:
     get:
       description: |
         **Get list of installed ODBC Data Source Names of the hub server**
@@ -15845,7 +15853,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/env/oratab:
+  /api/v6.1.0.3/hubserver/env/oratab:
     get:
       description: |
         **Retrieve /etc/oratab or equivalent Windows registry values of the hub server**
@@ -15885,7 +15893,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/env/vars:
+  /api/v6.1.0.3/hubserver/env/vars:
     get:
       description: |
         **Retrieve specified environment variables of the hub server**
@@ -15937,7 +15945,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/props_test:
+  /api/v6.1.0.3/hubserver/props_test:
     post:
       description: |
         **Verify (changes) to HubServer connection properties**
@@ -16000,7 +16008,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/test:
+  /api/v6.1.0.3/hubserver/test:
     post:
       description: |
         **Test hubserver is working correctly**
@@ -16027,7 +16035,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs:
+  /api/v6.1.0.3/hubs:
     get:
       description: |
         **Fetch all hubs and their basic properties**
@@ -16125,7 +16133,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}:
+  /api/v6.1.0.3/hubs/{hub}:
     delete:
       description: |
         **Delete hub**
@@ -16223,7 +16231,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/freeze:
+  /api/v6.1.0.3/hubs/{hub}/freeze:
     post:
       description: |
         **Changes the state of a hub to FROZEN**
@@ -16258,7 +16266,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/props:
+  /api/v6.1.0.3/hubs/{hub}/props:
     get:
       description: |
         **Get hub properties**
@@ -16394,7 +16402,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/props_delete:
     post:
       description: |
         **Delete hub properties**
@@ -16437,7 +16445,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/snapshot:
+  /api/v6.1.0.3/hubs/{hub}/snapshot:
     post:
       description: |
         **Save the hub state (db content and files) to a snapshot.**
@@ -16527,7 +16535,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/unfreeze:
+  /api/v6.1.0.3/hubs/{hub}/unfreeze:
     post:
       description: |
         **Changes the state of a hub to LIVE**
@@ -16562,7 +16570,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/snapshot:
+  /api/v6.1.0.3/snapshot:
     post:
       description: |
         **Restore the state (db content and files) from a snapshot.**
@@ -16623,7 +16631,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/snapshot_inspect:
+  /api/v6.1.0.3/snapshot_inspect:
     post:
       description: |
         **Inspect the snapshot and return some information about it.**
@@ -16726,7 +16734,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/clock:
+  /api/v6.1.0.3/hubserver/clock:
     get:
       description: |
         **Get HubServer clock**
@@ -16758,7 +16766,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/props:
+  /api/v6.1.0.3/hubserver/props:
     get:
       description: |
         **Get HubServer properties**
@@ -16890,7 +16898,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/props_delete:
+  /api/v6.1.0.3/hubserver/props_delete:
     post:
       description: |
         **Delete some HubServer properties**
@@ -16925,7 +16933,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/restart:
+  /api/v6.1.0.3/hubserver/restart:
     post:
       description: |
         **Restart HubServer internals**
@@ -16949,7 +16957,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/stop:
+  /api/v6.1.0.3/hubserver/stop:
     post:
       description: |
         **Stop HubServer**
@@ -16973,7 +16981,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubserver/upload:
+  /api/v6.1.0.3/hubserver/upload:
     post:
       description: |
         **Create upload ref to be used to upload a file to the server.**
@@ -17014,7 +17022,294 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs:
+  /api/v6.1.0.3/hubs/{hub}/job_system/attributes:
+    get:
+      description: |
+        **Fetch job attributes on SYSTEM job group**
+        ---
+        Required Permissions:
+        * ReadOnly access level on hub
+        ---
+      tags:
+        - Job Interface
+      operationId: job_system_attributes_get
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: job_system_attributes_get_resp
+                type: object
+                description: attr
+                additionalProperties:
+                  type: object
+                  properties:
+                    arg1:
+                      type: string
+                    arg2:
+                      type: string
+                  required:
+                    - arg1
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/job_system/attributes/{attr}:
+    delete:
+      description: |
+        **Delete job attribute on SYSTEM job group**
+        ---
+        Required Permissions:
+        * ReadWrite access level on hub
+        ---
+        Creates the following event:
+        <!DOCTYPE html><body><details><summary><b>Job_System_Attribute_Delete</b></summary>
+        <pre><samp>  attr&lt;str&gt; : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_system_attribute_delete
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attr
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub does not exist or attribute is not set
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+    put:
+      description: |
+        **Assign job attribute on SYSTEM job group**
+        ---
+        Required Permissions:
+        * ReadWrite access level on hub
+        ---
+        Creates one or more of the following events:
+        <!DOCTYPE html><body><details><summary><b>Job_System_Attribute_Add</b></summary>
+        <pre><samp>  attr&lt;str&gt; : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }</samp></pre></details></body></html>
+        <!DOCTYPE html><body><details><summary><b>Job_System_Attribute_Change</b></summary>
+        <pre><samp>  'attr' : &lt;str&gt;
+          'args_after' : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }
+          'args_before' : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_system_attribute_put
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attr
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: job_system_attribute_put_req
+              type: object
+              properties:
+                arg1:
+                  type: string
+                arg2:
+                  type: string
+              required:
+                - arg1
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/job_system/env_vars:
+    get:
+      description: |
+        **Fetch 'set' job attribute on SYSTEM job group**
+        ---
+        Required Permissions:
+        * ReadOnly access level on hub
+        ---
+      tags:
+        - Job Interface
+      operationId: job_system_env_vars_get
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: job_system_env_vars_get_resp
+                type: object
+                description: envvar
+                additionalProperties:
+                  type: string
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/job_system/env_vars/{var}:
+    delete:
+      description: |
+        **Delete 'set' job attribute on SYSTEM job group**
+        ---
+        Required Permissions:
+        * ReadWrite access level on hub
+        ---
+        Creates the following event:
+        <!DOCTYPE html><body><details><summary><b>Job_System_Envvar_Delete</b></summary>
+        <pre><samp>  'envvar' : &lt;str&gt;</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_system_env_var_delete
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: var
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub does not exist or environment variable is not set
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+    put:
+      description: |
+        **Assign 'set' job attribute on SYSTEM job group**
+        ---
+        Required Permissions:
+        * ReadWrite access level on hub
+        ---
+        Creates one or more of the following events:
+        <!DOCTYPE html><body><details><summary><b>Job_System_Envvar_Add</b></summary>
+        <pre><samp>  'envvar' : &lt;str&gt;</samp></pre></details></body></html>
+        <!DOCTYPE html><body><details><summary><b>Job_System_Envvar_Change</b></summary>
+        <pre><samp>  'envvar' : &lt;str&gt;</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_system_env_var_put
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: var
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: job_system_env_var_put_req
+              type: object
+              properties:
+                val:
+                  type: string
+              required:
+                - val
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/jobs:
     get:
       description: |
         **Fetch job(s)**
@@ -17056,6 +17351,11 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: fetch
+          in: query
+          schema:
+            type: string
+            enum: [latency]
       responses:
         '200':
           description: OK
@@ -17091,6 +17391,8 @@ paths:
                     log_job_err_tstamp:
                       type: string
                       format: date-time
+                    latency:
+                      type: integer
                   required:
                     - state
         '400':
@@ -17099,7 +17401,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs/{job}:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}:
     delete:
       description: |
         **Delete job**
@@ -17151,7 +17453,330 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_delete:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/attributes:
+    get:
+      description: |
+        **Fetch job attributes**
+        ---
+        Required Permissions:
+        * ReadOnly access level on hub
+        ---
+      tags:
+        - Job Interface
+      operationId: job_attributes_get
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: job_attributes_get_resp
+                type: object
+                description: attr
+                additionalProperties:
+                  type: object
+                  properties:
+                    arg1:
+                      type: string
+                    arg2:
+                      type: string
+                  required:
+                    - arg1
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/attributes/{attr}:
+    delete:
+      description: |
+        **Delete job attribute**
+        ---
+        Required Permissions:
+        * ReadExec access level on hub
+        ---
+        Creates the following event:
+        <!DOCTYPE html><body><details><summary><b>Job_Attribute_Delete</b></summary>
+        <pre><samp>  'job' : &lt;str&gt;
+          attr&lt;str&gt; : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_attribute_delete
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attr
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub or job does not exist or attribute is not set
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+    put:
+      description: |
+        **Assign job attribute**
+        ---
+        Required Permissions:
+        * ReadExec access level on hub
+        ---
+        Creates one or more of the following events:
+        <!DOCTYPE html><body><details><summary><b>Job_Attribute_Add</b></summary>
+        <pre><samp>  'job' : &lt;str&gt;
+          attr&lt;str&gt; : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }</samp></pre></details></body></html>
+        <!DOCTYPE html><body><details><summary><b>Job_Attribute_Change</b></summary>
+        <pre><samp>  'job' : &lt;str&gt;
+          'attr' : &lt;str&gt;
+          'args_after' : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }
+          'args_before' : { 
+              'arg1' : &lt;str&gt;
+              'arg2' ?: &lt;str&gt;
+          }</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_attribute_put
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attr
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: job_attribute_put_req
+              type: object
+              properties:
+                arg1:
+                  type: string
+                arg2:
+                  type: string
+              required:
+                - arg1
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub or job does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/env_vars:
+    get:
+      description: |
+        **Fetch 'set' job attribute**
+        ---
+        Required Permissions:
+        * ReadOnly access level on hub
+        ---
+      tags:
+        - Job Interface
+      operationId: job_env_vars_get
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: job_env_vars_get_resp
+                type: object
+                description: envvar
+                additionalProperties:
+                  type: string
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub or job does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/env_vars/{var}:
+    delete:
+      description: |
+        **Delete 'set' job attribute**
+        ---
+        Required Permissions:
+        * ReadWrite access level on hub
+        ---
+        Creates the following event:
+        <!DOCTYPE html><body><details><summary><b>Job_Envvar_Delete</b></summary>
+        <pre><samp>  'job' : &lt;str&gt;
+          'envvar' : &lt;str&gt;</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_env_var_delete
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: var
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub or job does not exist or environment variable is not set
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+    put:
+      description: |
+        **Assign 'set' job attribute**
+        ---
+        Required Permissions:
+        * ReadWrite access level on hub
+        ---
+        Creates one or more of the following events:
+        <!DOCTYPE html><body><details><summary><b>Job_Envvar_Add</b></summary>
+        <pre><samp>  'job' : &lt;str&gt;
+          'envvar' : &lt;str&gt;</samp></pre></details></body></html>
+        <!DOCTYPE html><body><details><summary><b>Job_Envvar_Change</b></summary>
+        <pre><samp>  'job' : &lt;str&gt;
+          'envvar' : &lt;str&gt;</samp></pre></details></body></html>
+      tags:
+        - Job Interface
+      operationId: job_env_var_put
+      parameters:
+        - name: hub
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: job
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: var
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: job_env_var_put_req
+              type: object
+              properties:
+                val:
+                  type: string
+              required:
+                - val
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Not Found - Hub or job does not exist
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/hubs/{hub}/jobs_delete:
     post:
       description: |
         **Delete jobs**
@@ -17212,7 +17837,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_start:
+  /api/v6.1.0.3/hubs/{hub}/jobs_start:
     post:
       description: |
         **Start jobs**
@@ -17278,7 +17903,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_suspend:
+  /api/v6.1.0.3/hubs/{hub}/jobs_suspend:
     post:
       description: |
         **Suspend jobs**
@@ -17327,7 +17952,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs_unsuspend:
+  /api/v6.1.0.3/hubs/{hub}/jobs_unsuspend:
     post:
       description: |
         **Unsuspend jobs**
@@ -17376,7 +18001,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log:
     get:
       description: |
         **Get log file content while a specified control was active**
@@ -17447,7 +18072,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/logs/{file}:
+  /api/v6.1.0.3/hubs/{hub}/logs/{file}:
     get:
       description: |
         **Get hub's log file content**
@@ -17542,7 +18167,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/logs/{file}/archive/{archive}:
+  /api/v6.1.0.3/hubs/{hub}/logs/{file}/archive/{archive}:
     get:
       description: |
         **Get hub's archived log file content**
@@ -17621,7 +18246,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/logs/{file}/search:
+  /api/v6.1.0.3/hubs/{hub}/logs/{file}/search:
     get:
       description: |
         **Search for timestamp in log file. Returns offset of first log line that starts with a timestamp bigger or equal to specified timstamp.**
@@ -17672,7 +18297,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/logs/{file}:
+  /api/v6.1.0.3/logs/{file}:
     get:
       description: |
         **Get log file content**
@@ -17762,7 +18387,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/logs/{file}/archive/{archive}:
+  /api/v6.1.0.3/logs/{file}/archive/{archive}:
     get:
       description: |
         **Get archived log file content**
@@ -17836,7 +18461,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels:
+  /api/v6.1.0.3/hubs/{hub}/query/channels:
     get:
       description: |
         **For each location in each channel calculate whichtables are captured and integrated, their schema and basenames, and latency SLA.**
@@ -17948,7 +18573,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels/{channel}/locs:
+  /api/v6.1.0.3/hubs/{hub}/query/channels/{channel}/locs:
     get:
       description: |
         **For each location calculate which tables are capturedand integrated, their schema and basenames, and latency SLA.**
@@ -18049,7 +18674,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}:
+  /api/v6.1.0.3/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}:
     get:
       description: |
         **Calculate how table is defined for a location, including effect of actions**
@@ -18250,7 +18875,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/channels/{channel}/tables:
+  /api/v6.1.0.3/hubs/{hub}/query/channels/{channel}/tables:
     get:
       description: |
         **For each table calculate its schema, basename, and the lists of locations where the table is captured or integrated**
@@ -18333,7 +18958,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/query/status:
+  /api/v6.1.0.3/hubs/{hub}/query/status:
     get:
       description: |
         **Gets general status and health of a hub**
@@ -18386,6 +19011,10 @@ paths:
                       - 'INVALID'
                   licensing_expiry_warning:
                     type: string
+                  licensing_upload_error:
+                    type: string
+                  licensing_acquire_error:
+                    type: string
                   perl_needed:
                     type: boolean
                 required:
@@ -18404,7 +19033,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos:
+  /api/v6.1.0.3/repos:
     delete:
       description: |
         **Drop all repository tables**
@@ -18495,7 +19124,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/props:
+  /api/v6.1.0.3/repos/props:
     get:
       description: |
         **Get repository properties**
@@ -18637,7 +19266,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/repos/props_delete:
+  /api/v6.1.0.3/repos/props_delete:
     post:
       description: |
         **Delete repository properties**
@@ -18675,7 +19304,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/stats/metrics:
+  /api/v6.1.0.3/hubs/{hub}/stats/metrics:
     get:
       description: |
         **Fetch statistics**
@@ -18819,7 +19448,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/stats/metrics/export:
+  /api/v6.1.0.3/hubs/{hub}/stats/metrics/export:
     post:
       description: |
         **Export statistics to a file**
@@ -18905,7 +19534,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/stats/oldest:
+  /api/v6.1.0.3/hubs/{hub}/stats/oldest:
     get:
       description: |
         **Fetch oldest stats history time for time granularity and scope**
@@ -18961,7 +19590,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply:
     post:
       description: |
         **Logic to Add and Replace table definition info from tables in a source (or target) database**
@@ -19191,7 +19820,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check:
     post:
       description: |
         **Logic to compare table definition info with table layouts in a source (or target) db**
@@ -19427,7 +20056,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}:
     post:
       description: |
         **Check table definition against the definition in a source (or target) database**
@@ -19752,7 +20381,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels:
     post:
       description: |
         **Check if tables are in other channels**
@@ -19808,7 +20437,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/mapdoc/parse:
+  /api/v6.1.0.3/hubs/{hub}/mapdoc/parse:
     post:
       description: |
         **Parse adapt pattern file to mapspec in JSON format**
@@ -19880,7 +20509,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/users/{user}/props:
+  /api/v6.1.0.3/hubs/{hub}/users/{user}/props:
     get:
       description: |
         **Get user's hub properties**
@@ -20017,7 +20646,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/users/{user}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/users/{user}/props_delete:
     post:
       description: |
         **Delete user hub properties**
@@ -20063,7 +20692,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users:
+  /api/v6.1.0.3/users:
     get:
       description: |
         **Get list of users, including properties**
@@ -20176,7 +20805,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}:
+  /api/v6.1.0.3/users/{user}:
     delete:
       description: |
         **Delete a user**
@@ -20270,7 +20899,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}/password:
+  /api/v6.1.0.3/users/{user}/password:
     put:
       description: |
         **Reset password of user, with local authentication**
@@ -20319,7 +20948,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}/props:
+  /api/v6.1.0.3/users/{user}/props:
     get:
       description: |
         **Get user properties**
@@ -20441,7 +21070,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/users/{user}/props_delete:
+  /api/v6.1.0.3/users/{user}/props_delete:
     post:
       description: |
         **Delete user properties**
@@ -20482,7 +21111,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/controls:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/controls:
     get:
       description: |
         **Get all control ids matched by the query**
@@ -20555,7 +21184,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:
     get:
       description: |
         **Get the control associated with the id**
@@ -20699,7 +21328,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/controls_delete:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/controls_delete:
     post:
       description: |
         **Delete all the controls matched.**
@@ -20754,7 +21383,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls:
     post:
       description: |
         **Send a new control file**
@@ -20948,7 +21577,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet:
+  /api/v6.1.0.3/wallet:
     post:
       description: |
         **Create new encryption wallet**
@@ -21001,7 +21630,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/change:
+  /api/v6.1.0.3/wallet/change:
     post:
       description: |
         **Change reference to existing wallet**
@@ -21054,7 +21683,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/disable:
+  /api/v6.1.0.3/wallet/disable:
     post:
       description: |
         **Disable encryption wallet**
@@ -21090,7 +21719,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/key_history_delete:
+  /api/v6.1.0.3/wallet/key_history_delete:
     post:
       description: |
         **Delete historical encryption keys**
@@ -21138,7 +21767,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/key_rotate:
+  /api/v6.1.0.3/wallet/key_rotate:
     post:
       description: |
         **Rotate encryption keys**
@@ -21165,7 +21794,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/migrate:
+  /api/v6.1.0.3/wallet/migrate:
     post:
       description: |
         **Migrate to a new wallet configuration gracefully**
@@ -21224,7 +21853,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/props:
+  /api/v6.1.0.3/wallet/props:
     get:
       description: |
         **Get wallet properties**
@@ -21275,7 +21904,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/wallet/reencrypt_continue:
+  /api/v6.1.0.3/wallet/reencrypt_continue:
     post:
       description: |
         **Continue previous re-encryption operation**
@@ -21309,7 +21938,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licenses:
+  /api/v6.1.0.3/licenses:
     get:
       description: |
         **Fetch licenses**
@@ -21403,7 +22032,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licenses/{license}:
+  /api/v6.1.0.3/licenses/{license}:
     delete:
       description: |
         **Delete a license**
@@ -21517,13 +22146,14 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licensing:
+  /api/v6.1.0.3/licensing:
     get:
       description: |
         **Show licensing status**
         ---
         Required Permissions:
         * No special permission required
+        * Available while <i>Setup Mode</i> is active.
         ---
       tags:
         - License Interface
@@ -21547,6 +22177,10 @@ paths:
                       - 'EXCEEDED'
                       - 'INVALID'
                   licensing_expiry_warning:
+                    type: string
+                  licensing_upload_error:
+                    type: string
+                  licensing_acquire_error:
                     type: string
                   capture_restrict:
                     type: array
@@ -21588,7 +22222,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1/licensing/license_agreement_accepted:
+  /api/v6.1.0.3/licensing/license_agreement_accepted:
     post:
       description: |
         **Set Hub Server property License_Agreement_Accepted**
@@ -21599,6 +22233,335 @@ paths:
       tags:
         - License Interface
       operationId: license_agreement_accepted_post
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/metering/download:
+    get:
+      description: |
+        **Fetch metering/MAR records**
+        ---
+        Required Permissions:
+        * SysAdmin access level
+        * Available while <i>Setup Mode</i> is active.
+        ---
+      tags:
+        - License Interface
+      operationId: metering_download_get
+      parameters:
+        - name: period_begin
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: period_end
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: metering_download_get_resp
+                type: object
+                properties:
+                  period_begin:
+                    type: string
+                    format: date-time
+                  period_end:
+                    type: string
+                    format: date-time
+                  hvr_version:
+                    type: string
+                  hubs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        hub:
+                          type: string
+                        hub_props:
+                          type: object
+                          properties:
+                            Description:
+                              type: string
+                            Hub_Id:
+                              type: string
+                            Hub_Server_URL:
+                              type: string
+                          required:
+                            - Hub_Id
+                        channels:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              channel:
+                                type: string
+                              loc_pairs:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    src_loc:
+                                      type: string
+                                    src_loc_props:
+                                      type: object
+                                      properties:
+                                        Class:
+                                          type: string
+                                        Class_Flavor:
+                                          type: string
+                                        Class_Version:
+                                          type: integer
+                                        File_Scheme:
+                                          type: string
+                                        Description:
+                                          type: string
+                                      required:
+                                        - Class
+                                    tgt_loc:
+                                      type: string
+                                    tgt_loc_props:
+                                      type: object
+                                      properties:
+                                        Class:
+                                          type: string
+                                        Class_Flavor:
+                                          type: string
+                                        Class_Version:
+                                          type: integer
+                                        File_Scheme:
+                                          type: string
+                                        Description:
+                                          type: string
+                                      required:
+                                        - Class
+                                    tables:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          table:
+                                            type: string
+                                          schema:
+                                            type: string
+                                          base_name:
+                                            type: string
+                                          records:
+                                            type: array
+                                            items:
+                                              type: object
+                                              properties:
+                                                hour:
+                                                  type: string
+                                                  format: date-time
+                                                mar_signature:
+                                                  type: string
+                                                timekey:
+                                                  type: boolean
+                                                refresh:
+                                                  type: boolean
+                                                initial_refresh:
+                                                  type: boolean
+                                                system_refresh:
+                                                  type: boolean
+                                              required:
+                                                - hour
+                                                - mar_signature
+                                          refr_events:
+                                            type: array
+                                            items:
+                                              type: object
+                                              properties:
+                                                ev_id:
+                                                  type: string
+                                                  pattern: (\d{4})-(\d{2})-(\d{2})([ T])(\d{2}):(\d{2}):(\d{2})(.\d{1,6})?(\s*)(Z|[+-]\d{2}:\d{2})
+                                                ev_start_tstamp:
+                                                  type: string
+                                                  format: date-time
+                                                tbl_begin_tstamp:
+                                                  type: string
+                                                  format: date-time
+                                                tbl_end_tstamp:
+                                                  type: string
+                                                  format: date-time
+                                                ev_finish_tstamp:
+                                                  type: string
+                                                  format: date-time
+                                                initial_refresh:
+                                                  type: boolean
+                                                system_refresh:
+                                                  type: boolean
+                                              required:
+                                                - ev_id
+                                                - ev_start_tstamp
+                                                - initial_refresh
+                                                - system_refresh
+                                        required:
+                                          - table
+                                          - base_name
+                                  required:
+                                    - src_loc
+                                    - tgt_loc
+                                    - tables
+                            required:
+                              - channel
+                              - loc_pairs
+                      required:
+                        - hub
+                        - hub_props
+                        - channels
+                required:
+                  - period_end
+                  - hvr_version
+                  - hubs
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/metering/license_acquire:
+    post:
+      description: |
+        **Acquire a new license through the metering interface**
+        ---
+        Required Permissions:
+        * SysAdmin access level
+        * Available while <i>Setup Mode</i> is active.
+        ---
+      tags:
+        - License Interface
+      operationId: metering_license_acquire_post
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request - Hub system not registered
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/metering/purge:
+    post:
+      description: |
+        **Purge metering data**
+        ---
+        Required Permissions:
+        * SysAdmin access level
+        * Available while <i>Setup Mode</i> is active.
+        ---
+      tags:
+        - License Interface
+      operationId: metering_purge_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: metering_purge_post_req
+              type: object
+              properties:
+                period_end:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: metering_purge_post_resp
+                type: object
+                properties:
+                  period_end:
+                    type: string
+                    format: date-time
+                  purged_days:
+                    type: integer
+                  purged_hours:
+                    type: integer
+        '400':
+          description: Bad Request
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/metering/registration_status:
+    post:
+      description: |
+        **Query registration status**
+        ---
+        Required Permissions:
+        * SysAdmin access level
+        * Available while <i>Setup Mode</i> is active.
+        ---
+      tags:
+        - License Interface
+      operationId: metering_registration_status_post
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: metering_registration_status_post_resp
+                type: object
+                properties:
+                  account_name:
+                    type: string
+                  require_mar_begin:
+                    nullable: true
+                    type: string
+                    format: date-time
+                  require_usage_snapshot:
+                    type: boolean
+                  download_license:
+                    type: boolean
+                required:
+                  - download_license
+        '400':
+          description: Bad Request - Hub system not registered
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /api/v6.1.0.3/metering/upload:
+    post:
+      description: |
+        **Upload metering/MAR records to registered service**
+        ---
+        Required Permissions:
+        * SysAdmin access level
+        * Available while <i>Setup Mode</i> is active.
+        ---
+      tags:
+        - License Interface
+      operationId: metering_upload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: metering_upload_post_req
+              type: object
+              properties:
+                period_begin:
+                  type: string
+                  format: date-time
+                period_end:
+                  type: string
+                  format: date-time
+                snapshots:
+                  type: boolean
       responses:
         '200':
           description: OK
