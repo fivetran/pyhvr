@@ -56,6 +56,10 @@ def generate(yaml_file):
                 ).replace(
                     "{alert}", ""
                 ).replace(
+                    "{attr}", ""
+                ).replace(
+                    "{var}", ""
+                ).replace(
                     "/", "_"
                 ).replace(
                     "__", "_"
