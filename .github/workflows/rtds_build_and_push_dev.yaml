@@ -46,7 +46,7 @@ jobs:
           while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
           while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
           docker exec rtdshub grep "Expiry date" /install/hvr.lic
-          pytest --ignore tests/test_clean_install.py --ignore tests/test_user.py
+          pytest --ignore tests/test_clean_install.py --ignore tests/test_user.py --ignore tests/test_duplicate_table_entry.py
           cd -
           docker-compose -f docker-compose-preconf.yaml down -v
 
@@ -62,6 +62,17 @@ jobs:
           cd -
           docker-compose  -f docker-compose-clean-inst.yaml down
 
+          docker-compose -f docker-compose-clean-inst.yaml up -d
+          cd ..
+          echo "Wait for hubserver to come up"
+          while ! docker exec rtdshub nc localhost 4340 ; do sleep 1; done;
+          while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
+          while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
+          docker exec rtdshub grep "Expiry date" /install/hvr.lic
+          docker cp rtdshub:/install/hvr.lic tests/hvr.lic
+          pytest tests/test_duplicate_table_entry.py
+          cd -
+          docker-compose  -f docker-compose-clean-inst.yaml down
       # Run Flake8 test to confirm formatting of file etc.  This will use a custom config file .flake8
       - name: Flake8
         run: |
