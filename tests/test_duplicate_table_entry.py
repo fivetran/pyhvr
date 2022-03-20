@@ -373,7 +373,8 @@ def test_init():
         "loc_scope": target,
     }
 
-    # # F_JR2D33: Action AdaptDDL with parameter AddTablePattern is defined for location 'sourcedup' with class 'postgresql' which does not support the required capability 'AdaptDdlCap'.
+    # F_JR2D33: Action AdaptDDL with parameter AddTablePattern is defined for location 'sourcedup' with class 'postgresql'
+    #   which does not support the required capability 'AdaptDdlCap'.
     # hvr_client.patch_hubs_definition_channels_actions(
     #     hub=hub, channel=channel, actions=[adapt_ddl_action]
     # )
@@ -469,10 +470,10 @@ def test_init():
 
     jobs = hvr_client.get_hubs_jobs(hub=hub, channel=channel)
 
-    # assert jobs == {
-    #     f"{channel}-activate": {"state": "RUNNING"},
-    #     f"{channel}-refr-{source}-{target}": {"state": "SUSPEND"},
-    # }
+    assert jobs == {
+        f"{channel}-activate": {"state": "RUNNING"},
+        f"{channel}-refr-{source}-{target}": {"state": "SUSPEND"},
+    }
 
     wait_for_status("refresh", "DONE", hvr_client, hub, channel, source, target)
     wait_for_status("capture", "RUNNING", hvr_client, hub, channel, source, target)
