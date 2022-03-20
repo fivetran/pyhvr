@@ -7,22 +7,20 @@ import os
 schema_source = "TPCC"
 schema_target = "target_tpcc"
 
+
 def run_source_sql(sql):
     # very ugly, but gets the job done
     # os.system(
     #     f"docker exec oracle-source bash -c 'echo \"{sql}\" | sqlplus tpcc/Kiwi1234'"
     # )
-    os.system(
-        f"docker exec postgres-source psql --user=postgres -d tpcc -c '{sql}'"
-    )
+    os.system(f"docker exec postgres-source psql --user=postgres -d tpcc -c '{sql}'")
     print(sql)
     pass
 
+
 def run_target_sql(sql):
     # very ugly, but gets the job done
-    os.system(
-        f"docker exec postgres-target psql --user=postgres -d tpcc -c '{sql}'"
-    )
+    os.system(f"docker exec postgres-target psql --user=postgres -d tpcc -c '{sql}'")
     print(sql)
     pass
 
@@ -123,7 +121,7 @@ def setup_replication(hvr_client, suffix):
             # "Oracle_SID": "XE",
             # "Oracle_Home": "/u01/app/oracle/product/11.2.0/xe",
             # "Agent_Host": "oracle-source",
-            "Agent_Host": "rtdsagent-1",            
+            "Agent_Host": "rtdsagent-1",
             "Agent_Port": "4343",
             "Case_Sensitive_Names": True,
         },
@@ -176,7 +174,6 @@ def setup_replication(hvr_client, suffix):
             #     "table_scope": "*",
             #     "params": {"CaptureFromRowId": True, "Name": "_fivetran_id"},
             # }
-
         ],
     )
     assert ch is None
@@ -325,13 +322,13 @@ def test_init():
     suffix = "dup"
     (hub, channel, source, target) = setup_replication(hvr_client, suffix)
 
-    old_name = "testtable" # old tbl_name
-    new_table_name = "unique_prefix_testtable" # new tbl_name, to make burst tables glovally unique
+    old_name = "testtable"  # old tbl_name
+    new_table_name = (
+        "unique_prefix_testtable"  # new tbl_name, to make burst tables glovally unique
+    )
     # base_name = "TESTTABLE"
     base_name = "testtable"
-    new_table_base_name= "testtable"
- 
-
+    new_table_base_name = "testtable"
 
     # adapt_ddl_action = {
     #     "type": "AdaptDDL",
@@ -370,14 +367,13 @@ def test_init():
     # }
 
     rename_target_action = {
-            "params": {"BaseName": new_table_base_name, "Schema": schema_target},
-            "type": "TableProperties",
-            "table_scope": new_table_name,
-            "loc_scope": target,
-        }
+        "params": {"BaseName": new_table_base_name, "Schema": schema_target},
+        "type": "TableProperties",
+        "table_scope": new_table_name,
+        "loc_scope": target,
+    }
 
-
-    # # F_JR2D33: Action AdaptDDL with parameter AddTablePattern is defined for location 'sourcedup' with class 'postgresql' which does not support the required capability 'AdaptDdlCap'. 
+    # # F_JR2D33: Action AdaptDDL with parameter AddTablePattern is defined for location 'sourcedup' with class 'postgresql' which does not support the required capability 'AdaptDdlCap'.
     # hvr_client.patch_hubs_definition_channels_actions(
     #     hub=hub, channel=channel, actions=[adapt_ddl_action]
     # )
@@ -495,12 +491,18 @@ def test_init():
 
     run_target_sql("\\d target_tpcc.*")
 
-    assert actions == [{'loc_scope': 'SOURCE', 'table_scope': '*', 'type': 'Capture'},
- {'loc_scope': 'TARGET',
-  'params': {'Method': 'BURST'},
-  'table_scope': '*',
-  'type': 'Integrate'},
- {'loc_scope': 'targetdup',
-  'params': {'BaseName': 'testtable', 'Schema': 'target_tpcc'},
-  'table_scope': 'unique_prefix_testtable',
-  'type': 'TableProperties'}]
+    assert actions == [
+        {"loc_scope": "SOURCE", "table_scope": "*", "type": "Capture"},
+        {
+            "loc_scope": "TARGET",
+            "params": {"Method": "BURST"},
+            "table_scope": "*",
+            "type": "Integrate",
+        },
+        {
+            "loc_scope": "targetdup",
+            "params": {"BaseName": "testtable", "Schema": "target_tpcc"},
+            "table_scope": "unique_prefix_testtable",
+            "type": "TableProperties",
+        },
+    ]
