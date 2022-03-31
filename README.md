@@ -14,7 +14,7 @@ Point `pip` to this git repository:
 pip install git+https://github.com/hvrsoftware/pyhvr.git@v6.1.0#egg=pyhvr
 ```
 
-### Crate a client
+### Create a client
 
 The standard client needs username, password and the URI of the hub.
 
@@ -106,4 +106,4 @@ The code used to generate the pyhvr module is a part of this repository, too. Se
 
 Python versions 3.6, 3.7, 3.8 and 3.9 are tested and supported.
 
-HVR 6.1.0.3 is the only support version at this time.
+HVR 6.1.0.3 GA is the only supported version at this time.

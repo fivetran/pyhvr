@@ -2077,13 +2077,18 @@ class Client:
             True,
         )
 
-    def post_hubs_channels_locs_adapt_other_channels(self, hub, channel, loc):
+    def post_hubs_channels_locs_adapt_other_channels(
+        self, hub, channel, loc, tables=None
+    ):
 
+        payload = {}
+        if tables is not None:
+            payload["tables"] = tables
         return self.post(
             f"/api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels",
             None,
             {},
-            None,
+            payload,
             True,
         )
 
@@ -3765,10 +3770,10 @@ class Client:
             True,
         )
 
-    def put_hubs_job_system_env_vars(self, hub, var, val):
+    def put_hubs_job_system_env_vars(self, hub, var, value):
 
         payload = {}
-        payload["val"] = val
+        payload["value"] = value
         return self.put(
             f"/api/v6.1.0.3/hubs/{hub}/job_system/env_vars/{var}",
             None,
@@ -3791,10 +3796,10 @@ class Client:
             True,
         )
 
-    def put_hubs_jobs_env_vars(self, hub, job, var, val):
+    def put_hubs_jobs_env_vars(self, hub, job, var, value):
 
         payload = {}
-        payload["val"] = val
+        payload["value"] = value
         return self.put(
             f"/api/v6.1.0.3/hubs/{hub}/jobs/{job}/env_vars/{var}",
             None,

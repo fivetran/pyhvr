@@ -1,7 +1,8 @@
 import pytest
 
 import pyhvr
-from pyhvr.pyhvr_exceptions import ConnectionError, LoginError, PyhvrError, RestError
+from pyhvr.pyhvr_exceptions import (ConnectionError, LoginError, PyhvrError,
+                                    RestError)
 
 hvr_client = pyhvr.client(
     username="admin", password="Kiwi1234Kiwi1234", uri="http://localhost:4340"
