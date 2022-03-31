@@ -1,8 +1,9 @@
 # from pyhvr.pyhvr_exceptions import ConnectionError, LoginError, RestError, PyhvrError
-from pprint import pprint
-import time
-import pyhvr
 import os
+import time
+from pprint import pprint
+
+import pyhvr
 
 schema_source = "TPCC"
 schema_target = "target_tpcc"

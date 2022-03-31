@@ -17290,10 +17290,10 @@ paths:
               title: job_system_env_var_put_req
               type: object
               properties:
-                val:
+                value:
                   type: string
               required:
-                - val
+                - value
       responses:
         '204':
           description: No Content
@@ -17757,10 +17757,10 @@ paths:
               title: job_env_var_put_req
               type: object
               properties:
-                val:
+                value:
                   type: string
               required:
-                - val
+                - value
       responses:
         '204':
           description: No Content
@@ -20384,7 +20384,7 @@ paths:
   /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels:
     post:
       description: |
-        **Check if tables are in other channels**
+        **For input tables plus tables replicated to/from location in channel, check if they are replicated to/from same location in other channels**
         ---
         Required Permissions:
         * ReadOnly access level on hub
@@ -20408,6 +20408,24 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: adapt_other_channels_post_req
+              type: object
+              properties:
+                tables:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      schema:
+                        type: string
+                      base_name:
+                        type: string
+                    required:
+                      - base_name
       responses:
         '200':
           description: OK
