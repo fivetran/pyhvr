@@ -237,4 +237,4 @@ def test_api_version():
     api = hvr_client.get_api()
 
     assert "v0" in api
-    assert "v6.1.0.3" in api
+    assert "v6.1.6" in api

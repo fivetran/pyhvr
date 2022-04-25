@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  version: v6.1.6
+  version: v6.1.0.3
   title: HVR REST Interfaces
-  description: HVR REST Interfaces version v6.1.6 which was originally released with HVR version 6.1.6/0.
+  description: HVR REST Interfaces version v6.1.0.3 which was originally released with HVR version 6.1.0/3.
   contact:
     name: HVR Software
     url: https://www.hvr-software.com/
@@ -41,7 +41,7 @@ tags:
   - name: Miscellaneous Interface
   - name: Authentication Interface
 paths:
-  /api/v6.1.6/hubs/{hub}/activate:
+  /api/v6.1.0.3/hubs/{hub}/activate:
     get:
       description: |
         **Check replication activation status of channels**
@@ -253,7 +253,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/activate:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/activate:
     get:
       description: |
         **Check replication activation status of channel**
@@ -668,7 +668,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/compare:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/compare:
     post:
       description: |
         **Post Compare event and schedule a job for it**
@@ -679,7 +679,6 @@ paths:
         Creates the following event:
         <!DOCTYPE html><body><details><summary><b>Compare</b></summary>
         <pre><samp>  'channel' : &lt;ident&gt;
-          'view_tstamp' ?: &lt;date_str_usecs_z&gt;
           'source_loc' : &lt;ident&gt;
           'target_loc' : &lt;ident&gt;
           'contexts' ?: ( &lt;ident&gt;+ )
@@ -692,7 +691,6 @@ paths:
           'quota_run' ?: njobs&lt;int :min=0&gt;
           'parallel_sessions' ?: &lt;int :min=0&gt;
           'db_sequences' ?: &lt;bool&gt;
-          'repeatable' ?: &lt;bool&gt;
           'slicing' ?: { 
               table&lt;str&gt; *: { 
                   'type' : 'boundary'
@@ -714,6 +712,7 @@ paths:
               name&lt;str&gt; *: value&lt;str&gt;
           }
           'file_preread_subtasks' ?: &lt;int&gt;
+          'start_immediate' ?: &lt;bool&gt;
           'online_compare' ?: 'diff_diff' | 'diff_cap'
           'online_compare_sleep' ?: &lt;int&gt;
           'select_moment' ?: &lt;str&gt;
@@ -774,8 +773,6 @@ paths:
                 parallel_sessions:
                   type: integer
                 db_sequences:
-                  type: boolean
-                repeatable:
                   type: boolean
                 slicing:
                   type: object
@@ -838,11 +835,6 @@ paths:
                     type: string
                 file_preread_subtasks:
                   type: integer
-                schedule_times:
-                  type: string
-                start_at:
-                  type: string
-                  format: date-time
                 start_immediate:
                   type: boolean
                 online_compare:
@@ -900,7 +892,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/compare/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/compare/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Compare**
@@ -975,7 +967,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/contexts:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/contexts:
     get:
       description: |
         **Show contexts and context variables**
@@ -1030,7 +1022,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/deactivate:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/deactivate:
     post:
       description: |
         **Post an Hvr deactivate event**
@@ -1135,7 +1127,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/capture_open_tx:
     get:
       description: |
         **Show open transactions**
@@ -1202,7 +1194,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/integrate_point:
     get:
       description: |
         **Show integrate point**
@@ -1286,7 +1278,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/slicing_suggest:
     post:
       description: |
         **Suggest slicing, based on old table results and Oracle DBMS stats**
@@ -1422,91 +1414,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/diffs/{ev_id}/get:
-    post:
-      description: |
-        **Convert compressed diff file into smaller JSON files for viewing**
-        ---
-        Required Permissions:
-        * ReadExecRefresh access level on hub
-        ---
-      tags:
-        - Activate, Refresh, and Compare Interface
-      operationId: convert_diff_to_json_post
-      parameters:
-        - name: hub
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: channel
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: loc
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: table
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: ev_id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: convert_diff_to_json_post_req
-              type: object
-              properties:
-                bytes_per_file:
-                  type: integer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                title: convert_diff_to_json_post_resp
-                type: object
-                properties:
-                  transport_key:
-                    type: string
-                  refs:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        slice:
-                          type: integer
-                        ref:
-                          type: string
-                        row_num_begin:
-                          type: string
-                          pattern: ^([0-9-])([0-9])*
-                        row_num_end:
-                          type: string
-                          pattern: ^([0-9-])([0-9])*
-                      required:
-                        - ref
-                        - row_num_begin
-                        - row_num_end
-                required:
-                  - refs
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/tables/{table}/slicing_boundaries:
     post:
       description: |
         **Suggest slicing boundaries based on Oracle DBMS stats. Can return empty**
@@ -1590,7 +1498,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/refresh:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/refresh:
     post:
       description: |
         **Post Refresh event and schedule a job for it**
@@ -1601,7 +1509,6 @@ paths:
         Creates the following event:
         <!DOCTYPE html><body><details><summary><b>Refresh</b></summary>
         <pre><samp>  'channel' : &lt;ident&gt;
-          'view_tstamp' ?: &lt;date_str_usecs_z&gt;
           'source_loc' : &lt;ident&gt;
           'target_loc' : &lt;ident&gt;
           'contexts' ?: ( &lt;ident&gt;+ )
@@ -1614,7 +1521,6 @@ paths:
           'quota_run' ?: njobs&lt;int :min=0&gt;
           'parallel_sessions' ?: &lt;int :min=0&gt;
           'db_sequences' ?: &lt;bool&gt;
-          'repeatable' ?: &lt;bool&gt;
           'slicing' ?: { 
               table&lt;str&gt; *: { 
                   'type' : 'boundary'
@@ -1636,6 +1542,7 @@ paths:
               name&lt;str&gt; *: value&lt;str&gt;
           }
           'file_preread_subtasks' ?: &lt;int&gt;
+          'start_immediate' ?: &lt;bool&gt;
           'create_tables' ?: { 
               'keep_structure' ?: &lt;bool&gt;
               'force_recreate' ?: &lt;bool&gt;
@@ -1648,8 +1555,7 @@ paths:
           'foreign_keys' ?: 'ignore' | 'disable'
           'select_moment' ?: &lt;str&gt;
           'online_refresh' ?: 'read_write' | 'write_only' | 'no_skip'
-          'start_next_jobs' ?: ( 'cap' | 'integ'* )
-          'save_diff_file' ?: &lt;bool&gt;</samp></pre></details></body></html>
+          'start_next_jobs' ?: ( 'cap' | 'integ'* )</samp></pre></details></body></html>
       tags:
         - Activate, Refresh, and Compare Interface
       operationId: refresh_post
@@ -1702,8 +1608,6 @@ paths:
                 parallel_sessions:
                   type: integer
                 db_sequences:
-                  type: boolean
-                repeatable:
                   type: boolean
                 slicing:
                   type: object
@@ -1766,11 +1670,6 @@ paths:
                     type: string
                 file_preread_subtasks:
                   type: integer
-                schedule_times:
-                  type: string
-                start_at:
-                  type: string
-                  format: date-time
                 start_immediate:
                   type: boolean
                 create_tables:
@@ -1810,8 +1709,6 @@ paths:
                     enum:
                       - 'cap'
                       - 'integ'
-                save_diff_file:
-                  type: boolean
               required:
                 - source_loc
                 - target_loc
@@ -1849,7 +1746,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/refresh/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/refresh/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Refresh**
@@ -1924,7 +1821,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/compare/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/compare/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Compare for all channels**
@@ -2005,7 +1902,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/activate:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/activate:
     get:
       description: |
         **Check replication activation status of loc**
@@ -2202,7 +2099,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/refresh/tables_results_ids:
+  /api/v6.1.0.3/hubs/{hub}/refresh/tables_results_ids:
     get:
       description: |
         **Get event ids for tables results of recent Refresh for all channels**
@@ -2283,7 +2180,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent:
     get:
       description: |
         **Detect whether hub may (re)configure agent of existing location**
@@ -2343,7 +2240,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_delete:
     post:
       description: |
         **Delete agent properties of existing location**
@@ -2411,7 +2308,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_get:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_get:
     post:
       description: |
         **Get agent properties of existing location**
@@ -2495,100 +2392,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_modify:
-    post:
-      description: |
-        **Modify agent properties of existing location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Change</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_agent_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }</samp></pre></details></body></html>
-      tags:
-        - Agent Configuration Interface
-      operationId: loc_agent_props_modify_post
-      parameters:
-        - name: hub
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: loc
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: loc_agent_props_modify_post_req
-              type: object
-              properties:
-                setup_token:
-                  type: string
-                setup_timed:
-                  type: boolean
-                  enum: [true]
-                auth_user_password:
-                  type: array
-                  minItems: 2
-                  maxItems: 2
-                  items:
-                    oneOf:
-                      - type: string
-                      - type: string
-                agent_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                              nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - agent_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-        '404':
-          description: Not Found - Location does not exist
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_patch:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_patch:
     post:
       description: |
         **Update agent properties of existing location**
@@ -2669,7 +2473,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/props_put:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/props_put:
     post:
       description: |
         **Set/reset agent properties of existing location**
@@ -2749,7 +2553,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/test:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/test:
     post:
       description: |
         **Discover agent loc props of existing location**
@@ -2822,7 +2626,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users:
     post:
       description: |
         **Create user on agent for existing location**
@@ -2898,7 +2702,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users_delete:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users_delete:
     post:
       description: |
         **Delete user on agent for existing location**
@@ -2963,7 +2767,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users_get:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users_get:
     post:
       description: |
         **Get list of users on existing agent**
@@ -3041,7 +2845,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/agent/users_password:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/agent/users_password:
     post:
       description: |
         **Change password of local user on agent for existing location**
@@ -3111,7 +2915,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_delete:
     post:
       description: |
         **Delete agent properties of new location**
@@ -3130,10 +2934,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3185,7 +2985,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/props_get:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_get:
     post:
       description: |
         **Get agent properties of new location**
@@ -3203,10 +3003,6 @@ paths:
           schema:
             type: string
         - name: X-Hvr-Classified-Access
-          in: header
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
           in: header
           schema:
             type: string
@@ -3276,102 +3072,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/props_modify:
-    post:
-      description: |
-        **Modify agent properties of new location**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Agent_Properties_Change</b></summary>
-        <pre><samp>  'agent' : host_port&lt;str&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_agent_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_agent_prop&gt;
-          }</samp></pre></details></body></html>
-      tags:
-        - Agent Configuration Interface
-      operationId: new_loc_agent_props_modify_post
-      parameters:
-        - name: hub
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: new_loc_agent_props_modify_post_req
-              type: object
-              properties:
-                loc_props_from:
-                  type: string
-                  pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                loc_props:
-                  type: object
-                  description: prop
-                  additionalProperties:
-                    nullable: true
-                    oneOf:
-                      - type: integer
-                      - type: string
-                      - type: object
-                setup_token:
-                  type: string
-                setup_timed:
-                  type: boolean
-                  enum: [true]
-                auth_user_password:
-                  type: array
-                  minItems: 2
-                  maxItems: 2
-                  items:
-                    oneOf:
-                      - type: string
-                      - type: string
-                agent_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                              nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - loc_props
-                - agent_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request - Error connecting to location specified by 'loc_props'
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/props_patch:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_patch:
     post:
       description: |
         **Update agent properties of new location**
@@ -3454,7 +3155,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/props_put:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/props_put:
     post:
       description: |
         **Set/reset agent properties of new location**
@@ -3536,7 +3237,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/test:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/test:
     post:
       description: |
         **Discover agent loc props of new location**
@@ -3551,10 +3252,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3616,7 +3313,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/users:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users:
     post:
       description: |
         **Create user on agent for new location**
@@ -3635,10 +3332,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3698,7 +3391,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/users_delete:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users_delete:
     post:
       description: |
         **Delete user on agent for new location**
@@ -3717,10 +3410,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3769,7 +3458,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/users_get:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users_get:
     post:
       description: |
         **Get list of users on new agent**
@@ -3784,10 +3473,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3854,7 +3539,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent/users_password:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent/users_password:
     post:
       description: |
         **Change password of local user on agent for new location**
@@ -3873,10 +3558,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -3930,7 +3611,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/agent_get:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/agent_get:
     post:
       description: |
         **Detect whether hub may (re)configure agent of new location**
@@ -3945,10 +3626,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -4010,7 +3687,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts:
+  /api/v6.1.0.3/hubs/{hub}/alerts:
     get:
       description: |
         **List configured alerts**
@@ -4110,7 +3787,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}:
     delete:
       description: |
         **Delete alert configuration**
@@ -4150,7 +3827,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}/clear:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/clear:
     post:
       description: |
         **Clear alert state**
@@ -4190,7 +3867,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}/disable:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/disable:
     post:
       description: |
         **Disable an alert configuration**
@@ -4230,7 +3907,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}/execute:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/execute:
     post:
       description: |
         **Execute alert configuration now**
@@ -4292,7 +3969,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}/props:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/props:
     get:
       description: |
         **Get alert configuration properties**
@@ -4360,7 +4037,7 @@ paths:
                 type: string
     patch:
       description: |
-        **Set/reset alert configuration properties**
+        **Modify alert configuration properties**
         ---
         Required Permissions:
         * ReadWrite access level on hub
@@ -4482,7 +4159,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/props_delete:
     post:
       description: |
         **Delete alert configuration properties**
@@ -4537,87 +4214,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}/props_modify:
-    patch:
-      description: |
-        **Modify alert configuration properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Alert_Property_Change</b></summary>
-        <pre><samp>  'alert' : &lt;ident&gt;
-          'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_alert_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_alert_prop&gt;
-          }</samp></pre></details></body></html>
-      tags:
-        - Alert Interface
-      operationId: alert_props_modify_patch
-      parameters:
-        - name: hub
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: alert
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: alert_props_modify_patch_req
-              type: object
-              properties:
-                alert_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                              nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - alert_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-        '404':
-          description: Not Found - Hub or Alert not found
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/alerts/{alert}/test:
+  /api/v6.1.0.3/hubs/{hub}/alerts/{alert}/test:
     post:
       description: |
         **Send test alert notifications**
@@ -4658,7 +4255,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition:
+  /api/v6.1.0.3/hubs/{hub}/definition:
     get:
       description: |
         **Fetch hub definition**
@@ -4897,7 +4494,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/action_modify:
+  /api/v6.1.0.3/hubs/{hub}/definition/action_modify:
     post:
       description: |
         **Modify scope or parameters of action**
@@ -4997,7 +4594,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/action_replace:
+  /api/v6.1.0.3/hubs/{hub}/definition/action_replace:
     post:
       description: |
         **Replace action**
@@ -5096,7 +4693,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/change/events:
+  /api/v6.1.0.3/hubs/{hub}/definition/change/events:
     get:
       description: |
         **Fetch definition changes from events**
@@ -6686,7 +6283,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels:
     get:
       description: |
         **Fetch channels from hub definition**
@@ -6987,7 +6584,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}:
     delete:
       description: |
         **Delete channel**
@@ -7376,7 +6973,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/actions:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/actions:
     get:
       description: |
         **Fetch channel actions from hub definition**
@@ -7617,7 +7214,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/actions_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/actions_delete:
     post:
       description: |
         **Delete channel actions**
@@ -7699,7 +7296,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups:
     get:
       description: |
         **Fetch location groups from hub definition**
@@ -7830,7 +7427,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}:
     delete:
       description: |
         **Delete location group**
@@ -8010,7 +7607,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members:
     get:
       description: |
         **Fetch location group members from hub definition**
@@ -8189,7 +7786,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members/{member}:
     delete:
       description: |
         **Delete location group member**
@@ -8243,7 +7840,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/members_delete:
     post:
       description: |
         **Delete location group members**
@@ -8305,7 +7902,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/loc_groups/{loc_group}/rename:
     post:
       description: |
         **Rename location group**
@@ -8366,7 +7963,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/rename:
     post:
       description: |
         **Rename channel**
@@ -8421,7 +8018,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables:
     get:
       description: |
         **Fetch tables from hub definition**
@@ -8843,7 +8440,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}:
     delete:
       description: |
         **Delete table**
@@ -9170,7 +8767,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols:
     get:
       description: |
         **Fetch columns from hub definition**
@@ -9453,7 +9050,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}/cols_delete:
     post:
       description: |
         **Delete columns**
@@ -9515,7 +9112,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables/{table}/rename:
     post:
       description: |
         **Rename table**
@@ -9576,7 +9173,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/channels/{channel}/tables_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/channels/{channel}/tables_delete:
     post:
       description: |
         **Delete tables**
@@ -9632,7 +9229,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/hub_actions:
+  /api/v6.1.0.3/hubs/{hub}/definition/hub_actions:
     get:
       description: |
         **Fetch hub actions from definition**
@@ -9822,7 +9419,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/hub_actions_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/hub_actions_delete:
     post:
       description: |
         **Delete hub actions**
@@ -9886,7 +9483,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/import:
+  /api/v6.1.0.3/hubs/{hub}/definition/import:
     post:
       description: |
         **Import set of definition changes**
@@ -9896,110 +9493,8 @@ paths:
         ---
         Creates the following event:
         <!DOCTYPE html><body><details><summary><b>Definition_Change_Import</b></summary>
-        <pre><samp>  'change_counts' : { 
-              'add_loc' ?: &lt;int&gt;
-              'replace_loc' ?: &lt;int&gt;
-              'delete_loc' ?: &lt;int&gt;
-              'rename_loc' ?: &lt;int&gt;
-              'add_loc_props' ?: &lt;int&gt;
-              'replace_loc_props' ?: &lt;int&gt;
-              'modify_loc_props' ?: &lt;int&gt;
-              'delete_loc_props' ?: &lt;int&gt;
-              'add_loc_actions' ?: &lt;int&gt;
-              'replace_loc_action_list' ?: &lt;int&gt;
-              'delete_loc_actions' ?: &lt;int&gt;
-              'add_channel' ?: &lt;int&gt;
-              'replace_channel' ?: &lt;int&gt;
-              'modify_channel' ?: &lt;int&gt;
-              'delete_channel' ?: &lt;int&gt;
-              'rename_channel' ?: &lt;int&gt;
-              'add_loc_group' ?: &lt;int&gt;
-              'replace_loc_group' ?: &lt;int&gt;
-              'delete_loc_group' ?: &lt;int&gt;
-              'rename_loc_group' ?: &lt;int&gt;
-              'add_loc_group_members' ?: &lt;int&gt;
-              'replace_loc_group_member_list' ?: &lt;int&gt;
-              'delete_loc_group_members' ?: &lt;int&gt;
-              'add_tables' ?: &lt;int&gt;
-              'modify_table_list' ?: &lt;int&gt;
-              'replace_table_list' ?: &lt;int&gt;
-              'add_table' ?: &lt;int&gt;
-              'replace_table' ?: &lt;int&gt;
-              'modify_table' ?: &lt;int&gt;
-              'rename_table' ?: &lt;int&gt;
-              'delete_tables' ?: &lt;int&gt;
-              'add_cols' ?: &lt;int&gt;
-              'modify_col_list' ?: &lt;int&gt;
-              'replace_col_list' ?: &lt;int&gt;
-              'delete_cols' ?: &lt;int&gt;
-              'add_channel_actions' ?: &lt;int&gt;
-              'replace_channel_action_list' ?: &lt;int&gt;
-              'delete_channel_actions' ?: &lt;int&gt;
-              'add_hub_actions' ?: &lt;int&gt;
-              'replace_hub_action_list' ?: &lt;int&gt;
-              'delete_hub_actions' ?: &lt;int&gt;
-              'modify_action' ?: &lt;int&gt;
-              'replace_action' ?: &lt;int&gt;
-          }
-          'change_replay' ?: &lt;bool&gt;
-          'add_exists' ?: { 
-              'loc' ?: &lt;int&gt;
-              'channel' ?: &lt;int&gt;
-              'loc_group' ?: &lt;int&gt;
-              'loc_group_member' ?: &lt;int&gt;
-              'table' ?: &lt;int&gt;
-              'col' ?: &lt;int&gt;
-          }
-          'rename_exists' ?: { 
-              'loc' ?: &lt;int&gt;
-              'channel' ?: &lt;int&gt;
-              'loc_group' ?: &lt;int&gt;
-              'table' ?: &lt;int&gt;
-          }
-          'replace_absent' ?: { 
-              'loc' ?: &lt;int&gt;
-              'channel' ?: &lt;int&gt;
-              'loc_group' ?: &lt;int&gt;
-              'table' ?: &lt;int&gt;
-              'action' ?: &lt;int&gt;
-          }
-          'modify_absent' ?: { 
-              'channel' ?: &lt;int&gt;
-              'table' ?: &lt;int&gt;
-              'action' ?: &lt;int&gt;
-          }
-          'delete_absent' ?: { 
-              'loc' ?: &lt;int&gt;
-              'loc_prop' ?: &lt;int&gt;
-              'loc_action' ?: &lt;int&gt;
-              'channel' ?: &lt;int&gt;
-              'loc_group' ?: &lt;int&gt;
-              'loc_group_member' ?: &lt;int&gt;
-              'table' ?: &lt;int&gt;
-              'col' ?: &lt;int&gt;
-              'channel_action' ?: &lt;int&gt;
-              'hub_action' ?: &lt;int&gt;
-          }
-          'rename_absent' ?: { 
-              'loc' ?: &lt;int&gt;
-              'channel' ?: &lt;int&gt;
-              'loc_group' ?: &lt;int&gt;
-              'table' ?: &lt;int&gt;
-          }
-          'action_absent_loc' ?: ( loc&lt;ident&gt;+ )
-          'old_group_members' ?: ( loc&lt;ident&gt;+ )
-          'member_absent_loc' ?: ( loc&lt;ident&gt;+ )
-          'rename_locs' ?: (
-              { 
-                  'name_before' : &lt;ident&gt;
-                  'names_after' : ( &lt;ident&gt;+ )
-              }*
-          )
-          'rename_channels' ?: (
-              { 
-                  'name_before' : &lt;ident&gt;
-                  'names_after' : ( &lt;ident&gt;+ )
-              }*
+        <pre><samp>  'changes' : (
+              &lt;str add_loc replace_loc delete_loc rename_loc add_loc_props replace_loc_props modify_loc_props delete_loc_props add_loc_actions replace_loc_action_list delete_loc_actions add_channel replace_channel modify_channel delete_channel rename_channel add_loc_group replace_loc_group delete_loc_group rename_loc_group add_loc_group_members replace_loc_group_member_list delete_loc_group_members add_tables modify_table_list replace_table_list add_table replace_table modify_table rename_table delete_tables add_cols modify_col_list replace_col_list delete_cols add_channel_actions replace_channel_action_list delete_channel_actions add_hub_actions replace_hub_action_list delete_hub_actions modify_action replace_action&gt;*
           )</samp></pre></details></body></html>
       tags:
         - Definition Interface
@@ -11842,40 +11337,6 @@ paths:
                     items:
                       type: string
                       pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                  rename_locs:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name_before:
-                          type: string
-                          pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                        names_after:
-                          type: array
-                          minItems: 1
-                          items:
-                            type: string
-                            pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                      required:
-                        - name_before
-                        - names_after
-                  rename_channels:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name_before:
-                          type: string
-                          pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                        names_after:
-                          type: array
-                          minItems: 1
-                          items:
-                            type: string
-                            pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                      required:
-                        - name_before
-                        - names_after
                 required:
                   - change_counts
         '400':
@@ -11884,7 +11345,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/import/analyze:
+  /api/v6.1.0.3/hubs/{hub}/definition/import/analyze:
     post:
       description: |
         **Analyze set of definition changes for import**
@@ -13706,40 +13167,6 @@ paths:
                     items:
                       type: string
                       pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                  rename_locs:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name_before:
-                          type: string
-                          pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                        names_after:
-                          type: array
-                          minItems: 1
-                          items:
-                            type: string
-                            pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                      required:
-                        - name_before
-                        - names_after
-                  rename_channels:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        name_before:
-                          type: string
-                          pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                        names_after:
-                          type: array
-                          minItems: 1
-                          items:
-                            type: string
-                            pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                      required:
-                        - name_before
-                        - names_after
                 required:
                   - change_counts
         '400':
@@ -13748,7 +13175,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs:
     get:
       description: |
         **Fetch locations from hub definition**
@@ -13927,7 +13354,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}:
     delete:
       description: |
         **Delete location**
@@ -14148,7 +13575,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/actions:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/actions:
     get:
       description: |
         **Fetch location actions from hub definition**
@@ -14373,7 +13800,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/actions_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/actions_delete:
     post:
       description: |
         **Delete location actions**
@@ -14449,7 +13876,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/copy:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/copy:
     post:
       description: |
         **Copy location**
@@ -14505,7 +13932,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/props:
     get:
       description: |
         **Fetch location properties from hub definition**
@@ -14573,7 +14000,7 @@ paths:
                 type: string
     patch:
       description: |
-        **Set/reset location properties**
+        **Modify location properties**
         ---
         Required Permissions:
         * ReadWrite access level on hub
@@ -14632,7 +14059,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props/{prop}:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/props/{prop}:
     delete:
       description: |
         **Delete location property**
@@ -14680,7 +14107,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/props_delete:
     post:
       description: |
         **Delete location properties**
@@ -14736,86 +14163,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/props_modify:
-    post:
-      description: |
-        **Modify location properties**
-        ---
-        Required Permissions:
-        * ReadWrite access level on hub
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Definition_Change</b></summary>
-        <pre><samp>  'modify_loc_props' : { 
-              'loc' : &lt;ident&gt;
-              'props' : { 
-                  prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_loc_prop&gt;
-              }
-          }</samp></pre></details></body></html>
-      tags:
-        - Definition Interface
-      operationId: definition_loc_props_modify_post
-      parameters:
-        - name: hub
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: loc
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: definition_loc_props_modify_post_req
-              type: object
-              properties:
-                loc_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                              nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - loc_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-        '404':
-          description: Not Found - Location does not exist
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/definition/locs/{loc}/rename:
+  /api/v6.1.0.3/hubs/{hub}/definition/locs/{loc}/rename:
     post:
       description: |
         **Rename location**
@@ -14870,7 +14218,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/event_channels:
+  /api/v6.1.0.3/hubs/{hub}/event_channels:
     get:
       description: |
         **Get all unique channels from hvr_event**
@@ -14938,7 +14286,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/event_locs:
+  /api/v6.1.0.3/hubs/{hub}/event_locs:
     get:
       description: |
         **Get all unique locations from hvr_event**
@@ -15009,7 +14357,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/event_types:
+  /api/v6.1.0.3/hubs/{hub}/event_types:
     get:
       description: |
         **Get all unique event types from hvr_event**
@@ -15078,7 +14426,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/events:
+  /api/v6.1.0.3/hubs/{hub}/events:
     get:
       description: |
         **Fetch event(s)**
@@ -15257,7 +14605,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/events/{ev_id}/log:
+  /api/v6.1.0.3/hubs/{hub}/events/{ev_id}/log:
     get:
       description: |
         **Get log file content during a specified event**
@@ -15329,7 +14677,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/events_cancel:
+  /api/v6.1.0.3/hubs/{hub}/events_cancel:
     post:
       description: |
         **Cancel events. Associated jobs will be suspended**
@@ -15378,7 +14726,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/repos/event_types:
+  /api/v6.1.0.3/repos/event_types:
     get:
       description: |
         **Get all unique event types for repos**
@@ -15425,7 +14773,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/repos/events:
+  /api/v6.1.0.3/repos/events:
     get:
       description: |
         **Fetch the repository events**
@@ -15530,7 +14878,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/dirs:
+  /api/v6.1.0.3/hubs/{hub}/dirs:
     get:
       description: |
         **List files in a directory (hub)**
@@ -15600,7 +14948,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/db/schemas:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/db/schemas:
     get:
       description: |
         **Show all schemas in database**
@@ -15652,7 +15000,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/dirs:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/dirs:
     get:
       description: |
         **List files in a directory on the location**
@@ -15737,7 +15085,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/env/odbc_drivers:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/env/odbc_drivers:
     get:
       description: |
         **Get list of installed ODBC Data Source Names of the location**
@@ -15792,7 +15140,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/env/oratab:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/env/oratab:
     get:
       description: |
         **Retrieve /etc/oratab or equivalent Windows registry values of the location**
@@ -15847,7 +15195,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/env/vars:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/env/vars:
     get:
       description: |
         **Retrieve specified environment variables of the location**
@@ -15913,7 +15261,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/locs/{loc}/test:
+  /api/v6.1.0.3/hubs/{hub}/locs/{loc}/test:
     post:
       description: |
         **Test Location connection**
@@ -15976,7 +15324,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/db/schemas:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/db/schemas:
     post:
       description: |
         **Show all schemas in new database location**
@@ -15991,10 +15339,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -16043,7 +15387,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/dirs:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/dirs:
     post:
       description: |
         **List files in a directory on the new location**
@@ -16058,10 +15402,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -16140,7 +15480,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/env/odbc_drivers:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/env/odbc_drivers:
     post:
       description: |
         **Get list of installed ODBC Data Source Names or the new location**
@@ -16155,10 +15495,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -16203,7 +15539,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/env/oratab:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/env/oratab:
     post:
       description: |
         **Retrieve /etc/oratab or equivalent Windows registry values of the new location**
@@ -16218,10 +15554,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -16270,7 +15602,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/env/vars:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/env/vars:
     post:
       description: |
         **Retrieve specified environment variables of the new location**
@@ -16285,10 +15617,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -16346,7 +15674,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/new_loc/test:
+  /api/v6.1.0.3/hubs/{hub}/new_loc/test:
     post:
       description: |
         **Test Location connection properties**
@@ -16361,10 +15689,6 @@ paths:
         - name: hub
           in: path
           required: true
-          schema:
-            type: string
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
           schema:
             type: string
       requestBody:
@@ -16416,7 +15740,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/dirs:
+  /api/v6.1.0.3/hubserver/dirs:
     get:
       description: |
         **List files in a directory (hubserver)**
@@ -16488,7 +15812,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/env/odbc_drivers:
+  /api/v6.1.0.3/hubserver/env/odbc_drivers:
     get:
       description: |
         **Get list of installed ODBC Data Source Names of the hub server**
@@ -16529,7 +15853,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/env/oratab:
+  /api/v6.1.0.3/hubserver/env/oratab:
     get:
       description: |
         **Retrieve /etc/oratab or equivalent Windows registry values of the hub server**
@@ -16569,7 +15893,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/env/vars:
+  /api/v6.1.0.3/hubserver/env/vars:
     get:
       description: |
         **Retrieve specified environment variables of the hub server**
@@ -16621,7 +15945,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/props_test:
+  /api/v6.1.0.3/hubserver/props_test:
     post:
       description: |
         **Verify (changes) to HubServer connection properties**
@@ -16633,11 +15957,6 @@ paths:
       tags:
         - File and DB Browse Interface
       operationId: hubserver_props_test_post
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -16689,7 +16008,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/test:
+  /api/v6.1.0.3/hubserver/test:
     post:
       description: |
         **Test hubserver is working correctly**
@@ -16716,7 +16035,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs:
+  /api/v6.1.0.3/hubs:
     get:
       description: |
         **Fetch all hubs and their basic properties**
@@ -16814,7 +16133,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}:
+  /api/v6.1.0.3/hubs/{hub}:
     delete:
       description: |
         **Delete hub**
@@ -16912,7 +16231,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/freeze:
+  /api/v6.1.0.3/hubs/{hub}/freeze:
     post:
       description: |
         **Changes the state of a hub to FROZEN**
@@ -16947,7 +16266,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/props:
+  /api/v6.1.0.3/hubs/{hub}/props:
     get:
       description: |
         **Get hub properties**
@@ -16993,7 +16312,7 @@ paths:
                 type: string
     patch:
       description: |
-        **Set/reset hub properties**
+        **Modify hub properties**
         ---
         Required Permissions:
         * HubOwner access level on hub
@@ -17083,7 +16402,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/props_delete:
     post:
       description: |
         **Delete hub properties**
@@ -17126,72 +16445,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/props_modify:
-    post:
-      description: |
-        **Modify hub properties**
-        ---
-        Required Permissions:
-        * HubOwner access level on hub
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Hub_Property_Change</b></summary>
-        <pre><samp>  'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_hub_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_hub_prop&gt;
-          }</samp></pre></details></body></html>
-      tags:
-        - Hub Config Interface
-      operationId: hub_props_modify_post
-      parameters:
-        - name: hub
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: hub_props_modify_post_req
-              type: object
-              properties:
-                hub_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                            nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - hub_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/snapshot:
+  /api/v6.1.0.3/hubs/{hub}/snapshot:
     post:
       description: |
         **Save the hub state (db content and files) to a snapshot.**
@@ -17281,7 +16535,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/unfreeze:
+  /api/v6.1.0.3/hubs/{hub}/unfreeze:
     post:
       description: |
         **Changes the state of a hub to LIVE**
@@ -17316,7 +16570,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/snapshot:
+  /api/v6.1.0.3/snapshot:
     post:
       description: |
         **Restore the state (db content and files) from a snapshot.**
@@ -17377,7 +16631,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/snapshot_inspect:
+  /api/v6.1.0.3/snapshot_inspect:
     post:
       description: |
         **Inspect the snapshot and return some information about it.**
@@ -17480,7 +16734,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/clock:
+  /api/v6.1.0.3/hubserver/clock:
     get:
       description: |
         **Get HubServer clock**
@@ -17512,7 +16766,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/props:
+  /api/v6.1.0.3/hubserver/props:
     get:
       description: |
         **Get HubServer properties**
@@ -17571,7 +16825,7 @@ paths:
                 type: string
     patch:
       description: |
-        **Set/reset HubServer properties**
+        **Modify HubServer properties**
         ---
         Required Permissions:
         * SysAdmin access level
@@ -17644,7 +16898,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/props_delete:
+  /api/v6.1.0.3/hubserver/props_delete:
     post:
       description: |
         **Delete some HubServer properties**
@@ -17679,63 +16933,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/props_modify:
-    post:
-      description: |
-        **Modify HubServer properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-      tags:
-        - HubServer Interface
-      operationId: hubserver_props_modify_post
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: hubserver_props_modify_post_req
-              type: object
-              properties:
-                hubserver_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                            nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - hubserver_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubserver/restart:
+  /api/v6.1.0.3/hubserver/restart:
     post:
       description: |
         **Restart HubServer internals**
@@ -17759,7 +16957,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/stop:
+  /api/v6.1.0.3/hubserver/stop:
     post:
       description: |
         **Stop HubServer**
@@ -17783,7 +16981,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubserver/upload:
+  /api/v6.1.0.3/hubserver/upload:
     post:
       description: |
         **Create upload ref to be used to upload a file to the server.**
@@ -17824,7 +17022,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/job_system/attributes:
+  /api/v6.1.0.3/hubs/{hub}/job_system/attributes:
     get:
       description: |
         **Fetch job attributes on SYSTEM job group**
@@ -17871,7 +17069,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/job_system/attributes/{attr}:
+  /api/v6.1.0.3/hubs/{hub}/job_system/attributes/{attr}:
     delete:
       description: |
         **Delete job attribute on SYSTEM job group**
@@ -17979,7 +17177,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/job_system/env_vars:
+  /api/v6.1.0.3/hubs/{hub}/job_system/env_vars:
     get:
       description: |
         **Fetch 'set' job attribute on SYSTEM job group**
@@ -18019,7 +17217,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/job_system/env_vars/{var}:
+  /api/v6.1.0.3/hubs/{hub}/job_system/env_vars/{var}:
     delete:
       description: |
         **Delete 'set' job attribute on SYSTEM job group**
@@ -18111,7 +17309,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs:
+  /api/v6.1.0.3/hubs/{hub}/jobs:
     get:
       description: |
         **Fetch job(s)**
@@ -18195,9 +17393,6 @@ paths:
                       format: date-time
                     latency:
                       type: integer
-                    next_run:
-                      type: string
-                      format: date-time
                   required:
                     - state
         '400':
@@ -18206,7 +17401,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs/{job}:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}:
     delete:
       description: |
         **Delete job**
@@ -18258,7 +17453,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs/{job}/attributes:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/attributes:
     get:
       description: |
         **Fetch job attributes**
@@ -18310,7 +17505,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs/{job}/attributes/{attr}:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/attributes/{attr}:
     delete:
       description: |
         **Delete job attribute**
@@ -18431,7 +17626,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs/{job}/env_vars:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/env_vars:
     get:
       description: |
         **Fetch 'set' job attribute**
@@ -18476,7 +17671,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs/{job}/env_vars/{var}:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/env_vars/{var}:
     delete:
       description: |
         **Delete 'set' job attribute**
@@ -18581,7 +17776,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs_delete:
+  /api/v6.1.0.3/hubs/{hub}/jobs_delete:
     post:
       description: |
         **Delete jobs**
@@ -18642,7 +17837,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs_start:
+  /api/v6.1.0.3/hubs/{hub}/jobs_start:
     post:
       description: |
         **Start jobs**
@@ -18708,7 +17903,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs_suspend:
+  /api/v6.1.0.3/hubs/{hub}/jobs_suspend:
     post:
       description: |
         **Suspend jobs**
@@ -18757,7 +17952,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs_unsuspend:
+  /api/v6.1.0.3/hubs/{hub}/jobs_unsuspend:
     post:
       description: |
         **Unsuspend jobs**
@@ -18806,7 +18001,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log:
+  /api/v6.1.0.3/hubs/{hub}/jobs/{job}/controls/{ctrl_id}/log:
     get:
       description: |
         **Get log file content while a specified control was active**
@@ -18877,7 +18072,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/logs/{file}:
+  /api/v6.1.0.3/hubs/{hub}/logs/{file}:
     get:
       description: |
         **Get hub's log file content**
@@ -18972,7 +18167,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/logs/{file}/archive/{archive}:
+  /api/v6.1.0.3/hubs/{hub}/logs/{file}/archive/{archive}:
     get:
       description: |
         **Get hub's archived log file content**
@@ -19051,7 +18246,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/logs/{file}/search:
+  /api/v6.1.0.3/hubs/{hub}/logs/{file}/search:
     get:
       description: |
         **Search for timestamp in log file. Returns offset of first log line that starts with a timestamp bigger or equal to specified timstamp.**
@@ -19102,7 +18297,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/logs/{file}:
+  /api/v6.1.0.3/logs/{file}:
     get:
       description: |
         **Get log file content**
@@ -19192,7 +18387,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/logs/{file}/archive/{archive}:
+  /api/v6.1.0.3/logs/{file}/archive/{archive}:
     get:
       description: |
         **Get archived log file content**
@@ -19266,7 +18461,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/query/channels:
+  /api/v6.1.0.3/hubs/{hub}/query/channels:
     get:
       description: |
         **For each location in each channel calculate whichtables are captured and integrated, their schema and basenames, and latency SLA.**
@@ -19378,7 +18573,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/query/channels/{channel}/locs:
+  /api/v6.1.0.3/hubs/{hub}/query/channels/{channel}/locs:
     get:
       description: |
         **For each location calculate which tables are capturedand integrated, their schema and basenames, and latency SLA.**
@@ -19479,7 +18674,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}:
+  /api/v6.1.0.3/hubs/{hub}/query/channels/{channel}/locs/{loc}/tables/{table}:
     get:
       description: |
         **Calculate how table is defined for a location, including effect of actions**
@@ -19546,12 +18741,6 @@ paths:
                       - 'explicit'
                       - 'implicit'
                       - 'duplicate_rows'
-                  available_contexts:
-                    type: array
-                    minItems: 1
-                    items:
-                      type: string
-                      pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
                   cols:
                     type: array
                     items:
@@ -19686,7 +18875,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/query/channels/{channel}/tables:
+  /api/v6.1.0.3/hubs/{hub}/query/channels/{channel}/tables:
     get:
       description: |
         **For each table calculate its schema, basename, and the lists of locations where the table is captured or integrated**
@@ -19769,7 +18958,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/query/status:
+  /api/v6.1.0.3/hubs/{hub}/query/status:
     get:
       description: |
         **Gets general status and health of a hub**
@@ -19844,7 +19033,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/repos:
+  /api/v6.1.0.3/repos:
     delete:
       description: |
         **Drop all repository tables**
@@ -19935,7 +19124,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/repos/props:
+  /api/v6.1.0.3/repos/props:
     get:
       description: |
         **Get repository properties**
@@ -19988,7 +19177,7 @@ paths:
                 type: string
     patch:
       description: |
-        **Set/reset repository properties**
+        **Modify repository properties**
         ---
         Required Permissions:
         * SysAdmin access level
@@ -20077,7 +19266,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/repos/props_delete:
+  /api/v6.1.0.3/repos/props_delete:
     post:
       description: |
         **Delete repository properties**
@@ -20115,71 +19304,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/repos/props_modify:
-    post:
-      description: |
-        **Modify repository properties**
-        ---
-        Required Permissions:
-        * SysAdmin access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-        Creates the following event:
-        <!DOCTYPE html><body><details><summary><b>Repository_Property_Change</b></summary>
-        <pre><samp>  'props_after' : { 
-              prop&lt;str&gt; *: value&lt;null&gt; | &lt;typeof_repos_prop&gt;
-          }
-          'props_before' ?: { 
-              prop&lt;str&gt; *: value&lt;typeof_repos_prop&gt;
-          }</samp></pre></details></body></html>
-      tags:
-        - Repository Config Interface
-      operationId: repos_props_modify_post
-      parameters:
-        - name: X-Hvr-Classified-Transport-Key
-          in: header
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: repos_props_modify_post_req
-              type: object
-              properties:
-                repos_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                            nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - repos_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/stats/metrics:
+  /api/v6.1.0.3/hubs/{hub}/stats/metrics:
     get:
       description: |
         **Fetch statistics**
@@ -20323,7 +19448,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/stats/metrics/export:
+  /api/v6.1.0.3/hubs/{hub}/stats/metrics/export:
     post:
       description: |
         **Export statistics to a file**
@@ -20409,7 +19534,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/stats/oldest:
+  /api/v6.1.0.3/hubs/{hub}/stats/oldest:
     get:
       description: |
         **Fetch oldest stats history time for time granularity and scope**
@@ -20465,7 +19590,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/apply:
     post:
       description: |
         **Logic to Add and Replace table definition info from tables in a source (or target) database**
@@ -20695,7 +19820,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check:
     post:
       description: |
         **Logic to compare table definition info with table layouts in a source (or target) db**
@@ -20931,7 +20056,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/check/{table}:
     post:
       description: |
         **Check table definition against the definition in a source (or target) database**
@@ -21013,12 +20138,6 @@ paths:
                       - 'explicit'
                       - 'implicit'
                       - 'duplicate_rows'
-                  available_contexts:
-                    type: array
-                    minItems: 1
-                    items:
-                      type: string
-                      pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
                   source_tables:
                     type: array
                     minItems: 1
@@ -21262,7 +20381,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/adapt/other_channels:
     post:
       description: |
         **For input tables plus tables replicated to/from location in channel, check if they are replicated to/from same location in other channels**
@@ -21336,7 +20455,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/mapdoc/parse:
+  /api/v6.1.0.3/hubs/{hub}/mapdoc/parse:
     post:
       description: |
         **Parse adapt pattern file to mapspec in JSON format**
@@ -21408,7 +20527,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/users/{user}/props:
+  /api/v6.1.0.3/hubs/{hub}/users/{user}/props:
     get:
       description: |
         **Get user's hub properties**
@@ -21460,7 +20579,7 @@ paths:
                 type: string
     patch:
       description: |
-        **Set/reset user hub properties**
+        **Modify user hub properties**
         ---
         Required Permissions:
         * CurrentUser access level
@@ -21545,7 +20664,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/users/{user}/props_delete:
+  /api/v6.1.0.3/hubs/{hub}/users/{user}/props_delete:
     post:
       description: |
         **Delete user hub properties**
@@ -21591,69 +20710,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/users/{user}/props_modify:
-    post:
-      description: |
-        **Modify user hub properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-      tags:
-        - User Config Interface
-      operationId: hub_user_props_modify_post
-      parameters:
-        - name: hub
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: hub_user_props_modify_post_req
-              type: object
-              properties:
-                user_hub_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                            nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - user_hub_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/users:
+  /api/v6.1.0.3/users:
     get:
       description: |
         **Get list of users, including properties**
@@ -21766,7 +20823,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/users/{user}:
+  /api/v6.1.0.3/users/{user}:
     delete:
       description: |
         **Delete a user**
@@ -21860,7 +20917,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/users/{user}/password:
+  /api/v6.1.0.3/users/{user}/password:
     put:
       description: |
         **Reset password of user, with local authentication**
@@ -21909,7 +20966,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/users/{user}/props:
+  /api/v6.1.0.3/users/{user}/props:
     get:
       description: |
         **Get user properties**
@@ -21956,7 +21013,7 @@ paths:
                 type: string
     patch:
       description: |
-        **Set/reset user properties**
+        **Modify user properties**
         ---
         Required Permissions:
         * CurrentUser access level
@@ -22031,7 +21088,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/users/{user}/props_delete:
+  /api/v6.1.0.3/users/{user}/props_delete:
     post:
       description: |
         **Delete user properties**
@@ -22072,64 +21129,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/users/{user}/props_modify:
-    post:
-      description: |
-        **Modify user properties**
-        ---
-        Required Permissions:
-        * CurrentUser access level
-        * Available while <i>Setup Mode</i> is active.
-        ---
-      tags:
-        - User Config Interface
-      operationId: user_props_post
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              title: user_props_post_req
-              type: object
-              properties:
-                user_prop_args:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: array
-                        minItems: 1
-                        items:
-                          oneOf:
-                            - type: string
-                              pattern: ^([a-zA-Z_])([0-9_a-zA-Z]*)
-                            nullable: true
-                            - type: integer
-                            - type: string
-                      value:
-                        AnyValue: {}
-                    required:
-                      - key
-                      - value
-              required:
-                - user_prop_args
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/controls:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/controls:
     get:
       description: |
         **Get all control ids matched by the query**
@@ -22202,7 +21202,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/controls/{ctrl_id}:
     get:
       description: |
         **Get the control associated with the id**
@@ -22346,7 +21346,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/controls_delete:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/controls_delete:
     post:
       description: |
         **Delete all the controls matched.**
@@ -22401,7 +21401,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls:
+  /api/v6.1.0.3/hubs/{hub}/channels/{channel}/locs/{loc}/tasks/{task}/controls:
     post:
       description: |
         **Send a new control file**
@@ -22595,7 +21595,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet:
+  /api/v6.1.0.3/wallet:
     post:
       description: |
         **Create new encryption wallet**
@@ -22648,7 +21648,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet/change:
+  /api/v6.1.0.3/wallet/change:
     post:
       description: |
         **Change reference to existing wallet**
@@ -22701,7 +21701,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet/disable:
+  /api/v6.1.0.3/wallet/disable:
     post:
       description: |
         **Disable encryption wallet**
@@ -22737,7 +21737,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet/key_history_delete:
+  /api/v6.1.0.3/wallet/key_history_delete:
     post:
       description: |
         **Delete historical encryption keys**
@@ -22785,7 +21785,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet/key_rotate:
+  /api/v6.1.0.3/wallet/key_rotate:
     post:
       description: |
         **Rotate encryption keys**
@@ -22812,7 +21812,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet/migrate:
+  /api/v6.1.0.3/wallet/migrate:
     post:
       description: |
         **Migrate to a new wallet configuration gracefully**
@@ -22871,7 +21871,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet/props:
+  /api/v6.1.0.3/wallet/props:
     get:
       description: |
         **Get wallet properties**
@@ -22922,7 +21922,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/wallet/reencrypt_continue:
+  /api/v6.1.0.3/wallet/reencrypt_continue:
     post:
       description: |
         **Continue previous re-encryption operation**
@@ -22956,7 +21956,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/licenses:
+  /api/v6.1.0.3/licenses:
     get:
       description: |
         **Fetch licenses**
@@ -23050,7 +22050,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/licenses/{license}:
+  /api/v6.1.0.3/licenses/{license}:
     delete:
       description: |
         **Delete a license**
@@ -23164,7 +22164,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/licensing:
+  /api/v6.1.0.3/licensing:
     get:
       description: |
         **Show licensing status**
@@ -23240,7 +22240,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/licensing/license_agreement_accepted:
+  /api/v6.1.0.3/licensing/license_agreement_accepted:
     post:
       description: |
         **Set Hub Server property License_Agreement_Accepted**
@@ -23260,7 +22260,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/metering/download:
+  /api/v6.1.0.3/metering/download:
     get:
       description: |
         **Fetch metering/MAR records**
@@ -23449,7 +22449,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/metering/license_acquire:
+  /api/v6.1.0.3/metering/license_acquire:
     post:
       description: |
         **Acquire a new license through the metering interface**
@@ -23470,7 +22470,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/metering/purge:
+  /api/v6.1.0.3/metering/purge:
     post:
       description: |
         **Purge metering data**
@@ -23514,7 +22514,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/metering/registration_status:
+  /api/v6.1.0.3/metering/registration_status:
     post:
       description: |
         **Query registration status**
@@ -23553,7 +22553,7 @@ paths:
             text/plain; charset=utf-8:
               schema:
                 type: string
-  /api/v6.1.6/metering/upload:
+  /api/v6.1.0.3/metering/upload:
     post:
       description: |
         **Upload metering/MAR records to registered service**
