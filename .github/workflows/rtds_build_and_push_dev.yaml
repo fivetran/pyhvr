@@ -13,6 +13,10 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
+      - name: Authenticate GCP
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCR_BUILD_SERVICE_ACCOUNT_KEY }}'
       - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v0'
       - name: Configure docker for GAR
