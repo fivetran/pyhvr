@@ -22,9 +22,9 @@ cd -
 cd ..
 pip install .
 echo "Wait for HammerDB to finish and database becoming available"
-while ! docker exec rtdshub nc postgres-source 5432 ; do sleep 5; done;
-while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
-while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
+while ! docker exec pyhvrhub nc postgres-source 5432 ; do sleep 5; done;
+while ! docker exec pyhvragent-1 nc localhost 4343 ; do sleep 1; done;
+while ! docker exec pyhvragent-2 nc localhost 4343 ; do sleep 1; done;
 pytest --ignore tests/test_clean_install.py
 cd -
 
@@ -41,10 +41,10 @@ docker compose -f docker-compose-clean-inst.yaml up --build -d
 cd -
 
 echo "Wait for hubserver to come up"
-while ! docker exec rtdshub nc localhost 4340 ; do sleep 1; done;
-while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
-while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
-docker cp rtdshub:/install/hvr.lic ../tests/hvr.lic
+while ! docker exec pyhvrhub nc localhost 4340 ; do sleep 1; done;
+while ! docker exec pyhvragent-1 nc localhost 4343 ; do sleep 1; done;
+while ! docker exec pyhvragent-2 nc localhost 4343 ; do sleep 1; done;
+docker cp pyhvrhub:/install/hvr.lic ../tests/hvr.lic
 cd ..
 pytest tests/test_clean_install.py
 cd -

@@ -7,14 +7,14 @@
 
 version: "3.1"
 services:
-  rtdshub:
+  pyhvrhub:
     build:
       dockerfile: Dockerfile-clean-inst.hub
       args:
         owner: ${owner}
       context: .
-    container_name: rtdshub
-    hostname: rtdshub
+    container_name: pyhvrhub
+    hostname: pyhvrhub
     ports:
       - "4340:4340"
     environment:
@@ -23,31 +23,31 @@ services:
       - HUB_DATABASE_NAME=pghub
       - DEPLOYMENT_ID=gidtest-1
       - DEPLOYMENT_GROUP_ID=gidtest
-      - AGENT_1_ENDPOINT=rtdsagent-1-service
-      - AGENT_2_ENDPOINT=rtdsagent-2-service
+      - AGENT_1_ENDPOINT=pyhvragent-1-service
+      - AGENT_2_ENDPOINT=pyhvragent-2-service
       - OVERRIDE_HUB_DATABASE_PASSWORD=Kiwi1234
       - OVERRIDE_HUB_DATABASE_USER=postgres
       - OVERRIDE_HUB_ADMIN_PASSWORD=Kiwi1234Kiwi1234
       - OVERRIDE_HUB_ADMIN_USER=admin
-  rtdsagent-1:
+  pyhvragent-1:
     build:
       dockerfile: Dockerfile-clean-inst.agent
       args:
         owner: ${owner}
       context: .
-    container_name: rtdsagent-1
+    container_name: pyhvragent-1
     # ports:
     #   - "4340:4340"
     environment:
       - AGENT_ID=1
       - DEPLOYMENT_GROUP_ID=gidtest
-  rtdsagent-2:
+  pyhvragent-2:
     build:
       dockerfile: Dockerfile-clean-inst.agent
       args:
         owner: ${owner}
       context: .
-    container_name: rtdsagent-2
+    container_name: pyhvragent-2
     # ports:
     #   - "4340:4340"
     environment:

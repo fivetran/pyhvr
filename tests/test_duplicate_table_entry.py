@@ -122,7 +122,7 @@ def setup_replication(hvr_client, suffix):
             # "Oracle_SID": "XE",
             # "Oracle_Home": "/u01/app/oracle/product/11.2.0/xe",
             # "Agent_Host": "oracle-source",
-            "Agent_Host": "rtdsagent-1",
+            "Agent_Host": "pyhvragent-1",
             "Agent_Port": "4343",
             "Case_Sensitive_Names": True,
         },
@@ -141,7 +141,7 @@ def setup_replication(hvr_client, suffix):
             "Database_Password": "Kiwi1234",
             "Class": "postgresql",
             "Capture_Method": "SQL",
-            "Agent_Host": "rtdsagent-2",
+            "Agent_Host": "pyhvragent-2",
             "Agent_Port": "4343",
         },
     )
@@ -261,8 +261,8 @@ def test_init():
     pprint("current_repo_props")
     pprint(current_repo_props)
 
-    # for agent_id in ["oracle-source", "rtdsagent-2"]:
-    for agent_id in ["rtdsagent-1", "rtdsagent-2"]:
+    # for agent_id in ["oracle-source", "pyhvragent-2"]:
+    for agent_id in ["pyhvragent-1", "pyhvragent-2"]:
 
         agent_info = hvr_client.post_hubs_new_loc_agent_get(
             hub="hvrhub",
@@ -308,7 +308,7 @@ def test_init():
             agent_props={
                 "Setup_Mode_Timed_Until": None,
                 "Only_From_Client_Public_Certificates": {
-                    "http://rtdshub:4340/": current_repo_props[
+                    "http://pyhvrhub:4340/": current_repo_props[
                         "Agent_Client_Public_Certificate"
                     ]
                 },

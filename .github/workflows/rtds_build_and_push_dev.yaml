@@ -1,6 +1,7 @@
 name: Test pyhvr
 env:
-  region: ap-southeast-2
+  project: build-286712
+  region: us
 
 on: push
 
@@ -12,12 +13,11 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.region }}
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Configure docker for GAR
+        run: |
+          gcloud auth configure-docker ${{ env.region }}-docker.pkg.dev -q
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -35,17 +35,15 @@ jobs:
       - name: docker compose and pytest
         run: |
           cd docker-compose
-          AWS_ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
-          export owner=$AWS_ACCOUNT_ID.dkr.ecr.${{ env.region }}.amazonaws.com
-          aws ecr --region ${{ env.region }} get-login-password | docker login --username AWS --password-stdin $owner
+          export owner=${{ env.region }}-docker.pkg.dev/${{ env.project }}/pyhvr
           docker-compose -f docker-compose-preconf.yaml up -d
 
           cd ..
           echo "Wait for HVR6 and all dependencies to be ready"
-          while ! docker exec rtdshub nc postgres-source 5432 ; do sleep 1; done;
-          while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
-          while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
-          docker exec rtdshub grep "Expiry date" /install/hvr.lic
+          while ! docker exec pyhvrhub nc postgres-source 5432 ; do sleep 1; done;
+          while ! docker exec pyhvragent-1 nc localhost 4343 ; do sleep 1; done;
+          while ! docker exec pyhvragent-2 nc localhost 4343 ; do sleep 1; done;
+          docker exec pyhvrhub grep "Expiry date" /install/hvr.lic
           pytest --ignore tests/test_clean_install.py --ignore tests/test_user.py --ignore tests/test_duplicate_table_entry.py
           cd -
           docker-compose -f docker-compose-preconf.yaml down -v
@@ -53,11 +51,11 @@ jobs:
           docker-compose -f docker-compose-clean-inst.yaml up -d
           cd ..
           echo "Wait for hubserver to come up"
-          while ! docker exec rtdshub nc localhost 4340 ; do sleep 1; done;
-          while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
-          while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
-          docker exec rtdshub grep "Expiry date" /install/hvr.lic
-          docker cp rtdshub:/install/hvr.lic tests/hvr.lic
+          while ! docker exec pyhvrhub nc localhost 4340 ; do sleep 1; done;
+          while ! docker exec pyhvragent-1 nc localhost 4343 ; do sleep 1; done;
+          while ! docker exec pyhvragent-2 nc localhost 4343 ; do sleep 1; done;
+          docker exec pyhvrhub grep "Expiry date" /install/hvr.lic
+          docker cp pyhvrhub:/install/hvr.lic tests/hvr.lic
           pytest tests/test_clean_install.py tests/test_user.py
           cd -
           docker-compose  -f docker-compose-clean-inst.yaml down
@@ -65,11 +63,11 @@ jobs:
           docker-compose -f docker-compose-clean-inst.yaml up -d
           cd ..
           echo "Wait for hubserver to come up"
-          while ! docker exec rtdshub nc localhost 4340 ; do sleep 1; done;
-          while ! docker exec rtdsagent-1 nc localhost 4343 ; do sleep 1; done;
-          while ! docker exec rtdsagent-2 nc localhost 4343 ; do sleep 1; done;
-          docker exec rtdshub grep "Expiry date" /install/hvr.lic
-          docker cp rtdshub:/install/hvr.lic tests/hvr.lic
+          while ! docker exec pyhvrhub nc localhost 4340 ; do sleep 1; done;
+          while ! docker exec pyhvragent-1 nc localhost 4343 ; do sleep 1; done;
+          while ! docker exec pyhvragent-2 nc localhost 4343 ; do sleep 1; done;
+          docker exec pyhvrhub grep "Expiry date" /install/hvr.lic
+          docker cp pyhvrhub:/install/hvr.lic tests/hvr.lic
           pytest tests/test_duplicate_table_entry.py
           cd -
           docker-compose  -f docker-compose-clean-inst.yaml down

@@ -83,7 +83,7 @@ def test_init():
             hub="hvrhub",
             loc_props={
                 "Class": "postgresql",
-                "Agent_Host": f"rtdsagent-{agent_id}",
+                "Agent_Host": f"pyhvragent-{agent_id}",
                 "Agent_Port": 4343,
             },
         )
@@ -95,7 +95,7 @@ def test_init():
             hub="hvrhub",
             loc_props={
                 "Class": "postgresql",
-                "Agent_Host": f"rtdsagent-{agent_id}",
+                "Agent_Host": f"pyhvragent-{agent_id}",
                 "Agent_Port": 4343,
             },
             setup_timed=agent_info["setup_timed"],
@@ -116,14 +116,14 @@ def test_init():
                     "Agent_Server_Public_Certificate"
                 ],
                 "Agent_Version": a_p["Agent_Version"],
-                "Agent_Host": f"rtdsagent-{agent_id}",
+                "Agent_Host": f"pyhvragent-{agent_id}",
                 "Agent_Port": 4343,
                 "Class": "postgres",
             },
             agent_props={
                 "Setup_Mode_Timed_Until": None,
                 "Only_From_Client_Public_Certificates": {
-                    "http://rtdshub:4340/": current_repo_props[
+                    "http://pyhvrhub:4340/": current_repo_props[
                         "Agent_Client_Public_Certificate"
                     ]
                 },
@@ -146,7 +146,7 @@ def test_init():
             "Database_Password": "Kiwi1234",
             "Class": "postgresql",
             "Capture_Method": "SQL",
-            "Agent_Host": "rtdsagent-1",
+            "Agent_Host": "pyhvragent-1",
             "Agent_Port": "4343",
         },
     )
@@ -161,7 +161,7 @@ def test_init():
             "Database_Password": "Kiwi1234",
             "Class": "postgresql",
             "Capture_Method": "SQL",
-            "Agent_Host": "rtdsagent-2",
+            "Agent_Host": "pyhvragent-2",
             "Agent_Port": "4343",
         },
     )

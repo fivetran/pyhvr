@@ -17,7 +17,7 @@ def test_setup_slicing():
             "Database_Password": "Kiwi1234",
             "Class": "postgresql",
             "Capture_Method": "SQL",
-            "Agent_Host": "rtdsagent-1",
+            "Agent_Host": "pyhvragent-1",
             "Agent_Port": "4343",
         },
     )
@@ -35,7 +35,7 @@ def test_setup_slicing():
             "Database_Password": "Kiwi1234",
             "Class": "postgresql",
             "Capture_Method": "SQL",
-            "Agent_Host": "rtdsagent-2",
+            "Agent_Host": "pyhvragent-2",
             "Agent_Port": "4343",
         },
     )

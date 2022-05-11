@@ -1,5 +1,5 @@
 ARG owner
-FROM $owner/rtdsagent:cicd-test-latest
+FROM $owner/pyhvragent:cicd-test-latest
 
 
 COPY clean-inst-agent.sh /home/hvr/bin/
