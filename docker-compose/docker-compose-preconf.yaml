@@ -7,9 +7,9 @@
 
 version: "3.1"
 services:
-  rtdshub:
-    image: ${owner}/rtdshub:cicd-test-latest
-    container_name: rtdshub
+  pyhvrhub:
+    image: ${owner}/pyhvrhub:cicd-test-latest
+    container_name: pyhvrhub
     ports:
       - "4340:4340"
     environment:
@@ -18,17 +18,17 @@ services:
       - HUB_DATABASE_NAME=pghub
       - DEPLOYMENT_ID=gidtest-1
       - DEPLOYMENT_GROUP_ID=gidtest
-      - AGENT_1_ENDPOINT=rtdsagent-1-service
-      - AGENT_2_ENDPOINT=rtdsagent-2-service
+      - AGENT_1_ENDPOINT=pyhvragent-1-service
+      - AGENT_2_ENDPOINT=pyhvragent-2-service
       - OVERRIDE_HUB_DATABASE_PASSWORD=Kiwi1234
       - OVERRIDE_HUB_DATABASE_USER=postgres
       - OVERRIDE_HUB_ADMIN_PASSWORD=Kiwi1234Kiwi1234
       - OVERRIDE_HUB_ADMIN_USER=admin
     volumes:
        - shared-data:/shared-data
-  rtdsagent-1:
-    image: ${owner}/rtdsagent:cicd-test-latest
-    container_name: rtdsagent-1
+  pyhvragent-1:
+    image: ${owner}/pyhvragent:cicd-test-latest
+    container_name: pyhvragent-1
     # ports:
     #   - "4340:4340"
     environment:
@@ -36,9 +36,9 @@ services:
       - DEPLOYMENT_GROUP_ID=gidtest
     volumes:
        - shared-data:/shared-data
-  rtdsagent-2:
-    image: ${owner}/rtdsagent:cicd-test-latest
-    container_name: rtdsagent-2
+  pyhvragent-2:
+    image: ${owner}/pyhvragent:cicd-test-latest
+    container_name: pyhvragent-2
     # ports:
     #   - "4340:4340"
     environment:

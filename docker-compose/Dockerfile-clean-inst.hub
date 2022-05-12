@@ -1,5 +1,5 @@
 ARG owner
-FROM $owner/rtdshub:cicd-test-latest
+FROM $owner/pyhvrhub:cicd-test-latest
 
 COPY clean-inst-hub.sh /home/hvr/bin/
 
