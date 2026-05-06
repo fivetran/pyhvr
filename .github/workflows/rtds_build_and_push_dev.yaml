@@ -26,15 +26,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      # Install all the required python modules for app, but also flake8 and pytest
-      - name: Install dependencies
+      - name: Install pyhvr with test dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest
-          pip install -r requirements.txt
-      - name: Install pyhvr
-        run: |
-          pip install .
+          pip install '.[test]'
       # TODO: check that generated code is up-to-date with source code
       - name: docker compose and pytest
         run: |

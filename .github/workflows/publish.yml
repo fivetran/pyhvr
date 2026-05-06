@@ -1,0 +1,80 @@
+# Build and publish pyhvr to PyPI on tag push.
+#
+# Triggering: push a tag matching v*.*.* (e.g. v6.1.0.3). The version in the
+# tag should match `__version__` in pyhvr/__init__.py.
+#
+# Authentication: PyPI Trusted Publishing via GitHub OIDC. NO secrets needed.
+# Maintainers must configure the trust policy on PyPI once — see the PR
+# description for the exact steps.
+
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  # `workflow_dispatch` lets a maintainer run a publish manually from the
+  # Actions tab if a tag-push run failed and needs retrying without re-tagging.
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build wheel and sdist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build frontend
+        run: python -m pip install --upgrade build
+
+      - name: Verify tag matches package version
+        # Fail fast if the git tag and __version__ disagree. Catches the
+        # "forgot to bump pyhvr/__init__.py" mistake before we publish.
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION=$(python -c "import re,pathlib; print(re.search(r'__version__\s*=\s*[\"\']([^\"\']+)', pathlib.Path('pyhvr/__init__.py').read_text()).group(1))")
+          echo "tag=$TAG_VERSION  pkg=$PKG_VERSION"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag $TAG_VERSION does not match pyhvr.__version__ $PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Build wheel and sdist
+        run: python -m build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    # GitHub Actions environment. Maintainers can require manual approval on
+    # this environment in repo settings → Environments → pypi.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pyhvr
+    permissions:
+      # Required for OIDC. Without this, the publish action cannot get a
+      # token from PyPI and the upload will fail.
+      id-token: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI
+        # No `password:` parameter — the action detects OIDC and uses Trusted
+        # Publishing automatically when id-token: write is granted.
+        uses: pypa/gh-action-pypi-publish@release/v1

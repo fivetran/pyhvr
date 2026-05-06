@@ -1,0 +1,75 @@
+# PEP 517: tells any build frontend (pip, build, uv) which backend to invoke.
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# PEP 621: standardised, backend-agnostic project metadata.
+[project]
+name = "pyhvr"
+description = "Python SDK for HVR6"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "HVR Software", email = "vit.spinka@fivetran.com" },
+]
+keywords = ["hvr", "fivetran", "rest-api", "data-replication"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "requests",
+]
+
+# `dynamic` declares fields that the build backend will fill in at build time
+# rather than reading from this file. Here we want `version` populated from
+# pyhvr/__init__.py's __version__ attribute, so __init__.py is the single
+# source of truth for the version string.
+dynamic = ["version"]
+
+[project.optional-dependencies]
+# Installed with `pip install pyhvr[test]`. Used by CI and contributors.
+test = [
+    "pytest",
+    "flake8",
+]
+# Codegen tooling for regenerating pyhvr_client.py from the OpenAPI spec.
+# `pip install pyhvr[generate]` for contributors who edit the generator.
+generate = [
+    "jinja2",
+    "pyyaml",
+    "black",
+    "isort",
+]
+
+[project.urls]
+Homepage = "https://github.com/fivetran/pyhvr"
+Repository = "https://github.com/fivetran/pyhvr"
+Issues = "https://github.com/fivetran/pyhvr/issues"
+"HVR REST API docs" = "https://www.hvr-software.com/docs/6/rest-api/rest-api-reference"
+
+# ---------------------------------------------------------------------------
+# Backend-specific configuration. Anything under [tool.<backend>] is opaque
+# to other backends — this is where the "swappable" promise breaks down.
+# ---------------------------------------------------------------------------
+
+[tool.setuptools]
+# Ship exactly the `pyhvr` package and nothing else. Without this, setuptools'
+# auto-discovery would also try to interpret top-level dirs like `tests/`,
+# `api/`, `docker-compose/` and `pyhvr-generate/`. Being explicit is safer.
+packages = ["pyhvr"]
+
+[tool.setuptools.dynamic]
+# How to resolve the `dynamic = ["version"]` declaration above:
+# import pyhvr (without executing build steps) and read its __version__.
+version = { attr = "pyhvr.__version__" }

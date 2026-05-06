@@ -9,3 +9,8 @@
 **/venv/
 
 tests/hvr.lic
+# build artefacts (added as part of pyproject.toml migration)
+build/
+dist/
+*.egg-info/
+*.egg
