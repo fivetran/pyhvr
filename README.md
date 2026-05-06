@@ -8,7 +8,11 @@ This module is a wrapper of the API as described in https://www.hvr-software.com
 
 ### Install pyhvr
 
-Point `pip` to this git repository:
+```bash
+pip install pyhvr
+```
+
+Or to install a specific commit or branch directly from this repository:
 
 ```bash
 pip install git+https://github.com/fivetran/pyhvr.git@v6.1.0.3#egg=pyhvr
@@ -104,6 +108,6 @@ The code used to generate the pyhvr module is a part of this repository, too. Se
 
 ## Supported versions
 
-Python versions 3.6, 3.7, 3.8 and 3.9 are tested and supported.
+Python 3.10, 3.11, 3.12 and 3.13 are tested and supported.
 
 HVR 6.1.0.3 GA is the only supported version at this time.

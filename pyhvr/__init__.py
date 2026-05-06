@@ -1,5 +1,5 @@
 """Module docstring text"""
-__version__ = "0.1.0"
+__version__ = "6.1.0.3"
 from pyhvr.pyhvr_client import Client
 
 
